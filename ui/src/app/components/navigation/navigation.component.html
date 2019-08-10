@@ -1,0 +1,16 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<a class="navbar-brand" routerLink="/admin">Navbar</a>
+	<button class="navbar-toggler" type="button" (click)="toggleNavbar()">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
+		<div class="navbar-nav">
+			<a class="nav-item nav-link" [routerLinkActive]="['active']" routerLink="/admin">Admin</a>
+			<a class="nav-item nav-link" [routerLinkActive]="['active']" routerLink="/groups">Groups</a>
+			<a class="nav-item nav-link" [routerLinkActive]="['active']" routerLink="/items">Items</a>
+		</div>
+		<div class="navbar-nav ml-auto	">
+			<a class="nav-item nav-link ml-auto" [routerLinkActive]="['active']" routerLink="/user">User</a>
+		</div>
+	</div>
+</nav>

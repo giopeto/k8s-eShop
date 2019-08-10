@@ -1,0 +1,40 @@
+- Install virtual box
+- Install vagrant
+- open console and run
+- cd microk8s-ubuntu
+- vagrant up
+- Go to virtual box and "Show" on microk8s-ubuntu
+- sudo apt-get install ubuntu-desktop -y
+- startx
+- run commands to install microk8s from bootsrtap-microk8s.sh
+
+
+
+	**** Remote debug ****
+Add debug port to service definition:
+  ports:
+    - name: store-service-web
+      protocol: "TCP"
+      # Port accessible inside cluster
+      port: 8081
+      # Port to forward to inside the pod
+      targetPort: 8081
+      # Port accessible outside cluster
+      nodePort: 30102
+    - name: store-service-debug
+      protocol: "TCP"
+      # Port accessible inside cluster
+      port: 5005
+      # Port to forward to inside the pod
+      targetPort: 5005
+      # Port accessible outside cluster
+      nodePort: 30110
+
+Change entrypoint in Dockerfile(add "-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n"):
+	ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n","-jar","/usr/app/app.jar"]
+
+get pod name
+	kubectl get pods
+
+forward 5005 port
+	kubectl port-forward <NODE_NAME>  5005:5005

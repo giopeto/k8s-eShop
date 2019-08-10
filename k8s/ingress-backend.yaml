@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: e-shop-gateway-ingress-backend
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  backend:
+    serviceName: default-http-backend
+    servicePort: 80
+  rules:
+  - host: k8s-eshop.io
+    http:
+      paths:
+      - path: /users(/|$)(.*)
+        backend:
+          serviceName: edge-service-svc
+          servicePort: 8080
+
+      - path: /store(/|$)(.*)
+        backend:
+          serviceName: store-service-svc
+          servicePort: 8081
+
+      - path: /files(/|$)(.*)
+        backend:
+          serviceName: files-service-svc
+          servicePort: 8082

@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: edge-service-dep
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: edge-service
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: edge-service
+          image: giopeto/e-shop-edge-service:V5
+          imagePullPolicy: Always
+          env:
+          - name: MONGODB_HOST
+            value: mongodb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-service-svc
+spec:
+  selector:
+    app: edge-service
+  ports:
+    - name: edge-service-web
+      protocol: "TCP"
+      # Port accessible inside cluster
+      port: 8080
+      # Port to forward to inside the pod
+      targetPort: 8080
+      # Port accessible outside cluster
+      nodePort: 30101
+    - name: edge-service-debug
+      protocol: "TCP"
+      # Port accessible inside cluster
+      port: 5005
+      # Port to forward to inside the pod
+      targetPort: 5005
+      # Port accessible outside cluster
+      nodePort: 30111
+  type: LoadBalancer

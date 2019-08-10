@@ -1,0 +1,63 @@
+<section>
+	<div class="container">
+		<form [formGroup]="itemForm" (ngSubmit)="save(itemForm.value)">
+			<div class="row">
+				<div class="col-lg-6"> <!-- Items -->
+					<h2>{{id?'Edit item':'Add new item'}}</h2>
+					<div class="form-group">
+						<label for="name">Name</label>
+						<div class="alert alert-danger" *ngIf="!itemForm.controls['name'].valid && itemForm.controls['name'].touched">
+							<strong>Name</strong> is required field
+						</div>
+						<input type="text" class="form-control" id="name" placeholder="Name" formControlName="name">
+					</div>
+					<div class="row">
+						<div class="col form-group">
+							<label for="group">Group</label>
+							<div class="alert alert-danger" *ngIf="!itemForm.controls['groupId'].valid && itemForm.controls['groupId'].touched">
+								<strong>Group</strong> is required field
+							</div>
+							<select class="form-control" id="group" placeholder="Group" formControlName="groupId">
+								<option *ngFor="let row of groups" value="{{row.id}}">{{row.name}}</option>
+							</select>
+						</div>
+						<div class="col form-group">
+							<label for="price">Price</label>
+							<input class="form-control" id="price" formControlName="price" type="number"
+									value="0.00" min="0" step="0.01" data-number-to-fixed="2" data-number-stepfactor="100"
+									class="form-control currency"/>
+						</div>
+						
+					</div>
+					<div class="form-group">
+						<label for="shortDescription">Short description</label>
+						<input type="text" class="form-control" id="shortDescription" placeholder="Short description" formControlName="shortDescription"/>
+					</div>
+					<div class="form-group">
+						<label for="description">Description</label>
+						<textarea class="form-control" id="description" placeholder="Description" formControlName="description" rows="5"></textarea>
+						
+					</div>
+				</div><!-- End of items-->
+				<div  class="col-lg-6">
+					<app-files [domainId]="id"></app-files>
+				</div>
+			</div>
+			<div class="form-group text-center">
+				<div class="col-12">
+					<button type="submit" class="btn btn-warning btn-lg btn-block" [disabled]="!itemForm.valid" *ngIf="!id">
+						<i class="icon ion-md-add"></i>Create
+					</button>
+					<button type="button" class="btn btn-warning btn-lg btn-block" [disabled]="!itemForm.valid" *ngIf="id" (click)="update(itemForm.value)">
+						<i class="icon ion-md-create"></i>Save
+					</button>
+					<button type="button" class="btn btn-secondary btn-lg btn-block" (click)="goBack()">
+						<i class="icon ion-md-return-left"></i>Back
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+
+

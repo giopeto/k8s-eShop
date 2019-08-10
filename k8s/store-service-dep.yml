@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: store-service-dep
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: store-service
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: store-service
+          image: giopeto/e-shop-store-service:V9
+          imagePullPolicy: Always
+          env:
+          - name: MONGODB_HOST
+            value: mongodb
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: store-service-svc
+spec:
+  selector:
+    app: store-service
+  ports:
+    - name: store-service-web
+      protocol: "TCP"
+      # Port accessible inside cluster
+      port: 8081
+      # Port to forward to inside the pod
+      targetPort: 8081
+      # Port accessible outside cluster
+      nodePort: 30102
+    - name: store-service-debug
+      protocol: "TCP"
+      # Port accessible inside cluster
+      port: 5005
+      # Port to forward to inside the pod
+      targetPort: 5005
+      # Port accessible outside cluster
+      nodePort: 30110
+  type: LoadBalancer

@@ -1,0 +1,28 @@
+<section>
+	<div class="container">
+		<h2>{{id?'Edit group':'Add new group'}}</h2>
+		
+		<form [formGroup]="groupForm" (ngSubmit)="save(groupForm.value)">
+			<div class="form-group">
+				<label for="name">Name</label>
+				<div class="alert alert-danger" *ngIf="!groupForm.controls['name'].valid && groupForm.controls['name'].touched">
+					<strong>Name</strong> is required field
+				</div>
+				<input type="text" class="form-control" id="name" placeholder="Name" formControlName="name">
+			</div>
+			<div class="form-group text-center">
+				<div class="col-12">
+					<button type="submit" class="btn btn-warning btn-lg btn-block" [disabled]="!groupForm.valid" *ngIf="!id">
+						<i class="icon ion-md-add"></i>Create
+					</button>
+					<button type="button" class="btn btn-warning btn-lg btn-block" [disabled]="!groupForm.valid" *ngIf="id" (click)="update(groupForm.value)">
+						<i class="icon ion-md-create"></i>Save
+					</button>
+					<button type="button" class="btn btn-secondary btn-lg btn-block" (click)="goBack()">
+						<i class="icon ion-md-return-left"></i>Back
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>

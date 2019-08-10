@@ -1,0 +1,41 @@
+<div>
+	<h2>Files</h2>
+	<pre>
+		{{filesForUpload | json}}
+	</pre>
+	<div class="row">
+		<div class="col-6" *ngFor="let row of filesForUpload.src; let index=index">
+			<div class="card">
+				<img class="img-fluid" [src]="row | safe:'resourceUrl'" alt="Image file" />
+				<div class="card-body">
+					<button type="button" class="btn btn-danger btn-block" (click)="removeFromLocal({index: index, id: row})">
+						<i class="icon ion-md-close"></i>Delete
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-6" *ngFor="let row of filesToDomainMapper.fileIds; let index=index">
+			<div class="card">
+				<img class="img-fluid" src="{{filesUrl}}/file/{{row}}" alt="Image file" />
+				<div class="card-body">
+					<button type="button" class="btn btn-danger btn-block" (click)="remove({index: index, id: row})">
+						<i class="icon ion-md-close"></i>Delete
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<form enctype="multipart/form-data" class="form-horizontal" [formGroup]="filesForm" (ngSubmit)="save()">
+		<div class="form-group">
+			<div>
+				<label class="btn btn-lg btn-block btn-outline-primary">
+					Add files
+					<input type="file" id="multipartFile" multiple accept="image/*" aria-describedby="fileHelp"/>
+				</label>
+				<small id="fileHelp" class="form-text text-muted">
+					Attach one or multiple files using 'Add files' button
+				</small>
+			</div>
+		</div>
+	</form>
+</div>

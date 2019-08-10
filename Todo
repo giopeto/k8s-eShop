@@ -1,0 +1,5 @@
+1. Add spring-cloud-config-server
+2. Create shred property file that share common properties across applications.
+3. Create common-dependency project. Define all common dependency there and reuse in all application
+4. Add Swagger
+5. Use wait-for-it - https://github.com/vishnubob/wait-for-it
