@@ -1,12 +1,10 @@
-package com.store.V1.security;
+package com.files.V1.remote.call.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

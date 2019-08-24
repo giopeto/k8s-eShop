@@ -12,11 +12,11 @@ spec:
       restartPolicy: Always
       containers:
         - name: files-service
-          image: giopeto/e-shop-files-service:V2
+          image: giopeto/e-shop-files-service:V6
           imagePullPolicy: Always
           env:
-          - name: MONGODB_HOST
-            value: mongodb
+            - name: MONGODB_HOST
+              value: mongodb
 ---
 apiVersion: v1
 kind: Service

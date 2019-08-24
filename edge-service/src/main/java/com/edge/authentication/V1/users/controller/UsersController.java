@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
@@ -48,7 +49,14 @@ public class UsersController {
     @RequestMapping(method = GET)
     public Users getCurrentAccount(Principal principal, HttpServletRequest req) {
         notNull(principal);
-        return usersService.findOneByEmail(principal.getName());
-    }
+        System.out.println("principal: " + principal.toString() + " URIIIII " + req.getRequestURI());
+        System.out.println("SecurityContextHolder.getContext().getAuthentication()1: " + SecurityContextHolder.getContext().getAuthentication());
 
+
+        for (Cookie c : req.getCookies()) {
+            System.out.println(c.getName() + " : " + c.getValue());
+        }
+        return usersService.findOneByEmail(principal.getName());
+
+    }
 }

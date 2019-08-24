@@ -2,7 +2,6 @@ package com.store.V1.items.controller;
 
 import com.store.V1.items.domain.Items;
 import com.store.V1.items.service.ItemsService;
-import com.store.V1.security.SecurityClient;
 import com.store.common.StoreConstants;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -21,10 +20,6 @@ public class ItemsController {
     @NonNull
     private final ItemsService itemsService;
 
-    @NonNull
-    private final SecurityClient securityClient;
-
-
     @RequestMapping(method = POST)
     public Items save(@RequestBody Items items) {
         return itemsService.save(items);
@@ -37,14 +32,6 @@ public class ItemsController {
 
     @RequestMapping(method = GET)
     public List<Items> get(HttpServletRequest httpServletRequest, @CookieValue("JSESSIONID") String sessionId) {
-        System.out.println("\n\n****** STORE SERVICE JSESSIONID ******\n\n");
-        System.out.println("JSESSIONID: " + sessionId);
-        System.out.println("securityClient.getCurrentAccount(sessionId): " + securityClient.getCurrentAccount(sessionId));
-        System.out.println("\n\n****** STORE SERVICE JSESSIONID END******\n\n");
-
-        printRequestInfo(httpServletRequest);
-
-        securityClient.getCurrentAccount(sessionId);
         return itemsService.get().getItems();
     }
 
@@ -67,14 +54,5 @@ public class ItemsController {
     @RequestMapping(method = GET, value = "test")
     public String test() {
         return "Test";
-    }
-
-
-    private void printRequestInfo(HttpServletRequest httpServletRequest) {
-        System.out.println("\n\n****** STORE SERVICE Req log start ******\n\n");
-        System.out.println("Request Method: " + httpServletRequest.getMethod());
-        System.out.println("Request URL: " + httpServletRequest.getRequestURL().toString());
-        System.out.println("Request getCookies: " + httpServletRequest.getCookies().toString());
-        System.out.println("\n\n****** STORE SERVICE Req log end  ******\n\n");
     }
 }

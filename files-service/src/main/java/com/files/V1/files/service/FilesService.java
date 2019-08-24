@@ -8,8 +8,13 @@ import java.util.List;
 
 public interface FilesService {
 
-	public FilesToDomainMapper store(FilesUpload filesUpload);
-	public GridFsResource getById(String id);
-	public void delete(String id, String domainId);
-	public void delete(List<String> ids, String domainId);
+    public FilesToDomainMapper store(FilesUpload filesUpload);
+
+    public GridFsResource getById(String id);
+
+    public void delete(String id, String domainId);
+
+    public void delete(List<String> ids, String domainId);
+
+    public void deleteByDomainId(String domainId);
 }
