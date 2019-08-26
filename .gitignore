@@ -4,6 +4,7 @@
 **/node_modules
 **/*.log
 **/*.log.*
+**/.vagrant
 
 /target/
 !.mvn/wrapper/maven-wrapper.jar

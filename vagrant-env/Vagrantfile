@@ -1,0 +1,90 @@
+# encoding: utf-8
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# Box / OS
+VAGRANT_BOX = 'bento/ubuntu-18.04'
+# Memorable name for your
+VM_NAME = 'microk8s-ubuntu'
+# VM User — 'vagrant' by default
+VM_USER = 'vagrant'
+# Sync Folder name
+SYNC_FOLDER_NAME = 'microk8s-ubuntu-shared-folder'
+# Host folder to sync
+HOST_PATH = 'D:/Tutorials/Dev'
+# Where to sync to on Guest — 'vagrant' is the default user name
+GUEST_PATH = '/home/' + VM_USER + '/' + SYNC_FOLDER_NAME
+
+Vagrant.configure('2') do |config|
+  config.vm.box = VAGRANT_BOX
+  # Actual machine name
+  config.vm.hostname = VM_NAME
+  # Set VM name in Virtualbox
+  
+  # Sync folder
+  #config.vm.synced_folder HOST_PATH, GUEST_PATH
+  # Disable default Vagrant folder, use a unique path per project
+  #config.vm.synced_folder '.', '/home/'+VM_USER+'', disabled: true
+
+  config.vm.synced_folder '.', '/vagrant', disabled: true
+
+  config.vm.provider 'virtualbox' do |v|
+    v.name = VM_NAME
+    v.memory = 10240 # 10GB
+    v.cpus = 3
+    v.gui = true
+
+  	v.customize ["modifyvm", :id, "--vram", "128"]
+  	#v.customize ["modifyvm", :id, "--accelerate3d", "on"]
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    
+    echo -e '\n\n\n\n microk8s-ubuntu \n\n\n\n'
+
+    apt-get update
+
+    # Install nodejs 12.x, n and npm
+    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+    apt-get install -y nodejs
+    apt-get install -y build-essential
+    npm install -g npm
+    npm install -g n
+
+    # sudo apt-get install ubuntu-desktop -y
+    
+    # Install docker (https://unix.stackexchange.com/questions/363048/unable-to-locate-package-docker-ce-on-a-64bit-ubuntu)
+    echo -e '\n\n\n\n Install docker\n\n\n\n'
+
+    sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+    sudo apt update -y
+    apt-get update -y && apt-get install docker-ce=18.06.2~ce~3-0~ubuntu -y
+
+    # Setup daemon.
+    cat > /etc/docker/daemon.json <<EOF
+    {
+      "exec-opts": ["native.cgroupdriver=systemd"],
+      "log-driver": "json-file",
+      "log-opts": {
+        "max-size": "100m"
+      },
+      "storage-driver": "overlay2"
+    }
+EOF
+
+    mkdir -p /etc/systemd/system/docker.service.d
+
+    # Restart docker.
+    systemctl daemon-reload
+    systemctl restart docker
+
+    sudo systemctl enable docker
+
+    # startx
+    # try to apt-get-remove
+
+	echo -e '\n\n\n\n END \n\n\n\n'
+  
+  SHELL
+end

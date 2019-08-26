@@ -1,0 +1,41 @@
+********** To start **********
+
+1. check node
+kubectl get nodes
+
+2. if status is not started run
+microk8s.start
+
+3. Fix dns again
+sudo ufw allow in on cbr0 && sudo ufw allow out on cbr0
+sudo ufw default allow routed
+sudo iptables -P FORWARD ACCEPT
+sudo apt-get install iptables-persistent --yes
+
+
+
+********** Dashboard UI **********
+
+microk8s.enable dns dashboard
+
+microk8s.kubectl get all --all-namespaces
+
+Get dashboard url
+get service/kubernetes-dashboard IP and PORT ang go to https://{IP}:{PORT}
+
+Get token
+token=$(microk8s.kubectl -n kube-system get secret | grep default-token | cut -d " " -f1) && microk8s.kubectl -n kube-system describe secret $token
+
+
+********** Essential microk8s integrated commands **********
+
+microk8s.status: Provides an overview of the MicroK8s state (running/not running) as well as the set of enabled addons
+microk8s.enable: Enables an addon
+microk8s.disable: Disables an addon
+microk8s.kubectl: Interact with kubernetes
+microk8s.config: Shows the kubernetes config file
+microk8s.istioctl: Interact with the istio services. Needs the istio addon to be enabled
+microk8s.inspect: Performs a quick inspectio of the MicroK8s intallation. Offers hints on what
+microk8s.reset: Resets the infrastructure to a clean state
+microk8s.stop: Stops all kubernetes services
+microk8s.start: Starts MicroK8s after it is being stopped
