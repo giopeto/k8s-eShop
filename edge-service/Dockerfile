@@ -18,7 +18,7 @@ RUN mvn -f /usr/src/app/pom.xml clean install -DskipTests
 ### production ###
 ##################
 
-FROM gcr.io/distroless/java  
+FROM gcr.io/distroless/java
 
 COPY --from=build /usr/src/app/target/*.jar /usr/app/app.jar 
 

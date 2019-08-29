@@ -9,10 +9,10 @@ spec:
     serviceName: default-http-frontend
     servicePort: 80
   rules:
-  - host: k8s-eshop.io
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: ui-svc
-          servicePort: 80
+    - host: k8s-eshop.io
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: ui-svc
+              servicePort: 80

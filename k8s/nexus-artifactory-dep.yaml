@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus
+  labels:
+    artifactory: nexus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      artifactory: nexus
+  template:
+    metadata:
+      labels:
+        artifactory: nexus
+    spec:
+      containers:
+        - name: nexus
+          image: sonatype/nexus3:3.0.0
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - name: hostvol-nexus
+              mountPath: /.m2
+      volumes:
+        - name: hostvol-nexus
+          persistentVolumeClaim:
+            claimName: nexus-pv-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexus-svc
+  labels:
+    app: nexus
+spec:
+  ports:
+    - port: 8081
+      targetPort: 8081
+      nodePort: 30181
+      protocol: TCP
+  selector:
+    artifactory: nexus
+  type: LoadBalancer
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nexus-task-pv-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /nexus-m2
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nexus-pv-claim
+  labels:
+    app: nexuspv
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 1Gi

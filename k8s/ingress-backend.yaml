@@ -9,20 +9,22 @@ spec:
     serviceName: default-http-backend
     servicePort: 80
   rules:
-  - host: k8s-eshop.io
-    http:
-      paths:
-      - path: /users(/|$)(.*)
-        backend:
-          serviceName: edge-service-svc
-          servicePort: 8080
-
-      - path: /store(/|$)(.*)
-        backend:
-          serviceName: store-service-svc
-          servicePort: 8081
-
-      - path: /files(/|$)(.*)
-        backend:
-          serviceName: files-service-svc
-          servicePort: 8082
+    - host: k8s-eshop.io
+      http:
+        paths:
+          - path: /users(/|$)(.*)
+            backend:
+              serviceName: edge-service-svc
+              servicePort: 8080
+          - path: /store(/|$)(.*)
+            backend:
+              serviceName: store-service-svc
+              servicePort: 8081
+          - path: /files(/|$)(.*)
+            backend:
+              serviceName: files-service-svc
+              servicePort: 8082
+          - path: /nexus
+            backend:
+              serviceName: nexus-svc
+              servicePort: 8081

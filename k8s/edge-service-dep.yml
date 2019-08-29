@@ -12,7 +12,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: edge-service
-          image: giopeto/e-shop-edge-service:V10
+          image: giopeto/e-shop-edge-service:V15
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST
