@@ -15,4 +15,7 @@ sudo ufw default allow routed
 sudo iptables -P FORWARD ACCEPT
 sudo apt-get install iptables-persistent --yes
 
-sudo microk8s.enable ingress dns dashboard registry
+sudo microk8s.enable ingress dns dashboard
+
+# grant premission to /data/my-nexus-data/ for nexus server
+sudo chown -R 777 /data/my-nexus-data/

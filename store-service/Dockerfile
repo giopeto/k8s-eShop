@@ -4,6 +4,8 @@
 
 FROM maven:3.5-jdk-8 AS build
 
+COPY settings.xml /root/.m2/settings.xml
+
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 

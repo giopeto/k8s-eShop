@@ -14,14 +14,19 @@ spec:
       labels:
         artifactory: nexus
     spec:
+      securityContext:
+        runAsUser: 200
+        runAsGroup: 2000
+        fsGroup: 2000
       containers:
         - name: nexus
-          image: sonatype/nexus3:3.0.0
+          image: sonatype/nexus3:3.15.2
+          #command: ["sh", "-c", "chown -R 200:200 /nexus-data"]
           ports:
             - containerPort: 8081
           volumeMounts:
             - name: hostvol-nexus
-              mountPath: /.m2
+              mountPath: /nexus-data
       volumes:
         - name: hostvol-nexus
           persistentVolumeClaim:
@@ -35,7 +40,7 @@ metadata:
     app: nexus
 spec:
   ports:
-    - port: 8081
+    - port: 80
       targetPort: 8081
       nodePort: 30181
       protocol: TCP
@@ -50,13 +55,12 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   capacity:
-    storage: 1Gi
+    storage: 2Gi
   hostPath:
-    path: /nexus-m2
+    path: /data/my-nexus-data
     type: DirectoryOrCreate
 ---
 apiVersion: v1
@@ -68,7 +72,6 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: manual
   resources:
     requests:
       storage: 1Gi

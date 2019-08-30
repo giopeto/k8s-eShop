@@ -12,7 +12,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: files-service
-          image: giopeto/e-shop-files-service:V6
+          image: giopeto/e-shop-files-service:V7
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST

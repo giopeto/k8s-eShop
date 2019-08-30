@@ -15,17 +15,17 @@ spec:
         appdb: mongodb
     spec:
       containers:
-      - name: mongodb
-        image: mongo:3.6.6
-        ports:
-        - containerPort: 27017              
-        volumeMounts:
-        - name: hostvol
-          mountPath: /data/db
+        - name: mongodb
+          image: mongo:3.6.6
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: hostvol
+              mountPath: /data/db
       volumes:
-      - name: hostvol
-        persistentVolumeClaim:
-          claimName: mongo-pv-claim
+        - name: hostvol
+          persistentVolumeClaim:
+            claimName: mongo-pv-claim
 ---
 apiVersion: v1
 kind: Service
@@ -35,8 +35,8 @@ metadata:
     app: mongodb
 spec:
   ports:
-  - port: 27017
-    protocol: TCP
+    - port: 27017
+      protocol: TCP
   selector:
     appdb: mongodb
 ---
@@ -47,13 +47,12 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   capacity:
     storage: 1Gi
   hostPath:
-    path: /data/mongo1
+    path: /data/mongo
     type: DirectoryOrCreate
 ---
 apiVersion: v1
@@ -62,10 +61,9 @@ metadata:
   name: mongo-pv-claim
   labels:
     app: mongopv
-spec:  
+spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: manual
   resources:
     requests:
       storage: 1Gi

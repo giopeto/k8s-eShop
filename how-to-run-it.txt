@@ -7,6 +7,11 @@
 - sudo apt-get install ubuntu-desktop -y
 - startx
 - run commands to install microk8s from bootsrtap-microk8s.sh
+- cd maven-parent
+- Get nexus server ip address
+	- kubectl get svc nexus-svc -o jsonpath='{.spec.clusterIP}'
+- Build parent project
+	- sudo docker build --add-host=nexus.k8s-eshop.io:<NEXUS-SERVER-IP-ADDRESS> .
 
 
 

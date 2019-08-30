@@ -24,4 +24,3 @@ docker tag $APP_NAME:$APP_VERSION localhost:32000/$APP_NAME:$APP_VERSION
 
 docker push localhost:32000/$APP_NAME:$APP_VERSION
 
-echo "Build docker image: $APP_NAME:$APP_VERSION completed"

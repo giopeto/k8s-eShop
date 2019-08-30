@@ -24,7 +24,3 @@ spec:
             backend:
               serviceName: files-service-svc
               servicePort: 8082
-          - path: /nexus
-            backend:
-              serviceName: nexus-svc
-              servicePort: 8081
