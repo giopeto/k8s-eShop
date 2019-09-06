@@ -4,7 +4,7 @@
 # Box / OS
 VAGRANT_BOX = 'bento/ubuntu-18.04'
 # Memorable name for your
-VM_NAME = 'microk8s-ubuntu'
+VM_NAME = 'e-shop-microk8s-ubuntu'
 # VM User — 'vagrant' by default
 VM_USER = 'vagrant'
 # Sync Folder name
@@ -40,9 +40,24 @@ Vagrant.configure('2') do |config|
   config.vm.provision "shell", inline: <<-SHELL
     
     echo -e '\n\n\n\n microk8s-ubuntu \n\n\n\n'
-
+    
     apt-get update
 
+    # Install kubernetes (https://microk8s.io/docs/)
+
+    echo -e '\n\n\n\n Install kubernetes\n\n\n\n'
+	#sudo apt install snapd
+	echo -e '\n\n\n\n Install kubernetes snapd\n\n\n\n'
+
+	sudo dpkg --configure -a
+	sudo apt update -y
+	sudo apt upgrade -y
+	sudo apt dist-upgrade -y
+	sudo apt install snapd
+
+	sudo snap install microk8s --classic
+
+	echo -e '\n\n\n\n Install nodejs 12.x, n and npm\n\n\n\n'
     # Install nodejs 12.x, n and npm
     curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
     apt-get install -y nodejs
@@ -84,6 +99,50 @@ EOF
     # startx
     # try to apt-get-remove
 
+
+    
+	echo -e '\n\n\n\n Install kubernetes microk8s.ready --wait\n\n\n\n'
+
+	snap alias microk8s.kubectl kubectl
+
+	echo -e '\n\n\n\n Install kubernetes ingress Fix dns\n\n\n\n'
+	# Fix dns
+	#sudo ufw allow in on cbr0 && sudo ufw allow out on cbr0
+	#sudo ufw default allow routed
+
+	# Fix dns (maybe ufw fix issue) <<<<<<<====== TODO: Check if ufw is enough
+	sudo iptables -P FORWARD ACCEPT
+	#sudo apt-get install iptables-persistent --yes
+
+	echo -e '\n\n\n\n Install kubernetes microk8s.enable\n\n\n\n'
+	sudo microk8s.enable ingress dns dashboard
+
+	# Manual k8s ingress controller
+	echo -e '\n\n\n\n Install kubernetes ingress\n\n\n\n'
+	sudo wget --no-check-certificate https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+	microk8s.kubectl apply -f mandatory.yaml
+	sudo rm mandatory.yaml
+
+	echo -e '\n\n\n\n Install kubernetes LS\n\n\n\n'
+	ls -la
+	
+	echo -e '\n\n\n\n Install kubernetes cd / LS\n\n\n\n'
+	cd /
+	ls -la
+	
+	echo -e '\n\n\n\n Install kubernetes LS\n\n\n\n'
+
+	# grant premission to /data/my-nexus-data/ for nexus server
+	cd /
+	sudo mkdir data
+	cd data
+	sudo mkdir my-nexus-data
+	sudo chmod 777 -R my-nexus-data/
+	
+	sudo sed -i "$ a 127.0.0.1	k8s-eshop.io" /etc/hosts
+	sudo sed -i "$ a 127.0.0.1	nexus.k8s-eshop.io" /etc/hosts
+
+	sudo apt autoremove -y
 	echo -e '\n\n\n\n END \n\n\n\n'
   
   SHELL
