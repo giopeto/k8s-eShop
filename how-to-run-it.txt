@@ -1,12 +1,22 @@
 - Install virtual box
 - Install vagrant
-- open console and run
-- cd microk8s-ubuntu
-- vagrant up
-- Go to virtual box and "Show" on microk8s-ubuntu
-- sudo apt-get install ubuntu-desktop -y
-- startx
-- run commands to install microk8s from bootsrtap-microk8s.sh
+- Clone project
+	-- git clone https://github.com/giopeto/k8s-eShop.git
+- Navigate to vagrant-env folder
+	-- cd k8s-eShop/vagrant-env
+- Run vagrant provisioning
+	-- vagrant up
+- Install ubuntu desktop. Open terminal and run
+	--- sudo apt-get install ubuntu-desktop -y
+	-- startx
+- Clone project again in vm
+	-- git clone https://github.com/giopeto/k8s-eShop.git && cd k8s-eShop
+- Deploy app via kubernetes
+	-- kubectl apply -f k8s/
+
+
+## Optional
+- Build maven-parent project
 - cd maven-parent
 - Get nexus server ip address
 	- kubectl get svc nexus-svc -o jsonpath='{.spec.clusterIP}'
@@ -43,3 +53,4 @@ get pod name
 
 forward 5005 port
 	kubectl port-forward <NODE_NAME>  5005:5005
+

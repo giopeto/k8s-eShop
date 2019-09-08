@@ -56,6 +56,7 @@ Vagrant.configure('2') do |config|
 	sudo apt install snapd
 
 	sudo snap install microk8s --classic
+	sudo usermod -a -G microk8s vagrant
 
 	echo -e '\n\n\n\n Install nodejs 12.x, n and npm\n\n\n\n'
     # Install nodejs 12.x, n and npm
@@ -141,6 +142,7 @@ EOF
 	
 	sudo sed -i "$ a 127.0.0.1	k8s-eshop.io" /etc/hosts
 	sudo sed -i "$ a 127.0.0.1	nexus.k8s-eshop.io" /etc/hosts
+	sudo sed -i "$ a 127.0.0.1	zipkin.k8s-eshop.io" /etc/hosts
 
 	sudo apt autoremove -y
 	echo -e '\n\n\n\n END \n\n\n\n'

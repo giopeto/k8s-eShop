@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
         - name: ui
-          image: giopeto/e-shop-ui:V3
+          image: giopeto/e-shop-ui:V1
 ---
 
 apiVersion: v1
