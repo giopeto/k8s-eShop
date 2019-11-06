@@ -123,6 +123,14 @@ EOF
 	sudo wget --no-check-certificate https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 	microk8s.kubectl apply -f mandatory.yaml
 	sudo rm mandatory.yaml
+	
+	# Jaeger Operator k8s setup
+	kubectl create namespace observability
+	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing_v1_jaeger_crd.yaml
+	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/service_account.yaml
+	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml
+	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
+	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
 
 	echo -e '\n\n\n\n Install kubernetes LS\n\n\n\n'
 	ls -la

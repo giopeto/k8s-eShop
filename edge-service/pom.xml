@@ -31,18 +31,9 @@
         </dependency>
     </dependencies>
 
-    <!--<build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>-->
-
     <repositories>
         <repository>
-            <id>maven-group</id>
+            <id>maven-public</id>
             <url>${nexus-server-url}/repository/maven-public/</url>
         </repository>
     </repositories>

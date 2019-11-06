@@ -29,7 +29,7 @@
 
     <repositories>
         <repository>
-            <id>maven-group</id>
+            <id>maven-public</id>
             <url>${nexus-server-url}/repository/maven-public/</url>
         </repository>
     </repositories>

@@ -1,8 +1,8 @@
 package com.files.common;
 
 import com.files.V1.remote.call.security.Users;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,13 +18,16 @@ import java.util.Optional;
 import static com.files.common.FilesConstants.EDGE_SERVICE_GET_CURRENT_ACCOUNT_URL;
 import static com.files.common.FilesConstants.JSESSIONID;
 
-@AllArgsConstructor
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class SecurityInterceptor implements HandlerInterceptor {
 
     @NonNull
     private final AppUtils appUtils;
+
+    @NonNull
+    private final RestTemplate restTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -45,7 +48,6 @@ public class SecurityInterceptor implements HandlerInterceptor {
     }
 
     private Users getCurrentAccount(String sessionId) {
-        RestTemplate restTemplate = new RestTemplate();
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Cookie", JSESSIONID + "=" + sessionId);
 

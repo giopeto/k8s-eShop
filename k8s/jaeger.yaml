@@ -1,0 +1,41 @@
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
+metadata:
+  name: jaeger
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: jaeger-svc
+# spec:
+#   selector:
+#     app: jaeger-svc
+#   ports:
+#     - name: jaeger-svc-web
+#       protocol: "TCP"
+#       # Port accessible inside cluster
+#       port: 16686
+#       # Port to forward to inside the pod
+#       targetPort: 16686
+#       # Port accessible outside cluster
+#       nodePort: 30122
+#   type: LoadBalancer
+#---
+# apiVersion: extensions/v1beta1
+# kind: Ingress
+# metadata:
+#   name: e-shop-gateway-ingress-jaeger
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   backend:
+#     serviceName: default-http-backend
+#     servicePort: 80
+#   rules:
+#     - host: jaeger.k8s-eshop.io
+#       http:
+#         paths:
+#           - path: /
+#             backend:
+#               serviceName: jaeger-svc
+#               servicePort: 80

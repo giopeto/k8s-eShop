@@ -75,6 +75,13 @@
             <artifactId>sonar-maven-plugin</artifactId>
             <version>5.1</version>
         </dependency>
+
+        <!-- Jaeger distributed tracing -->
+        <dependency>
+            <groupId>io.opentracing.contrib</groupId>
+            <artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>
+            <version>1.0.3</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>

@@ -1,9 +1,15 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: edge-service-dep
+  annotations:
+    # Jaeger tracing sidecar
+    sidecar.jaegertracing.io/inject: "true"
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: edge-service
   template:
     metadata:
       labels:
@@ -12,7 +18,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: edge-service
-          image: giopeto/e-shop-edge-service:V1
+          image: giopeto/e-shop-edge-service:V15
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST
@@ -35,12 +41,12 @@ spec:
       targetPort: 8080
       # Port accessible outside cluster
       nodePort: 30101
-    - name: edge-service-debug
-      protocol: "TCP"
+    #- name: edge-service-debug
+     # protocol: "TCP"
       # Port accessible inside cluster
-      port: 5005
+      #port: 5005
       # Port to forward to inside the pod
-      targetPort: 5005
+      #targetPort: 5005
       # Port accessible outside cluster
-      nodePort: 30111
+      #nodePort: 30111
   type: LoadBalancer
