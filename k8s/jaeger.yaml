@@ -2,24 +2,24 @@ apiVersion: jaegertracing.io/v1
 kind: Jaeger
 metadata:
   name: jaeger
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: jaeger-svc
-# spec:
-#   selector:
-#     app: jaeger-svc
-#   ports:
-#     - name: jaeger-svc-web
-#       protocol: "TCP"
-#       # Port accessible inside cluster
-#       port: 16686
-#       # Port to forward to inside the pod
-#       targetPort: 16686
-#       # Port accessible outside cluster
-#       nodePort: 30122
-#   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-svc
+spec:
+  selector:
+    app: jaeger-svc
+  ports:
+    - name: jaeger-svc-web
+      protocol: "TCP"
+      # Port accessible inside cluster
+      port: 16686
+      # Port to forward to inside the pod
+      targetPort: 16686
+      # Port accessible outside cluster
+      nodePort: 30122
+  type: LoadBalancer
 #---
 # apiVersion: extensions/v1beta1
 # kind: Ingress

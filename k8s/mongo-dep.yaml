@@ -21,7 +21,7 @@ spec:
             - containerPort: 27017
           volumeMounts:
             - name: hostvol
-              mountPath: /data/db
+              mountPath: /var/jenkins_home
       volumes:
         - name: hostvol
           persistentVolumeClaim:

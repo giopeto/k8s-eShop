@@ -2,7 +2,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 # Box / OS
-VAGRANT_BOX = 'bento/ubuntu-18.04'
+VAGRANT_BOX = 'peru/ubuntu-18.04-desktop-amd64' #'bento/ubuntu-18.04'
+# Box / OS version
+VAGRANT_BOX_VERSION = '20190901.01'
 # Memorable name for your
 VM_NAME = 'e-shop-microk8s-ubuntu'
 # VM User — 'vagrant' by default
@@ -16,9 +18,8 @@ GUEST_PATH = '/home/' + VM_USER + '/' + SYNC_FOLDER_NAME
 
 Vagrant.configure('2') do |config|
   config.vm.box = VAGRANT_BOX
-  # Actual machine name
+  config.vm.box_version = VAGRANT_BOX_VERSION
   config.vm.hostname = VM_NAME
-  # Set VM name in Virtualbox
   
   # Sync folder
   #config.vm.synced_folder HOST_PATH, GUEST_PATH
@@ -36,124 +37,6 @@ Vagrant.configure('2') do |config|
   	v.customize ["modifyvm", :id, "--vram", "128"]
   	#v.customize ["modifyvm", :id, "--accelerate3d", "on"]
   end
-
-  config.vm.provision "shell", inline: <<-SHELL
-    
-    echo -e '\n\n\n\n microk8s-ubuntu \n\n\n\n'
-    
-    apt-get update
-
-    # Install kubernetes (https://microk8s.io/docs/)
-
-    echo -e '\n\n\n\n Install kubernetes\n\n\n\n'
-	#sudo apt install snapd
-	echo -e '\n\n\n\n Install kubernetes snapd\n\n\n\n'
-
-	sudo dpkg --configure -a
-	sudo apt update -y
-	sudo apt upgrade -y
-	sudo apt dist-upgrade -y
-	sudo apt install snapd
-
-	sudo snap install microk8s --classic
-	sudo usermod -a -G microk8s vagrant
-
-	echo -e '\n\n\n\n Install nodejs 12.x, n and npm\n\n\n\n'
-    # Install nodejs 12.x, n and npm
-    curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-    apt-get install -y nodejs
-    apt-get install -y build-essential
-    npm install -g npm
-    npm install -g n
-
-    # sudo apt-get install ubuntu-desktop -y
-    
-    # Install docker (https://unix.stackexchange.com/questions/363048/unable-to-locate-package-docker-ce-on-a-64bit-ubuntu)
-    echo -e '\n\n\n\n Install docker\n\n\n\n'
-
-    sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-    sudo apt update -y
-    apt-get update -y && apt-get install docker-ce=18.06.2~ce~3-0~ubuntu -y
-
-    # Setup daemon.
-    cat > /etc/docker/daemon.json <<EOF
-    {
-      "exec-opts": ["native.cgroupdriver=systemd"],
-      "log-driver": "json-file",
-      "log-opts": {
-        "max-size": "100m"
-      },
-      "storage-driver": "overlay2"
-    }
-EOF
-
-    mkdir -p /etc/systemd/system/docker.service.d
-
-    # Restart docker.
-    systemctl daemon-reload
-    systemctl restart docker
-
-    sudo systemctl enable docker
-
-    # startx
-    # try to apt-get-remove
-
-
-    
-	echo -e '\n\n\n\n Install kubernetes microk8s.ready --wait\n\n\n\n'
-
-	snap alias microk8s.kubectl kubectl
-
-	echo -e '\n\n\n\n Install kubernetes ingress Fix dns\n\n\n\n'
-	# Fix dns
-	#sudo ufw allow in on cbr0 && sudo ufw allow out on cbr0
-	#sudo ufw default allow routed
-
-	# Fix dns (maybe ufw fix issue) <<<<<<<====== TODO: Check if ufw is enough
-	sudo iptables -P FORWARD ACCEPT
-	#sudo apt-get install iptables-persistent --yes
-
-	echo -e '\n\n\n\n Install kubernetes microk8s.enable\n\n\n\n'
-	sudo microk8s.enable ingress dns dashboard
-
-	# Manual k8s ingress controller
-	echo -e '\n\n\n\n Install kubernetes ingress\n\n\n\n'
-	sudo wget --no-check-certificate https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
-	microk8s.kubectl apply -f mandatory.yaml
-	sudo rm mandatory.yaml
-	
-	# Jaeger Operator k8s setup
-	kubectl create namespace observability
-	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing_v1_jaeger_crd.yaml
-	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/service_account.yaml
-	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml
-	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
-	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
-
-	echo -e '\n\n\n\n Install kubernetes LS\n\n\n\n'
-	ls -la
-	
-	echo -e '\n\n\n\n Install kubernetes cd / LS\n\n\n\n'
-	cd /
-	ls -la
-	
-	echo -e '\n\n\n\n Install kubernetes LS\n\n\n\n'
-
-	# grant premission to /data/my-nexus-data/ for nexus server
-	cd /
-	sudo mkdir data
-	cd data
-	sudo mkdir my-nexus-data
-	sudo chmod 777 -R my-nexus-data/
-	
-	sudo sed -i "$ a 127.0.0.1	k8s-eshop.io" /etc/hosts
-	sudo sed -i "$ a 127.0.0.1	nexus.k8s-eshop.io" /etc/hosts
-	sudo sed -i "$ a 127.0.0.1	zipkin.k8s-eshop.io" /etc/hosts
-
-	sudo apt autoremove -y
-	echo -e '\n\n\n\n END \n\n\n\n'
   
-  SHELL
+  config.vm.provision "shell", path: "vagrant-provision-script.sh"
 end

@@ -6,13 +6,16 @@
 	-- cd k8s-eShop/vagrant-env
 - Run vagrant provisioning
 	-- vagrant up
-- Install ubuntu desktop. Open terminal and run
-	--- sudo apt-get install ubuntu-desktop -y
-	-- startx
-- Clone project again in vm
-	-- git clone https://github.com/giopeto/k8s-eShop.git && cd k8s-eShop
-- Deploy app via kubernetes
-	-- kubectl apply -f k8s/
+- Vagrant user:password => vagrant:vagrant
+- Install Jaeger operator on k8s
+	kubectl create namespace observability
+	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing_v1_jaeger_crd.yaml
+	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/service_account.yaml
+	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml
+	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
+	kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
+- Deploy k8s-eShop application via kubernetes
+	-- cd k8s-eShop && kubectl apply -f k8s/
 
 
 ## Optional
@@ -23,6 +26,11 @@
 - Build parent project
 	- sudo docker build --add-host=nexus.k8s-eshop.io:<NEXUS-SERVER-IP-ADDRESS> .
 
+
+- Get grafana default password
+	cat /var/snap/microk8s/current/credentials/basic_auth.csv
+	MGJBOFh...,admin,admin,"system:masters"
+	user is admin pass is first string(MGJBOFh...)
 
 
 	**** Remote debug ****
