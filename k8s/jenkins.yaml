@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: jenkins-deployment
+  name: jenkins-dep
 spec:
   replicas: 1
   selector:
@@ -14,7 +14,9 @@ spec:
     spec:
       containers:
       - name: jenkins
-        image: getintodevops/jenkins-withdocker:lts-docker18.06.0
+        #image: getintodevops/jenkins-withdocker:lts-docker18.06.0
+        #image: jenkinsci/blueocean:1.19.0
+        image: giopeto/jenkins-with-docker:V1
         ports:
           - name: http-port
             containerPort: 8080
@@ -22,7 +24,7 @@ spec:
             containerPort: 50000
         volumeMounts:
             - name: hostvol-jenkins
-              mountPath: /jenkins-data
+              mountPath: /var/jenkins_home
       volumes:
         - name: hostvol-jenkins
           persistentVolumeClaim:

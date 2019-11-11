@@ -82,11 +82,16 @@ sudo mkdir data
 cd data
 sudo mkdir my-nexus-data
 sudo chmod 777 -R my-nexus-data/
+# grant premission to /data/my-jenkins-data/ for jenkins server
+sudo mkdir my-jenkins-data
+sudo chmod 777 -R my-jenkins-data/
 
 sudo sed -i "$ a 127.0.0.1	k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	nexus.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	jaeger.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	jenkins.k8s-eshop.io" /etc/hosts
+sudo sed -i "$ a 127.0.0.1	sonar.k8s-eshop.io" /etc/hosts
+
 
 sudo apt autoremove -y
 echo -e '\n\n\n\n END \n\n\n\n'
