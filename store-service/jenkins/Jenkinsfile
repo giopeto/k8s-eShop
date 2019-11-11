@@ -3,6 +3,7 @@ def CONTAINER_TAG="latest"
 def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT="8081"
 def PROJECT_DIR="store-service"
+def NEXUS_IP_ADDRESS="10.152.183.132"
 
 node {
 
@@ -18,7 +19,7 @@ node {
 
     stage('Build'){
         dir(PROJECT_DIR) {
-            sh "mvn clean install"
+            sh "mvn clean install -DskipTests"
         }
     }
     
@@ -38,7 +39,7 @@ node {
 
     stage('Image Build'){
         dir(PROJECT_DIR) {
-            imageBuild(CONTAINER_NAME, CONTAINER_TAG)
+            imageBuild(CONTAINER_NAME, CONTAINER_TAG, NEXUS_IP_ADDRESS)
         }
     }
 
@@ -63,8 +64,8 @@ def imagePrune(containerName){
     } catch(error){}
 }
 
-def imageBuild(containerName, tag){
-    sh "docker build -t $containerName:$tag  -t $containerName --pull --no-cache ."
+def imageBuild(containerName, tag, nexusIpAddress){
+    sh "docker build --add-host=nexus.k8s-eshop.io:$nexusIpAddress -t $containerName:$tag  -t $containerName --pull --no-cache ."
     echo "Image build complete"
 }
 

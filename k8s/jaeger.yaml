@@ -1,7 +1,7 @@
 apiVersion: jaegertracing.io/v1
 kind: Jaeger
 metadata:
-  name: jaeger
+  name: jaeger-dep
 ---
 apiVersion: v1
 kind: Service

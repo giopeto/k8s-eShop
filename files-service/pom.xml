@@ -18,30 +18,25 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
-
+	<properties>
+        <nexus-server-k8s-url>http://nexus-svc</nexus-server-k8s-url>
+    </properties>
+    
 	<repositories>
-		<repository>
-			<id>maven-public</id>
-			<url>${nexus-server-url}/repository/maven-public/</url>
-		</repository>
-	</repositories>
+        <repository>
+            <id>maven-public</id>
+            <url>${nexus-server-k8s-url}/repository/maven-public/</url>
+        </repository>
+    </repositories>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>nexus-snapshots</id>
-			<url>${nexus-server-url}/repository/maven-snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>nexus-releases</id>
-			<url>${nexus-server-url}/repository/maven-releases/</url>
-		</repository>
-	</distributionManagement>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>${nexus-server-k8s-url}/repository/maven-snapshots/</url>
+        </snapshotRepository>
+        <repository>
+            <id>nexus-releases</id>
+            <url>${nexus-server-k8s-url}/repository/maven-releases/</url>
+        </repository>
+    </distributionManagement>
 </project>

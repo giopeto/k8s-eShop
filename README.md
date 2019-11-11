@@ -16,7 +16,8 @@
 ## Links
 ### k8s-eShop [http://k8s-eshop.io](http://k8s-eshop.io)
 ### Jaeger tracing [http://jaeger.k8s-eshop.io](http://jaeger.k8s-eshop.io)
-### Jenkins CI/CD [http://jenkins.k8s-eshop.io](http://jenkins.k8s-eshop.io)
+### Jenkins CI/CD [http://jenkins.k8s-eshop.io](http://jenkins.k8s-eshop.io) user:pass admin:admin123
+### SonarQube Code Inspection [http://sonar.k8s-eshop.io/sonar](http://sonar.k8s-eshop.io/sonar) user:pass admin:admin
 ### Nexus repository [http://nexus.k8s-eshop.io](http://nexus.k8s-eshop.io) user:pass admin:admin123
 ### Grafana run `kubectl cluster-info` and get grafana url
 

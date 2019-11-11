@@ -15,8 +15,11 @@
         <groupId>com.example</groupId>
         <artifactId>maven-parent</artifactId>
         <version>1.0.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
+    <properties>
+        <nexus-server-k8s-url>http://nexus-svc</nexus-server-k8s-url>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -34,18 +37,18 @@
     <repositories>
         <repository>
             <id>maven-public</id>
-            <url>${nexus-server-url}/repository/maven-public/</url>
+            <url>${nexus-server-k8s-url}/repository/maven-public/</url>
         </repository>
     </repositories>
 
     <distributionManagement>
         <snapshotRepository>
             <id>nexus-snapshots</id>
-            <url>${nexus-server-url}/repository/maven-snapshots/</url>
+            <url>${nexus-server-k8s-url}/repository/maven-snapshots/</url>
         </snapshotRepository>
         <repository>
             <id>nexus-releases</id>
-            <url>${nexus-server-url}/repository/maven-releases/</url>
+            <url>${nexus-server-k8s-url}/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 

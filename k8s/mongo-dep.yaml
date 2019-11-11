@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongodb
+  name: mongodb-dep
   labels:
     appdb: mongodb
 spec:
@@ -21,7 +21,7 @@ spec:
             - containerPort: 27017
           volumeMounts:
             - name: hostvol
-              mountPath: /var/jenkins_home
+              mountPath: /data/db
       volumes:
         - name: hostvol
           persistentVolumeClaim:
@@ -52,7 +52,7 @@ spec:
   capacity:
     storage: 1Gi
   hostPath:
-    path: /data/mongo
+    path: /home/vagrant/persistent-volumes-k8s/mongo
     type: DirectoryOrCreate
 ---
 apiVersion: v1

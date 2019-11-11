@@ -20,12 +20,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Greenwich.SR1</spring-cloud.version>
-        <sonar.host.url>http://sonarqube:9000</sonar.host.url>
+        <spring-cloud-starter-netflix-ribbon.version>2.0.0.RELEASE</spring-cloud-starter-netflix-ribbon.version>
+        <sonar.host.url>http://sonar-svc/sonar/</sonar.host.url>
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
         <jacoco.version>0.7.0.201403182114</jacoco.version>
-        <spring-cloud-starter-netflix-ribbon.version>2.0.0.RELEASE</spring-cloud-starter-netflix-ribbon.version>
         <nexus-server-url>http://nexus.k8s-eshop.io</nexus-server-url>
     </properties>
 

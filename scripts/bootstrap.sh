@@ -1,19 +1,35 @@
 # Enable prometheus addon
-microk8s.enable prometheus
-
-# Manual k8s ingress controller
-kubectl create -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
-
-# Jaeger Operator k8s setup
-kubectl create namespace observability
-kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing_v1_jaeger_crd.yaml
-kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/service_account.yaml
-kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml
-kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
-kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
-
-# Deploy k8s-eShop application via kubernetes
-kubectl apply -f ../k8s/
+#microk8s.enable prometheus
 
 # git ignore filemode change (https://stackoverflow.com/questions/1257592/how-do-i-remove-files-saying-old-mode-100755-new-mode-100644-from-unstaged-cha)
 git config core.filemode false
+
+# save credentials
+git config credential.helper store
+
+# Add maven settings.xml file
+mkdir /home/vagrant/.m2
+sudo chmod -R 777 /home/vagrant/.m2
+cp /home/vagrant/k8s-eShop/resources/settings.xml /home/vagrant/.m2/settings.xml
+
+# prepare folder for nexus k8s volume
+mkdir /home/vagrant/persistent-volumes-k8s
+sudo chmod -R 777 /home/vagrant/persistent-volumes-k8s
+mkdir /home/vagrant/persistent-volumes-k8s/nexus
+sudo chown -R 200:200 /home/vagrant/persistent-volumes-k8s/nexus
+
+# Update vm.max_map_count for sonarqube/postgres
+echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+
+sudo sed -i "$ a 127.0.0.1	k8s-eshop.io" /etc/hosts
+sudo sed -i "$ a 127.0.0.1	nexus.k8s-eshop.io" /etc/hosts
+sudo sed -i "$ a 127.0.0.1	jaeger.k8s-eshop.io" /etc/hosts
+sudo sed -i "$ a 127.0.0.1	jenkins.k8s-eshop.io" /etc/hosts
+sudo sed -i "$ a 127.0.0.1	sonar.k8s-eshop.io" /etc/hosts
+
+# create postgresql secret for sonar deployment
+kubectl create secret generic postgres-pwd --from-literal=password=S0nar_P0stgress_Pass
+
+# Deploy k8s-eShop application via kubernetes
+kubectl apply -R -f ../k8s/
