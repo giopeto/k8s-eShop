@@ -5,8 +5,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -19,52 +19,53 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringRunner.class)
+@DataMongoTest
 @TestPropertySource("classpath:test.properties")
-//@ContextConfiguration(classes = ApplicationTestPersistentConfig.class)
-@SpringBootTest
 public class GroupsRepositoryTest {
 
-	private static final int NUMBER_OF_TEST_RECORDS = 10;
+    private static final int NUMBER_OF_TEST_RECORDS = 10;
 
-	@MockBean private GroupsRepository groupsRepository;
+    @Autowired
+    private GroupsRepository groupsRepository;
 
-	private List<Groups> groups;
+    private List<Groups> groups;
 
-	@Before
-	public void setUp() {
-		groups = generateGroups(NUMBER_OF_TEST_RECORDS);
-		groupsRepository.saveAll(groups);
-	}
+    @Before
+    public void setUp() {
+        groups = generateGroups(NUMBER_OF_TEST_RECORDS);
+        //groups.forEach(group -> mongoTemplate.save(group));
+        groupsRepository.saveAll(groups);
+    }
 
-	@After
-	public void tearDown() {
-		groupsRepository.deleteAll();
-	}
+    @After
+    public void tearDown() {
+        groupsRepository.deleteAll();
+    }
 
-	@Test
-	public void findById() throws Exception {
-		Groups expectedGroups = groups.get(0);
-		Optional<Groups> actualGroups = groupsRepository.findById(expectedGroups.getId());
+    @Test
+    public void findById() throws Exception {
+        Optional<Groups> expectedGroups = Optional.of(groups.get(0));
+        Optional<Groups> actualGroups = groupsRepository.findById(expectedGroups.get().getId());
 
-		assertEquals(expectedGroups, actualGroups);
-	}
+        assertEquals(expectedGroups, actualGroups);
+    }
 
-	@Test
-	public void findAllByOrderByNameAsc() throws Exception {
-		groups.sort(comparing(Groups::getName));
+    @Test
+    public void findAllByOrderByNameAsc() throws Exception {
+        groups.sort(comparing(Groups::getName));
 
-		assertEquals(groups, groupsRepository.findAllByOrderByNameAsc());
-	}
+        assertEquals(groups, groupsRepository.findAllByOrderByNameAsc());
+    }
 
-	@Test
-	public void deleteById() throws Exception {
-		Groups groupsForDelete = groups.get(0);
-		groupsRepository.deleteById(groupsForDelete.getId());
+    @Test
+    public void deleteById() throws Exception {
+        Groups groupsForDelete = groups.get(0);
+        groupsRepository.deleteById(groupsForDelete.getId());
 
-		Optional<Groups> deletedGroup = groupsRepository.findAll().stream()
-			.filter(group -> group.getId().equals(groupsForDelete.getId()))
-			.findAny();
+        Optional<Groups> deletedGroup = groupsRepository.findAll().stream()
+                .filter(group -> group.getId().equals(groupsForDelete.getId()))
+                .findAny();
 
-		assertFalse(deletedGroup.isPresent());
-	}
+        assertFalse(deletedGroup.isPresent());
+    }
 }

@@ -5,7 +5,6 @@ import com.store.V1.items.repository.ItemsRepository;
 import com.store.V1.remote.call.files.FilesClient;
 import com.store.common.AppUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -20,7 +19,6 @@ import static java.util.UUID.randomUUID;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-@Ignore
 @RunWith(SpringRunner.class)
 public class ItemsServiceTest {
 
@@ -58,7 +56,7 @@ public class ItemsServiceTest {
 
     @Test
     public void testGet() throws Exception {
-        List allItems = generateItems(2, groupId);
+        List<Items> allItems = generateItems(2, groupId);
 
         when(itemsRepository.findAll()).thenReturn(allItems);
 
@@ -74,7 +72,7 @@ public class ItemsServiceTest {
 
     @Test
     public void testFindByGroupId() throws Exception {
-        List allItems = generateItems(2, groupId);
+        List<Items> allItems = generateItems(2, groupId);
 
         when(itemsRepository.findByGroupId(groupId)).thenReturn(allItems);
 

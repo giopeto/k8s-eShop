@@ -5,9 +5,11 @@ import com.store.V1.items.service.ItemsService;
 import com.store.common.StoreConstants;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -31,7 +33,7 @@ public class ItemsController {
     }
 
     @RequestMapping(method = GET)
-    public List<Items> get(HttpServletRequest httpServletRequest, @CookieValue("JSESSIONID") String sessionId) {
+    public List<Items> get() {
         return itemsService.get().getItems();
     }
 
@@ -48,11 +50,5 @@ public class ItemsController {
     @RequestMapping(value = "{id}", method = DELETE)
     public void delete(@PathVariable String id) {
         itemsService.delete(id);
-    }
-
-
-    @RequestMapping(method = GET, value = "test")
-    public String test() {
-        return "Test";
     }
 }

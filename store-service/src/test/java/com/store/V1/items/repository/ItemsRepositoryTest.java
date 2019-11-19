@@ -7,7 +7,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -21,54 +22,53 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringRunner.class)
+@DataMongoTest
 @TestPropertySource("classpath:test.properties")
-//@ContextConfiguration(classes = ApplicationTestPersistentConfig.class)
-@SpringBootTest
 public class ItemsRepositoryTest {
 
-	private static final int NUMBER_OF_TEST_RECORDS = 10;
+    private static final int NUMBER_OF_TEST_RECORDS = 10;
+    String groupId;
+    @Autowired
+    private ItemsRepository itemsRepository;
+    @MockBean
+    private GroupsRepository groupsRepository;
+    private List<Items> items;
 
-	@MockBean private ItemsRepository itemsRepository;
-	@MockBean private GroupsRepository groupsRepository;
+    @Before
+    public void setUp() throws Exception {
+        groupId = randomUUID().toString();
+        items = generateItems(NUMBER_OF_TEST_RECORDS, groupId);
+        itemsRepository.saveAll(items);
+        itemsRepository.findAll();
+    }
 
-	private List<Items> items;
-	String groupId;
+    @After
+    public void tearDown() throws Exception {
+        itemsRepository.deleteAll();
+    }
 
-	@Before
-	public void setUp() throws Exception {
-		groupId = randomUUID().toString();
-		items = generateItems(NUMBER_OF_TEST_RECORDS, groupId);
-		itemsRepository.saveAll(items);
-		itemsRepository.findAll();
-	}
+    @Test
+    public void testFindById() throws Exception {
+        Items expectedItems = items.get(0);
+        Optional<Items> actualItems = itemsRepository.findById(expectedItems.getId());
 
-	@After
-	public void tearDown() throws Exception {
-		itemsRepository.deleteAll();
-	}
+        assertEquals(expectedItems, actualItems.get());
+    }
 
-	@Test
-	public void testFindById() throws Exception {
-		Items expectedItems = items.get(0);
-		Optional<Items> actualItems = itemsRepository.findById(expectedItems.getId());
+    @Test
+    public void testFindByGroupId() throws Exception {
+        assertEquals(items, itemsRepository.findByGroupId(groupId));
+    }
 
-		assertEquals(expectedItems, actualItems.get());
-	}
+    @Test
+    public void testDeleteById() throws Exception {
+        Items itemsForDelete = items.get(0);
+        itemsRepository.deleteById(itemsForDelete.getId());
 
-	@Test
-	public void testFindByGroupId() throws Exception {
-		assertEquals(items, itemsRepository.findByGroupId(groupId));
-	}
+        Optional<Items> deletedItems = itemsRepository.findAll().stream()
+                .filter(item -> item.getId().equals(itemsForDelete.getId()))
+                .findAny();
 
-	@Test
-	public void testDeleteById() throws Exception {
-		Items itemsForDelete = items.get(0);
-		itemsRepository.deleteById(itemsForDelete.getId());
-
-		Optional<Items> deletedItems = itemsRepository.findAll().stream()
-			.filter(item -> item.getId().equals(itemsForDelete.getId()))
-			.findAny();
-
-		assertFalse(deletedItems.isPresent());
-	}
+        assertFalse(deletedItems.isPresent());
+    }
 }

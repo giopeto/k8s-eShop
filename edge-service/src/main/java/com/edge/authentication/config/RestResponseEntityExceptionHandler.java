@@ -1,4 +1,4 @@
-package com.edge.authentication.configuration;
+package com.edge.authentication.config;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -17,7 +17,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     private static final String ERROR_MESSAGE = "message";
 
-    @ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class, UsernameNotFoundException.class})
+    @ExceptionHandler(value = {IllegalArgumentException.class, IllegalStateException.class, UsernameNotFoundException.class})
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
         ObjectNode node = JsonNodeFactory.instance.objectNode();
         node.put(ERROR_MESSAGE, ex.getMessage());

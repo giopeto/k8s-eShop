@@ -51,7 +51,7 @@ public class ItemsServiceImpl implements ItemsService {
     @Override
     public void delete(String id) {
         itemsRepository.deleteById(id);
-        Map<String, String> headers = new HashMap();
+        Map<String, String> headers = new HashMap<>();
         //headers.put("Cookie", JSESSIONID + "=" + appUtils.getCookie(JSESSIONID).get());
         filesClient.deleteByDomainId(JSESSIONID + "=" + appUtils.getCookie(JSESSIONID).get(), id);
     }

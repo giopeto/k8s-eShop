@@ -1,4 +1,4 @@
-package com.edge.authentication.configuration;
+package com.edge.authentication.config;
 
 import io.jaegertracing.Configuration;
 import io.jaegertracing.internal.JaegerTracer;

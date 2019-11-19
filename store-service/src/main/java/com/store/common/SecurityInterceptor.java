@@ -1,6 +1,6 @@
 package com.store.common;
 
-import com.store.V1.remote.call.security.Users;
+import com.store.V1.remote.call.security.domain.Users;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

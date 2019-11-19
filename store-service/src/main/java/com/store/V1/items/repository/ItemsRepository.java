@@ -10,7 +10,9 @@ import java.util.Optional;
 @Repository
 public interface ItemsRepository extends MongoRepository<Items, String> {
 
-	Optional<Items> findById(String id);
-	void deleteById(String id);
-	List findByGroupId(String groupId);
+    Optional<Items> findById(String id);
+
+    void deleteById(String id);
+
+    List<Items> findByGroupId(String groupId);
 }

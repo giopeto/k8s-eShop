@@ -18,25 +18,21 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<properties>
-        <nexus-server-k8s-url>http://nexus-svc</nexus-server-k8s-url>
-    </properties>
-    
 	<repositories>
         <repository>
             <id>maven-public</id>
-            <url>${nexus-server-k8s-url}/repository/maven-public/</url>
+            <url>http://nexus-svc/repository/maven-public/</url>
         </repository>
     </repositories>
 
     <distributionManagement>
         <snapshotRepository>
             <id>nexus-snapshots</id>
-            <url>${nexus-server-k8s-url}/repository/maven-snapshots/</url>
+            <url>http://nexus-svc/repository/maven-snapshots/</url>
         </snapshotRepository>
         <repository>
             <id>nexus-releases</id>
-            <url>${nexus-server-k8s-url}/repository/maven-releases/</url>
+            <url>http://nexus-svc/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 </project>

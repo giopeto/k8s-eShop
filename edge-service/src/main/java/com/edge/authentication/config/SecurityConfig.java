@@ -1,4 +1,4 @@
-package com.edge.authentication.configuration;
+package com.edge.authentication.config;
 
 import com.edge.authentication.V1.users.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,8 @@ import static com.edge.authentication.common.AuthenticationConstants.AUTHENTICAT
 import static com.edge.authentication.common.SecurityRoles.ROLE_ADMIN;
 import static com.edge.authentication.common.SecurityRoles.ROLE_USER;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
-import static org.springframework.http.HttpMethod.*;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -54,24 +54,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-            .authorizeRequests()
+                .authorizeRequests()
                 .antMatchers(POST, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
                 .antMatchers(GET, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
                 .antMatchers(GET, "/store-service/store/**").hasAnyRole(ROLE_ADMIN.getName(), ROLE_USER.getName())
                 .antMatchers(GET, "/zuul/files-service/files/**").hasAnyRole(ROLE_ADMIN.getName(), ROLE_USER.getName())
                 .anyRequest().hasRole(ROLE_ADMIN.getName())
-            .and()
+                .and()
                 .logout()
                 .deleteCookies("JSESSIONID")
                 .and()
                 .exceptionHandling().authenticationEntryPoint((req, rsp, e) -> rsp.sendError(SC_UNAUTHORIZED))
-            .and()
+                .and()
                 .rememberMe()
                 .rememberMeServices(rememberMeServices())
                 .key(REMEMBER_ME_KEY)
-            .and()
+                .and()
                 .cors()
-            .and()
+                .and()
                 .csrf().disable();
     }
 }

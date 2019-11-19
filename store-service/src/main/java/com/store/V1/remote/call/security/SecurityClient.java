@@ -1,5 +1,6 @@
 package com.store.V1.remote.call.security;
 
+import com.store.V1.remote.call.security.domain.Users;
 import feign.Headers;
 import feign.Param;
 import org.springframework.cloud.openfeign.FeignClient;

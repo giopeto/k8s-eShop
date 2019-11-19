@@ -1,4 +1,4 @@
-package com.store.V1.remote.call.security;
+package com.store.V1.remote.call.security.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

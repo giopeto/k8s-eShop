@@ -19,7 +19,7 @@ node {
 
     stage('Build'){
         dir(PROJECT_DIR) {
-            sh "mvn clean install -DskipTests"
+            sh "mvn clean install"
         }
     }
 

@@ -1,6 +1,6 @@
 package com.files.common;
 
-import com.files.V1.remote.call.security.Users;
+import com.files.V1.remote.call.security.domain.Users;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

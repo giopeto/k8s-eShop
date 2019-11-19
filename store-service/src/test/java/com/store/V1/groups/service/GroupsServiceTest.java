@@ -20,50 +20,51 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 public class GroupsServiceTest {
 
-	private GroupsService groupsService;
+    private GroupsService groupsService;
 
-	@Mock private GroupsRepository groupsRepository;
+    @Mock
+    private GroupsRepository groupsRepository;
 
-	private Groups groups;
-	private String groupId;
+    private Groups groups;
+    private String groupId;
 
-	@Before
-	public void setUp() {
-		groupsService = new GroupsServiceImpl(groupsRepository);
-		groups = generateGroup(null, Optional.empty());
-		groupId = randomUUID().toString();
-	}
+    @Before
+    public void setUp() {
+        groupsService = new GroupsServiceImpl(groupsRepository);
+        groups = generateGroup(null, Optional.empty());
+        groupId = randomUUID().toString();
+    }
 
-	@Test
-	public void testSave() {
-		Groups savedGroups = generateGroup(groupId, Optional.of(groups.getName()));
+    @Test
+    public void testSave() {
+        Groups savedGroups = generateGroup(groupId, Optional.of(groups.getName()));
 
-		when(groupsRepository.save(groups)).thenReturn(savedGroups);
+        when(groupsRepository.save(groups)).thenReturn(savedGroups);
 
-		Groups resultGroups = groupsService.save(groups);
-		assertEquals(groupId, resultGroups.getId());
-	}
+        Groups resultGroups = groupsService.save(groups);
+        assertEquals(groupId, resultGroups.getId());
+    }
 
-	@Test
-	public void testGet() {
-		List allGroupsOrderByName = generateGroups(2);
+    @Test
+    public void testGet() {
+        List<Groups> allGroupsOrderByName = generateGroups(2);
 
-		when(groupsRepository.findAllByOrderByNameAsc()).thenReturn(allGroupsOrderByName);
+        when(groupsRepository.findAllByOrderByNameAsc()).thenReturn(allGroupsOrderByName);
 
-		assertEquals(groupsService.get().getGroups(), allGroupsOrderByName);
-	}
+        assertEquals(groupsService.get().getGroups(), allGroupsOrderByName);
+    }
 
-	@Test
-	public void testGetById() {
-		when(groupsRepository.findById(groupId)).thenReturn(Optional.of(groups));
+    @Test
+    public void testGetById() {
+        when(groupsRepository.findById(groupId)).thenReturn(Optional.of(groups));
 
-		assertEquals(groupsService.findById(groupId).get(), groups);
-	}
+        assertEquals(groupsService.findById(groupId).get(), groups);
+    }
 
-	@Test
-	public void testDelete() {
-		groupsRepository.deleteById(groupId);
+    @Test
+    public void testDelete() {
+        groupsRepository.deleteById(groupId);
 
-		//assertFalse(groupsRepository.findById(groupId).get());
-	}
+        //assertFalse(groupsRepository.findById(groupId).get());
+    }
 }
