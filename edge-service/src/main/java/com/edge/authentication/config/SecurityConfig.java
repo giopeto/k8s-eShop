@@ -1,6 +1,6 @@
 package com.edge.authentication.config;
 
-import com.edge.authentication.V1.users.service.UsersService;
+import com.edge.authentication.v1.users.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
