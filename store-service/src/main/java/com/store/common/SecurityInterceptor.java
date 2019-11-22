@@ -1,6 +1,6 @@
 package com.store.common;
 
-import com.store.V1.remote.call.security.domain.Users;
+import com.store.v1.remote.call.security.domain.Users;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import static com.store.common.StoreConstants.JSESSIONID;
 public class SecurityInterceptor implements HandlerInterceptor {
 
     @NonNull
-    private final AppUtils appUtils;
+    private final CookieParser cookieParser;
 
     @NonNull
     private final RestTemplate restTemplate;
@@ -32,7 +32,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         log.info("[SecurityInterceptor] checking current user ...");
-        Optional<String> jSessionIdCookie = appUtils.getCookie(JSESSIONID);
+        Optional<String> jSessionIdCookie = cookieParser.getCookie(JSESSIONID);
 
         if (jSessionIdCookie.isPresent()) {
             Users user = getCurrentAccount(jSessionIdCookie.get());

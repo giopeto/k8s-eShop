@@ -1,6 +1,6 @@
 package com.files.config;
 
-import com.files.common.AppUtils;
+import com.files.common.CookieParser;
 import com.files.common.SecurityInterceptor;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -20,11 +20,11 @@ public class TestConfig {
     @MockBean
     private RestTemplate restTemplate;
     @MockBean
-    private AppUtils appUtils;
+    private CookieParser cookieParser;
 
     @Bean
     public SecurityInterceptor securityInterceptor() {
-        return new SecurityInterceptor(appUtils, restTemplate) {
+        return new SecurityInterceptor(cookieParser, restTemplate) {
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
                 return true;

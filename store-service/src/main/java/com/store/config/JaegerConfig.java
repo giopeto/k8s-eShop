@@ -14,7 +14,6 @@ public class JaegerConfig {
         Configuration.SamplerConfiguration samplerConfig = Configuration.SamplerConfiguration.fromEnv().withType("probabilistic").withParam(1);
 
 
-
         Configuration.ReporterConfiguration reporterConfig = Configuration.ReporterConfiguration.fromEnv().withLogSpans(true);
         Configuration config = new Configuration(SERVICE_NAME).withSampler(samplerConfig).withReporter(reporterConfig);
         return config.getTracer();

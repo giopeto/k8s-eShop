@@ -1,6 +1,6 @@
 package com.store.config;
 
-import com.store.common.AppUtils;
+import com.store.common.CookieParser;
 import com.store.common.SecurityInterceptor;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -16,11 +16,11 @@ public class TestConfig {
     @MockBean
     private RestTemplate restTemplate;
     @MockBean
-    private AppUtils appUtils;
+    private CookieParser cookieParser;
 
     @Bean
     public SecurityInterceptor securityInterceptor() {
-        return new SecurityInterceptor(appUtils, restTemplate) {
+        return new SecurityInterceptor(cookieParser, restTemplate) {
             @Override
             public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
                 return true;
