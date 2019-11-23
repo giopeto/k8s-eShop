@@ -1,5 +1,5 @@
 def CONTAINER_NAME="e-shop-store-service"
-def CONTAINER_TAG="V1"
+def CONTAINER_TAG="V55"
 def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT="8081"
 def PROJECT_DIR="store-service"
