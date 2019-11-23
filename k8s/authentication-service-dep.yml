@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication-service-dep
+  annotations:
+    # Jaeger tracing sidecar
+    sidecar.jaegertracing.io/inject: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentication-service
+  template:
+    metadata:
+      labels:
+        app: authentication-service
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: authentication-service
+          image: giopeto/e-shop-authentication-service:V20
+          imagePullPolicy: Always
+          env:
+            - name: MONGODB_HOST
+              value: mongodb
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authentication-service-svc
+spec:
+  selector:
+    app: authentication-service
+  ports:
+    - name: authentication-service-web
+      protocol: "TCP"
+      # Port accessible inside cluster
+      port: 8080
+      # Port to forward to inside the pod
+      targetPort: 8080
+      # Port accessible outside cluster
+      nodePort: 30101
+    #- name: authentication-service-debug
+     # protocol: "TCP"
+      # Port accessible inside cluster
+      #port: 5005
+      # Port to forward to inside the pod
+      #targetPort: 5005
+      # Port accessible outside cluster
+      #nodePort: 30111
+  type: LoadBalancer

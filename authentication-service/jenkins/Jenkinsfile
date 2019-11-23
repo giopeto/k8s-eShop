@@ -1,0 +1,83 @@
+def CONTAINER_NAME="e-shop-authentication-service"
+def CONTAINER_TAG="V20"
+def DOCKER_HUB_USER="giopeto"
+def HTTP_PORT=8080
+def PROJECT_DIR="authentication-service"
+def NEXUS_IP_ADDRESS="10.152.183.132"
+
+node {
+
+    stage('Initialize'){
+        def dockerHome = tool 'myDocker'
+        def mavenHome  = tool 'myMaven'
+        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+    }
+
+    stage('Checkout') {
+        checkout scm
+    }
+
+    stage('Build'){
+        dir(PROJECT_DIR) {
+            sh "mvn clean install"
+        }
+    }
+
+    stage('Sonar'){
+        try {
+            dir(PROJECT_DIR) {
+                sh "mvn sonar:sonar"
+            }
+        } catch(error){
+            echo "The sonar server could not be reached ${error}"
+        }
+     }
+
+    stage("Image Prune"){
+        imagePrune(CONTAINER_NAME)
+    }
+
+    stage('Image Build'){
+        dir(PROJECT_DIR) {
+            imageBuild(CONTAINER_NAME, CONTAINER_TAG, NEXUS_IP_ADDRESS)
+        }
+    }
+
+    stage('Push to Docker Registry'){
+        withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            dir(PROJECT_DIR) {
+                pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
+            }
+        }
+    }
+
+    stage('Run App'){
+        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT, HTTP_PORT + 1111)
+    }
+
+}
+
+def imagePrune(containerName){
+    try {
+        sh "docker image prune -f"
+        sh "docker stop $containerName"
+    } catch(error){}
+}
+
+def imageBuild(containerName, tag, nexusIpAddress){
+    sh "docker build --add-host=nexus.k8s-eshop.io:$nexusIpAddress -t $containerName:$tag  -t $containerName --pull --no-cache ."
+    echo "Image build complete"
+}
+
+def pushToImage(containerName, tag, dockerUser, dockerPassword){
+    sh "docker login -u $dockerUser -p $dockerPassword"
+    sh "docker tag $containerName:$tag $dockerUser/$containerName:$tag"
+    sh "docker push $dockerUser/$containerName:$tag"
+    echo "Image push complete"
+}
+
+def runApp(containerName, tag, dockerHubUser, httpPort, exposedHttpPort){
+    sh "docker pull $dockerHubUser/$containerName"
+    sh "docker run -d --rm -p $exposedHttpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
+    echo "Application started on port: ${httpPort} (http)"
+}

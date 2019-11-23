@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @deprecated
  */
 @Deprecated
-@FeignClient(name = "edge-service-svc")
+@FeignClient(name = "authentication-service-svc")
 public interface SecurityClient {
 
     @GetMapping("/users/v1/users")

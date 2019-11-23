@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-import static com.files.common.FilesConstants.EDGE_SERVICE_GET_CURRENT_ACCOUNT_URL;
+import static com.files.common.FilesConstants.AUTHENTICATION_SERVICE_GET_CURRENT_ACCOUNT_URL;
 import static com.files.common.FilesConstants.JSESSIONID;
 
 @Component
@@ -51,7 +51,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Cookie", JSESSIONID + "=" + sessionId);
 
-        return restTemplate.exchange(EDGE_SERVICE_GET_CURRENT_ACCOUNT_URL,
+        return restTemplate.exchange(AUTHENTICATION_SERVICE_GET_CURRENT_ACCOUNT_URL,
                 HttpMethod.GET,
                 new HttpEntity<String>(requestHeaders),
                 Users.class).getBody();
