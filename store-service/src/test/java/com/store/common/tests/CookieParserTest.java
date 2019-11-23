@@ -2,6 +2,7 @@ package com.store.common.tests;
 
 import com.store.common.CookieParser;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 
@@ -12,7 +13,7 @@ import java.util.Optional;
 import static com.store.common.StoreConstants.JSESSIONID;
 import static org.junit.Assert.assertEquals;
 
-
+@Ignore
 public class CookieParserTest {
 
     private HttpServletRequest mockHttpServletRequest;
