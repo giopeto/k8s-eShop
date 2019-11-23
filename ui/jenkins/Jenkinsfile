@@ -1,5 +1,5 @@
 def CONTAINER_NAME="e-shop-ui"
-def CONTAINER_TAG="V20"
+def CONTAINER_TAG="V1"
 def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT=80
 def PROJECT_DIR="ui"
@@ -60,7 +60,7 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword){
 }
 
 def runApp(containerName, tag, dockerHubUser, httpPort, exposedHttpPort){
-    sh "docker pull $dockerHubUser/$containerName"
+    sh "docker pull $dockerHubUser/$containerName:$tag"
     sh "docker run -d --rm -p $exposedHttpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
     echo "Application started on port: ${httpPort} (http)"
 }
