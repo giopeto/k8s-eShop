@@ -1,13 +1,14 @@
 package com.store.v1.items.service;
 
 import com.store.common.CookieParser;
+import com.store.jms.producer.JmsProducer;
 import com.store.v1.items.domain.Items;
 import com.store.v1.items.repository.ItemsRepository;
 import com.store.v1.remote.call.files.FilesClient;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
@@ -24,12 +25,15 @@ public class ItemsServiceTest {
 
     private ItemsService itemsService;
 
-    @Mock
+    @MockBean
     private ItemsRepository itemsRepository;
-    @Mock
+    @MockBean
     private FilesClient filesClient;
-    @Mock
+    @MockBean
     private CookieParser cookieParser;
+
+    @MockBean
+    private JmsProducer jmsProducer;
 
     private String itemId;
     private String groupId;
@@ -37,7 +41,7 @@ public class ItemsServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        itemsService = new ItemsServiceImpl(itemsRepository, filesClient, cookieParser);
+        itemsService = new ItemsServiceImpl(itemsRepository, filesClient, cookieParser, jmsProducer);
         itemId = randomUUID().toString();
         groupId = randomUUID().toString();
 

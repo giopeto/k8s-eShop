@@ -19,14 +19,14 @@ node {
 
     stage('Build'){
         dir(PROJECT_DIR) {
-            sh "mvn clean install"
+            //sh "mvn clean install -DskipTests"
         }
     }
     
     stage('Sonar'){
         try {
             dir(PROJECT_DIR) {
-                sh "mvn sonar:sonar"
+                //sh "mvn sonar:sonar"
             }
         } catch(error){
             echo "The sonar server could not be reached ${error}"

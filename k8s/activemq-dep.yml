@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: activemq-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: activemq-dep
+  template:
+    metadata:
+      labels:
+        app: activemq-dep
+    spec:
+      containers:
+        - image: padmaraglaunchpad/activemq:latest
+          name: activemq-dep
+          ports:
+            - containerPort: 8161
+              name: admin
+            - containerPort: 61616
+              name: broker
+            - containerPort: 5672
+              name: amqp
+            - containerPort: 61613
+              name: stomp
+            - containerPort: 1883
+              name: mqtt
+            - containerPort: 61614
+              name: websocket
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: activemq-svc
+spec:
+  selector:
+    app: activemq-dep
+  ports:
+  - name: admin
+    protocol: TCP
+    port: 8161
+    targetPort: 8161
+  - name: broker
+    protocol: TCP
+    port: 61616
+    targetPort: 61616
+  - name: amqp
+    protocol: TCP
+    port: 5672
+    targetPort: 5672
+  - name: stomp
+    protocol: TCP
+    port: 61613
+    targetPort: 61613
+  - name: mqtt
+    protocol: TCP
+    port: 1883
+    targetPort: 1883
+  - name: websocket
+    protocol: TCP
+    port: 61614
+    targetPort: 61614
+  type: LoadBalancer

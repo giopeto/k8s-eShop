@@ -2,8 +2,8 @@ echo -e '\n microk8s-ubuntu \n'
 
 apt-get update
 
-# Install kubernetes (https://microk8s.io/docs/)
-echo -e 'Install snapd and kubernetes (https://microk8s.io/docs/)'
+# Install snapd and kubernetes (https://microk8s.io/docs/)
+echo -e '\n Install snapd and kubernetes (https://microk8s.io/docs/) \n'
 sudo dpkg --configure -a
 sudo apt update -y
 sudo apt upgrade -y
@@ -13,7 +13,7 @@ sudo apt install snapd
 sudo snap install microk8s --classic
 sudo usermod -a -G microk8s vagrant
 
-echo -e 'Install nodejs 12.x, n and npm'
+echo -e 'Install curl, nodejs 12.x, n and npm'
 # Install curl, nodejs 12.x, n and npm
 sudo apt-get install -y curl
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
@@ -22,6 +22,7 @@ sudo apt-get install -y build-essential
 sudo npm install -g npm
 sudo npm install -g n
 
+echo -e 'Install java 11, maven, intellij-idea-community, chromium, visual studio code and sublime'
 # Install java 11, maven, intellij-idea-community, chromium, visual studio code and sublime
 sudo apt install openjdk-11-jdk -y
 sudo apt install maven -y
@@ -31,7 +32,7 @@ sudo snap install code --classic
 sudo snap install sublime-text --classic
 
 # Install docker (https://unix.stackexchange.com/questions/363048/unable-to-locate-package-docker-ce-on-a-64bit-ubuntu)
-echo -e 'Install docker'
+echo -e '\n Install docker \n'
 
 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -64,6 +65,8 @@ snap alias microk8s.kubectl kubectl
 # Fix dns
 sudo iptables -P FORWARD ACCEPT
 
+echo -e '\n K8s ingress, dns, dashboard, jaeger-operator \n'
+
 # Install k8s addons
 sudo microk8s.enable ingress dns dashboard
 
@@ -78,28 +81,13 @@ kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operato
 kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
 kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
 
-# Update vm.max_map_count for sonarqube/postgres
-#sudo sysctl -w vm.max_map_count=262144
-
 # Clone project
 echo "cd /vagrant" >> /home/vagrant/.bashrc
 git clone https://github.com/giopeto/k8s-eShop.git
 sudo chmod -R 777 k8s-eShop
 
-# grant premission to /data/my-nexus-data/ for nexus server
-# cd /
-# sudo mkdir data 
-# cd data
-# sudo mkdir my-nexus-data
-# sudo chmod 777 -R my-nexus-data/
-# grant premission to /data/my-jenkins-data/ for jenkins server
-#sudo cp -R /home/vagrant/k8s-eShop/resources/my-jenkins-data my-jenkins-data
-#sudo chmod 777 -R my-jenkins-data/
-
 # Remove 'cd /vagrant' from /home/vagrant/.bashrc
 sed -i '$d' /home/vagrant/.bashrc
 
-
-
 sudo apt autoremove -y
-echo -e '\n\n\n\n END \n\n\n\n'
+echo -e '\n END \n'

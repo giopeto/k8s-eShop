@@ -1,5 +1,5 @@
 def CONTAINER_NAME="e-shop-store-service"
-def CONTAINER_TAG="V55"
+def CONTAINER_TAG="V1"
 def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT="8081"
 def PROJECT_DIR="store-service"
@@ -19,14 +19,14 @@ node {
 
     stage('Build'){
         dir(PROJECT_DIR) {
-            sh "mvn clean install"
+            //sh "mvn clean install -DskipTests"
         }
     }
     
     stage('Sonar'){
         try {
             dir(PROJECT_DIR) {
-                sh "mvn sonar:sonar"
+                //sh "mvn sonar:sonar"
             }
         } catch(error){
             echo "The sonar server could not be reached ${error}"

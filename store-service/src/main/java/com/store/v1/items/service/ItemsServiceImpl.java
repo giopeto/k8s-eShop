@@ -1,6 +1,7 @@
 package com.store.v1.items.service;
 
 import com.store.common.CookieParser;
+import com.store.jms.producer.JmsProducer;
 import com.store.v1.items.domain.Items;
 import com.store.v1.items.domain.ItemsList;
 import com.store.v1.items.repository.ItemsRepository;
@@ -10,8 +11,6 @@ import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import static com.store.common.StoreConstants.JSESSIONID;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +24,9 @@ public class ItemsServiceImpl implements ItemsService {
 
     @NonNull
     private final CookieParser cookieParser;
+
+    @NonNull
+    private final JmsProducer jmsProducer;
 
     @Override
     public Items save(Items item) {
@@ -49,6 +51,7 @@ public class ItemsServiceImpl implements ItemsService {
     @Override
     public void delete(String id) {
         itemsRepository.deleteById(id);
-        filesClient.deleteByDomainId(JSESSIONID + "=" + cookieParser.getCookie(JSESSIONID).get(), id);
+        jmsProducer.send("test-activemq", id);
+        //filesClient.deleteByDomainId(JSESSIONID + "=" + cookieParser.getCookie(JSESSIONID).get(), id);
     }
 }

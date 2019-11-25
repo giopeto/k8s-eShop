@@ -7,7 +7,6 @@
 **/.vagrant
 
 /target/
-!.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###
 .apt_generated
@@ -31,3 +30,9 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+sudo
+mvnw
+mvnw.cmd
+
+**/.mvn
