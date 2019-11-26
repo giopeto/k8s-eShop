@@ -21,9 +21,6 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  backend:
-    serviceName: default-http-backend
-    servicePort: 80
   rules:
     - host: sonar.k8s-eshop.io
       http:

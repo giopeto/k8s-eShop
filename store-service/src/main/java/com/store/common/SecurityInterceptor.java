@@ -33,7 +33,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         log.info("[SecurityInterceptor] checking current user ...");
         Optional<String> jSessionIdCookie = cookieParser.getCookie(JSESSIONID);
-
+        log.info("[SecurityInterceptor] checking current user. JSESSIONID is present {}", jSessionIdCookie.isPresent());
         if (jSessionIdCookie.isPresent()) {
             Users user = getCurrentAccount(jSessionIdCookie.get());
             if (user != null) {
@@ -42,7 +42,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
             }
         }
 
-        log.info("[SecurityInterceptor] checking current user end");
+        log.info("[SecurityInterceptor] User is not logged");
 
         return false;
     }

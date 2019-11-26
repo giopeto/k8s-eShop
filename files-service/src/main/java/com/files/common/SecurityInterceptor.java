@@ -42,7 +42,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
             }
         }
 
-        log.info("[SecurityInterceptor] checking current user end");
+        log.info("[SecurityInterceptor] User is not logged");
 
         return false;
     }

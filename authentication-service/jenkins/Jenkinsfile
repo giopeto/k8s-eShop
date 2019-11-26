@@ -1,9 +1,9 @@
 def CONTAINER_NAME="e-shop-authentication-service"
-def CONTAINER_TAG="V1"
+def CONTAINER_TAG="V"
 def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT=8080
 def PROJECT_DIR="authentication-service"
-def NEXUS_IP_ADDRESS="10.152.183.132"
+def NEXUS_IP_ADDRESS="10.152.183.218"
 
 node {
 
@@ -11,6 +11,7 @@ node {
         def dockerHome = tool 'myDocker'
         def mavenHome  = tool 'myMaven'
         env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+        CONTAINER_TAG = "${CONTAINER_TAG}${currentBuild.number}"
     }
 
     stage('Checkout') {
@@ -19,14 +20,14 @@ node {
 
     stage('Build'){
         dir(PROJECT_DIR) {
-            sh "mvn clean install"
+            //sh "mvn clean install"
         }
     }
 
     stage('Sonar'){
         try {
             dir(PROJECT_DIR) {
-                sh "mvn sonar:sonar"
+                //sh "mvn sonar:sonar"
             }
         } catch(error){
             echo "The sonar server could not be reached ${error}"
@@ -52,7 +53,7 @@ node {
     }
 
     stage('Run App'){
-        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT, HTTP_PORT + 1111)
+        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT, HTTP_PORT + 1002)
     }
 
 }

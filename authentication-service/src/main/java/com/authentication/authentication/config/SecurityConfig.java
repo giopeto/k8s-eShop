@@ -16,8 +16,7 @@ import static com.authentication.authentication.common.AuthenticationConstants.A
 import static com.authentication.authentication.common.SecurityRoles.ROLE_ADMIN;
 import static com.authentication.authentication.common.SecurityRoles.ROLE_USER;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -57,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(POST, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
                 .antMatchers(GET, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
+                .antMatchers(OPTIONS, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
                 .antMatchers(GET, "/store-service/store/**").hasAnyRole(ROLE_ADMIN.getName(), ROLE_USER.getName())
                 .antMatchers(GET, "/zuul/files-service/files/**").hasAnyRole(ROLE_ADMIN.getName(), ROLE_USER.getName())
                 .anyRequest().hasRole(ROLE_ADMIN.getName())

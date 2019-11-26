@@ -23,13 +23,14 @@ echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 
 sudo sed -i "$ a 127.0.0.1	k8s-eshop.io" /etc/hosts
+sudo sed -i "$ a 127.0.0.1	admin.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	nexus.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	jaeger.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	jenkins.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	sonar.k8s-eshop.io" /etc/hosts
 
 # create postgresql secret for sonar deployment
-kubectl create secret generic postgres-pwd --from-literal=password=S0nar_P0stgress_Pass
+k create secret generic postgres-pwd --from-literal=password=S0nar_P0stgress_Pass
 
 # Deploy k8s-eShop application via kubernetes
-kubectl apply -R -f ../k8s/
+k apply -R -f ../k8s/

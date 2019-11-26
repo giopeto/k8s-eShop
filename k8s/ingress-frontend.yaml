@@ -1,18 +1,21 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: e-shop-gateway-ingress-frontend
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/add-base-url: 'true'
 spec:
-  backend:
-    serviceName: default-http-frontend
-    servicePort: 80
+  
   rules:
     - host: k8s-eshop.io
       http:
         paths:
-          - path: /
+          - path: /client(/|$)(.*)
             backend:
-              serviceName: ui-svc
+              serviceName: ui-client-svc
+              servicePort: 80
+          - path: /admin(/|$)(.*)
+            backend:
+              serviceName: ui-admin-svc
               servicePort: 80

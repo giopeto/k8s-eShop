@@ -12,11 +12,11 @@
 - Vagrant user:password => vagrant:vagrant
 - Run bootstrap.sh
 	- `cd k8s-eShop/scripts && sh bootstrap.sh`
-	
+
 ## Links
 ### k8s-eShop [http://k8s-eshop.io](http://k8s-eshop.io)
 ### Jaeger tracing [http://jaeger.k8s-eshop.io](http://jaeger.k8s-eshop.io)
-### Jenkins CI/CD [http://jenkins.k8s-eshop.io](http://jenkins.k8s-eshop.io) user:pass admin:admin123
+### Jenkins CI/CD [http://jenkins.k8s-eshop.io](http://jenkins.k8s-eshop.io)
 ### SonarQube Code Inspection [http://sonar.k8s-eshop.io/sonar](http://sonar.k8s-eshop.io/sonar) user:pass admin:admin
 ### Nexus repository [http://nexus.k8s-eshop.io](http://nexus.k8s-eshop.io) user:pass admin:admin123
 ### Grafana run `kubectl cluster-info` and get grafana url
@@ -56,3 +56,6 @@ Add debug port to service definition:
 	
 - forward 5005 port
 	- `kubectl port-forward <NODE_NAME>  5005:5005`
+
+test
+[![test](https://j.gifs.com/OMX89B.gif)](https://www.youtube.com/)

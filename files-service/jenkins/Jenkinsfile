@@ -1,9 +1,10 @@
 def CONTAINER_NAME="e-shop-files-service"
-def CONTAINER_TAG="V1"
 def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT="8082"
 def PROJECT_DIR="files-service"
-def NEXUS_IP_ADDRESS="10.152.183.132"
+def NEXUS_IP_ADDRESS="10.152.183.218"
+def CURRENT_BUILD_NUMBER=currentBuild.number as int
+def CONTAINER_TAG="V"
 
 node {
 
@@ -11,6 +12,7 @@ node {
         def dockerHome = tool 'myDocker'
         def mavenHome  = tool 'myMaven'
         env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+        CONTAINER_TAG = "${CONTAINER_TAG}${CURRENT_BUILD_NUMBER}"
     }
 
     stage('Checkout') {
@@ -52,7 +54,7 @@ node {
     }
 
     stage('Run App'){
-        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
+        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT + CURRENT_BUILD_NUMBER)
     }
 
 }

@@ -5,7 +5,7 @@
 
     <groupId>com</groupId>
     <artifactId>authentication-service</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <name>authentication-service</name>

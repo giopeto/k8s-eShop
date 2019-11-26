@@ -1,9 +1,9 @@
 def CONTAINER_NAME="e-shop-store-service"
-def CONTAINER_TAG="V1"
+def CONTAINER_TAG="V"
 def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT="8081"
 def PROJECT_DIR="store-service"
-def NEXUS_IP_ADDRESS="10.152.183.132"
+def NEXUS_IP_ADDRESS="10.152.183.218"
 
 node {
 
@@ -11,6 +11,7 @@ node {
         def dockerHome = tool 'myDocker'
         def mavenHome  = tool 'myMaven'
         env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+        CONTAINER_TAG = "${CONTAINER_TAG}${currentBuild.number}"
     }
 
     stage('Checkout') {
@@ -52,7 +53,7 @@ node {
     }
 
     stage('Run App'){
-        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
+        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT + 1003)
     }
 
 }

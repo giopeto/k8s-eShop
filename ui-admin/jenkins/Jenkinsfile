@@ -1,5 +1,5 @@
 def CONTAINER_NAME="e-shop-ui-admin"
-def CONTAINER_TAG="V2"
+def CONTAINER_TAG="V"
 def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT=80
 def PROJECT_DIR="ui-admin"
@@ -10,6 +10,7 @@ node {
         def dockerHome = tool 'myDocker'
         def mavenHome  = tool 'myMaven'
         env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+        CONTAINER_TAG = "${CONTAINER_TAG}${currentBuild.number}"
     }
 
     stage('Checkout') {
@@ -35,7 +36,7 @@ node {
     }
 
     stage('Run App'){
-        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT, HTTP_PORT + 1111)
+        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT, HTTP_PORT + 1000)
     }
 
 }
@@ -63,4 +64,5 @@ def runApp(containerName, tag, dockerHubUser, httpPort, exposedHttpPort){
     sh "docker pull $dockerHubUser/$containerName:$tag"
     sh "docker run -d --rm -p $exposedHttpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
     echo "Application started on port: ${httpPort} (http)"
+    echo "Image: $containerName:$tag"
 }
