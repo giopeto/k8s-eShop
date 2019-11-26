@@ -1,29 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ui-dep
+  name: ui-admin-dep
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ui
+      app: ui-admin
   template:
     metadata:
       labels:
-        app: ui
+        app: ui-admin
     spec:
       containers:
-        - name: ui
-          image: giopeto/e-shop-ui:V1
+        - name: ui-admin
+          image: giopeto/e-shop-ui-admin:V2
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: ui-svc
+  name: ui-admin-svc
 spec:
   selector:
-    app: ui
+    app: ui-admin
   ports:
     - protocol: "TCP"
       # Port accessible inside cluster
