@@ -80,7 +80,7 @@ public class ItemsServiceTest {
 
         when(itemsRepository.findByGroupId(groupId)).thenReturn(allItems);
 
-        assertEquals(itemsService.findByGroupId(groupId).getItems(), allItems);
+        assertEquals(itemsService.findByGroupId(groupId), allItems);
     }
 
 }

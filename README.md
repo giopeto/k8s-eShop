@@ -96,3 +96,72 @@ microk8s.inspect: Performs a quick inspectio of the MicroK8s intallation. Offers
 microk8s.reset: Resets the infrastructure to a clean state
 microk8s.stop: Stops all kubernetes services
 microk8s.start: Starts MicroK8s after it is being stopped
+
+## Run apps on localhost (dev/debug purpose)
+
+# Backend apps
+1. Get k8s activemq-svc and mongodb services CLUSTER-IP
+
+`
+vagrant@e-shop-microk8s-ubuntu ~ $ kubectl  get svc activemq-svc mongodb
+NAME           TYPE           CLUSTER-IP    ... ...   
+activemq-svc   LoadBalancer   10.152.183.84   ... ...
+mongodb        ClusterIP      10.152.183.37   ... ...
+`
+
+2. Change application-local.properties
+spring.data.mongodb.host=[CLUSTER-IP-MONGO] # eq spring.data.mongodb.host=10.152.183.37
+...
+spring.activemq.broker-url=tcp://[CLUSTER-IP-ACTIVEMQ]:61616 # eq spring.activemq.broker-url=tcp://10.152.183.84:61616 !!! Keep the port 61616 here
+
+
+# Frontend apps
+
+3. Add appropriate key in proxy.conf.json. Existing key "/api/*" need to be last, otherwise newly added key can't be fired
+3.1 Authentication service key:
+  "/api/authentication-svc/*": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api/authentication-svc": "http://localhost:8080"
+    }
+  }
+3.2 Store service key:
+  "/api/store-svc/*": {
+    "target": "http://localhost:8081",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api/store-svc": "http://localhost:8081"
+    }
+  }
+3.3 Files service key:
+  "/api/files-svc/*": {
+    "target": "http://localhost:8082",
+    "secure": false,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api/files-svc": "http://localhost:8082"
+    }
+  },
+
+***** Use: 
+
+{
+  "/api/files-svc/*": {
+    ...
+  },
+  "/api/*": {
+    ...
+  }
+}
+
+***** Don't:
+  "/api/*": {
+    ...
+  },
+  "/api/files-svc/*": {
+    ...
+  },
+

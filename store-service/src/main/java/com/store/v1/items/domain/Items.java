@@ -26,5 +26,4 @@ public class Items {
     private Double price;
     private boolean archive;
     private Date date;
-    private List<String> fileIds;
 }

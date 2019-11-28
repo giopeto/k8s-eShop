@@ -47,9 +47,6 @@ public class FilesControllerTest {
     @MockBean
     private FilesToDomainMapperService filesToDomainMapperService;
 
-    //@MockBean
-    //private FilesUpload filesUpload;
-
     private ObjectMapper jacksonObjectMapper;
     private String domainId;
 

@@ -2,6 +2,7 @@ package com.store.v1.items.controller;
 
 import com.store.common.StoreConstants;
 import com.store.v1.items.domain.Items;
+import com.store.v1.items.domain.ItemsDto;
 import com.store.v1.items.service.ItemsService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -38,8 +39,8 @@ public class ItemsController {
     }
 
     @GetMapping(value = "/getByGroupId/{groupId}")
-    public List<Items> getByGroupId(@PathVariable String groupId) {
-        return itemsService.findByGroupId(groupId).getItems();
+    public List<ItemsDto> getByGroupId(@PathVariable String groupId) {
+        return itemsService.findByGroupId(groupId);
     }
 
     @DeleteMapping(value = "{id}")

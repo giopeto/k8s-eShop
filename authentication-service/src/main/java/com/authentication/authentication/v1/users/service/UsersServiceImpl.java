@@ -2,6 +2,7 @@ package com.authentication.authentication.v1.users.service;
 
 import com.authentication.authentication.v1.users.domain.Users;
 import com.authentication.authentication.v1.users.repository.UsersRepository;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -23,18 +24,13 @@ import static java.util.Collections.singleton;
 
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+@AllArgsConstructor
 public class UsersServiceImpl implements UsersService, UserDetailsService {
 
     @NonNull
     private final UsersRepository usersRepository;
     @NonNull
     private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UsersServiceImpl(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
-        this.usersRepository = usersRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public void signIn(Users users) {

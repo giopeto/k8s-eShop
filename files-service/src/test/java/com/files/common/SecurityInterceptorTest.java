@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -31,13 +32,15 @@ public class SecurityInterceptorTest {
     private CookieParser cookieParser;
     @MockBean
     private RestTemplate restTemplate;
+    @MockBean
+    private Environment environment;
 
     private MockHttpServletRequest mockHttpServletRequest;
     private MockHttpServletResponse mockHttpServletResponse;
 
     @Before
     public void setUp() {
-        securityInterceptor = new SecurityInterceptor(cookieParser, restTemplate);
+        securityInterceptor = new SecurityInterceptor(cookieParser, restTemplate, environment);
         mockHttpServletRequest = new MockHttpServletRequest();
         mockHttpServletResponse = new MockHttpServletResponse();
     }

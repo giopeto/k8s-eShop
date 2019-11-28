@@ -5,12 +5,12 @@ import { catchError } from 'rxjs/operators';
 import 'rxjs/add/observable/of';
 
 import { Groups } from '../models/Groups';
-import { HTTP_OPTIONS, HTTP_OPTIONS_MULTIPART, getApiBaseUrl } from '../common/ApiConstants';
+import { HTTP_OPTIONS, HTTP_OPTIONS_MULTIPART, FILES_INGRESS_PATH, FILES_SERVICE_PREFIX, getApiBaseUrl } from '../common/ApiConstants';
 
 @Injectable()
 export class FilesService {
 
-	private apiUrl = getApiBaseUrl('files') + `/files`;
+	private apiUrl = getApiBaseUrl(FILES_INGRESS_PATH, FILES_SERVICE_PREFIX) + '/files';
 
 	formData: FormData = new FormData();
 	files = [];

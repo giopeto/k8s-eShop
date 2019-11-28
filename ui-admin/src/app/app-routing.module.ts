@@ -19,7 +19,7 @@ const routes: Routes = [
 	{ path: 'items', component: ItemsComponent },
 	{ path: 'items_edit/:id', component: ItemsAddEditComponent },
 	{ path: 'items_add', component: ItemsAddEditComponent },
-	{ path: '', redirectTo: '/admin', pathMatch: 'full' }
+	{ path: '', redirectTo: '/login', pathMatch: 'full' }
 ];
 
 @NgModule({

@@ -33,7 +33,6 @@ public class GroupsRepositoryTest {
     @Before
     public void setUp() {
         groups = generateGroups(NUMBER_OF_TEST_RECORDS);
-        //groups.forEach(group -> mongoTemplate.save(group));
         groupsRepository.saveAll(groups);
     }
 

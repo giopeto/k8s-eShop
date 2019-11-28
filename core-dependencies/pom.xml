@@ -105,6 +105,26 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <build.profile.id>local</build.profile.id>
+                <profileActive>local</profileActive>
+            </properties>
+        </profile>
+        <profile>
+            <id>k8s</id>
+            <properties>
+                <build.profile.id>k8s</build.profile.id>
+                <profileActive>k8s</profileActive>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>

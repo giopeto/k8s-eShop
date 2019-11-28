@@ -16,6 +16,7 @@ import { GroupsService } from './services/groups.service';
 import { ItemsService } from './services/items.service';
 import { FilesService } from './services/files.service';
 import { SafePipe } from './pipes/safe.pipe';
+import { ItemsInGroupComponent } from './components/items-in-group/items-in-group.component';
 
 @NgModule({
 	declarations: [
@@ -25,7 +26,8 @@ import { SafePipe } from './pipes/safe.pipe';
 		UserComponent,
 		FilesComponent,
 		SafePipe,
-		HomeComponent
+		HomeComponent,
+		ItemsInGroupComponent
 	],
 	imports: [
 		BrowserModule,

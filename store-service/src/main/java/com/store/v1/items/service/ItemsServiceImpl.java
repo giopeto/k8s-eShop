@@ -1,16 +1,27 @@
 package com.store.v1.items.service;
 
 import com.store.common.CookieParser;
+import com.store.common.JMSConstants;
+import com.store.common.JmsPayload;
 import com.store.jms.producer.JmsProducer;
 import com.store.v1.items.domain.Items;
+import com.store.v1.items.domain.ItemsDto;
 import com.store.v1.items.domain.ItemsList;
 import com.store.v1.items.repository.ItemsRepository;
 import com.store.v1.remote.call.files.FilesClient;
+import com.store.v1.remote.call.files.domain.FilesToDomainMapper;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static com.store.common.StoreConstants.JSESSIONID;
+import static java.util.Collections.emptyList;
 
 @Service
 @AllArgsConstructor
@@ -44,14 +55,33 @@ public class ItemsServiceImpl implements ItemsService {
     }
 
     @Override
-    public ItemsList findByGroupId(String groupId) {
-        return new ItemsList(itemsRepository.findByGroupId(groupId));
+    public List<ItemsDto> findByGroupId(String groupId) {
+        List<Items> items = itemsRepository.findByGroupId(groupId);
+
+        List<FilesToDomainMapper> fileIds = filesClient.getByDomainIds(JSESSIONID + "=" + cookieParser.getCookie(JSESSIONID).get(),
+                items.stream().map(item -> item.getId()).collect(Collectors.toList()));
+
+        Map<String, FilesToDomainMapper> filesMap = fileIds.stream().collect(Collectors.toMap(FilesToDomainMapper::getDomainId, Function.identity()));
+
+        return items.stream().map(item -> mapToItemsDto(item,
+                filesMap.get(item.getId()) == null ? emptyList() : filesMap.get(item.getId()).getFileIds())).collect(Collectors.toList());
     }
 
     @Override
     public void delete(String id) {
         itemsRepository.deleteById(id);
-        jmsProducer.send("test-activemq", id);
-        //filesClient.deleteByDomainId(JSESSIONID + "=" + cookieParser.getCookie(JSESSIONID).get(), id);
+        jmsProducer.send(JMSConstants.DELETE_FILES_BY_DOMAIN_ID, new JmsPayload(id).toString());
+    }
+
+    private ItemsDto mapToItemsDto(Items item, List<String> fileIdsPerItem) {
+        return new ItemsDto(item.getId(),
+                item.getName(),
+                item.getGroupId(),
+                item.getShortDescription(),
+                item.getDescription(),
+                item.getPrice(),
+                item.isArchive(),
+                item.getDate(),
+                fileIdsPerItem);
     }
 }

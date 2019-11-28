@@ -2,6 +2,7 @@ package com.authentication.authentication.v1.users.controller;
 
 import com.authentication.authentication.v1.users.domain.Users;
 import com.authentication.authentication.v1.users.service.UsersService;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,15 +16,11 @@ import static org.springframework.util.Assert.notNull;
 
 @RestController
 @RequestMapping(AUTHENTICATION_BASE_URL + "/users")
+@AllArgsConstructor
 public class UsersController {
 
     @NonNull
     private final UsersService usersService;
-
-    @Autowired
-    public UsersController(UsersService usersService) {
-        this.usersService = usersService;
-    }
 
     @PostMapping(value = "/signIn")
     public void signIn(@RequestBody Users users) {
@@ -32,7 +29,6 @@ public class UsersController {
 
     @PostMapping(value = "/signUp")
     public Users signUp(@RequestBody Users users) {
-        System.out.println(AUTHENTICATION_BASE_URL + " signUp " + users.toString());
         return usersService.signUp(users);
     }
 

@@ -29,8 +29,7 @@ public class ItemsTestUtils {
                 DESCRIPTION,
                 1D,
                 true,
-                date.isPresent() ? date.get() : NEW_DATE,
-                emptyList()
+                date.isPresent() ? date.get() : NEW_DATE
         );
     }
 

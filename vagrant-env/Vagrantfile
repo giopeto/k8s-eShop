@@ -6,7 +6,7 @@ VAGRANT_BOX = 'peru/ubuntu-18.04-desktop-amd64'
 # Box / OS version
 VAGRANT_BOX_VERSION = '20190901.01'
 # Memorable name for your
-VM_NAME = 'e-shop-microk8s-ubuntu'
+VM_NAME = 'k8s-eshop'
 
 Vagrant.configure('2') do |config|
   config.vm.box = VAGRANT_BOX
