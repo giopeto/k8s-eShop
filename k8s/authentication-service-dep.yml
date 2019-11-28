@@ -18,7 +18,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: authentication-service
-          image: giopeto/e-shop-authentication-service:V7
+          image: giopeto/e-shop-authentication-service:V10
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST

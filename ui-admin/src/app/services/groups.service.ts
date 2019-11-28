@@ -4,12 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 
 import { Groups } from '../models/Groups';
-import { HTTP_OPTIONS, getApiBaseUrl } from '../common/ApiConstants';
+import { HTTP_OPTIONS, STORE_INGRESS_PATH, STORE_SERVICE_PREFIX, getApiBaseUrl } from '../common/ApiConstants';
 
 @Injectable()
 export class GroupsService {
 
-	private apiUrl = getApiBaseUrl('store') + `/groups`;
+	private apiUrl = getApiBaseUrl(STORE_INGRESS_PATH, STORE_SERVICE_PREFIX) + '/groups';
 	
 	constructor(private http: HttpClient) { }
 

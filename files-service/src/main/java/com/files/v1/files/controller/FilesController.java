@@ -4,8 +4,8 @@ import com.files.v1.files.domain.FilesToDomainMapper;
 import com.files.v1.files.domain.FilesUpload;
 import com.files.v1.files.service.FilesService;
 import com.files.v1.files.service.FilesToDomainMapperService;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.http.MediaType;
@@ -13,10 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.files.common.FilesConstants.FILES_BASE_URL;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping(FILES_BASE_URL + "/files")
 public class FilesController {
 
@@ -24,12 +26,6 @@ public class FilesController {
     private final FilesService filesService;
     @NonNull
     private final FilesToDomainMapperService filesToDomainMapperService;
-
-    @Autowired
-    public FilesController(FilesService filesService, FilesToDomainMapperService filesToDomainMapperService) {
-        this.filesService = filesService;
-        this.filesToDomainMapperService = filesToDomainMapperService;
-    }
 
     @PostMapping
     public FilesToDomainMapper save(@ModelAttribute FilesUpload filesUpload) {
@@ -39,6 +35,11 @@ public class FilesController {
     @GetMapping(value = "{domainId}")
     public FilesToDomainMapper getByDomainId(@PathVariable String domainId) {
         return filesToDomainMapperService.getByDomainId(domainId);
+    }
+
+    @PostMapping("domain-ids")
+    public List<FilesToDomainMapper> getByDomainIds(@RequestBody List<String> domainIds) {
+        return filesToDomainMapperService.getByDomainIds(domainIds);
     }
 
     @GetMapping(value = "file/{fileId}")

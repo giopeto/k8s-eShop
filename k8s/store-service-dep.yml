@@ -18,7 +18,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: store-service
-          image: giopeto/e-shop-store-service:V1
+          image: giopeto/e-shop-store-service:V19
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST
@@ -41,12 +41,12 @@ spec:
       targetPort: 8081
       # Port accessible outside cluster
       nodePort: 30102
-    # - name: store-service-debug
-    #   protocol: "TCP"
-    #   # Port accessible inside cluster
-    #   port: 5005
-    #   # Port to forward to inside the pod
-    #   targetPort: 5005
-    #   # Port accessible outside cluster
-    #   nodePort: 30110
+    - name: store-service-debug
+      protocol: "TCP"
+      # Port accessible inside cluster
+      port: 5005
+      # Port to forward to inside the pod
+      targetPort: 5005
+      # Port accessible outside cluster
+      nodePort: 30110
   type: LoadBalancer

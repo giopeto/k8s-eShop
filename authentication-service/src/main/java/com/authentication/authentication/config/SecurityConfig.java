@@ -1,6 +1,8 @@
 package com.authentication.authentication.config;
 
 import com.authentication.authentication.v1.users.service.UsersService;
+import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,12 +21,13 @@ import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.springframework.http.HttpMethod.*;
 
 @Configuration
+@AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String REMEMBER_ME_KEY = "remember-me-key";
 
-    @Autowired
-    private UsersService usersService;
+    @NonNull
+    private final UsersService usersService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -56,9 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(POST, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
                 .antMatchers(GET, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
-                .antMatchers(OPTIONS, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
-                .antMatchers(GET, "/store-service/store/**").hasAnyRole(ROLE_ADMIN.getName(), ROLE_USER.getName())
-                .antMatchers(GET, "/zuul/files-service/files/**").hasAnyRole(ROLE_ADMIN.getName(), ROLE_USER.getName())
+                //.antMatchers(GET, "/store-service/store/**").hasAnyRole(ROLE_ADMIN.getName(), ROLE_USER.getName())
                 .anyRequest().hasRole(ROLE_ADMIN.getName())
                 .and()
                 .logout()

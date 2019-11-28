@@ -6,7 +6,7 @@
 	<div class="collapse navbar-collapse" [ngClass]="{ 'show': navbarOpen }">
 		<div class="navbar-nav">
 			<ng-container *ngFor="let row of groups">
-				<a class="nav-item nav-link" [routerLinkActive]="['active']" routerLink="/groups/{{row.id}}">{{row.name}}</a>
+				<a class="nav-item nav-link" [routerLinkActive]="['active']" routerLink="/items-in-group/{{row.id}}">{{row.name}}</a>
 			</ng-container>
 		</div>
 		<div class="navbar-nav ml-auto	">

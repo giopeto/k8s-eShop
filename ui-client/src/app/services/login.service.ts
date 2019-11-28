@@ -5,14 +5,14 @@ import { Subject } from 'rxjs/Subject';
 import { catchError } from 'rxjs/operators';
 
 import { Users } from '../models/Users';
-import { HTTP_OPTIONS, getApiBaseUrl } from '../common/ApiConstants';
+import { HTTP_OPTIONS, AUTHENTICATION_INGRESS_PATH, AUTHENTICATION_SERVICE_PREFIX, getApiBaseUrl } from '../common/ApiConstants';
 
 @Injectable()
 export class LoginService {
 
 	public userIsSignedInSubject: Subject<any> = new Subject<any>();
 	
-	private apiUrl = getApiBaseUrl('users') + `/users`;
+	private apiUrl = getApiBaseUrl(AUTHENTICATION_INGRESS_PATH, AUTHENTICATION_SERVICE_PREFIX) + '/users';
 	
 	constructor(private http: HttpClient) { }
 

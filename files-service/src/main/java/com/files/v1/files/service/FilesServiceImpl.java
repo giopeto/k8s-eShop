@@ -6,6 +6,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSDownloadStream;
 import com.mongodb.client.gridfs.model.GridFSFile;
+import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@AllArgsConstructor
 public class FilesServiceImpl implements FilesService {
 
     @NonNull
@@ -29,13 +31,6 @@ public class FilesServiceImpl implements FilesService {
     private final FilesToDomainMapperService filesToDomainMapperService;
     @NonNull
     private final GridFSBucket gridFSBucket;
-
-    @Autowired
-    public FilesServiceImpl(GridFsOperations gridFsOperations, FilesToDomainMapperService filesToDomainMapperService, GridFSBucket gridFSBucket) {
-        this.gridFsOperations = gridFsOperations;
-        this.filesToDomainMapperService = filesToDomainMapperService;
-        this.gridFSBucket = gridFSBucket;
-    }
 
     @Override
     public FilesToDomainMapper store(FilesUpload filesUpload) {

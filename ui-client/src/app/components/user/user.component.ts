@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Users } from '../../models/Users';
 import { LoginService } from '../../services/login.service';
+import { FilesService } from '../../services/files.service';
 
 @Component({
 	selector: 'app-user',
@@ -9,8 +11,10 @@ import { LoginService } from '../../services/login.service';
 })
 export class UserComponent implements OnInit {
 
-	user: object;
-	constructor(private loginService: LoginService) { }
+	user: Users;
+	edit: boolean = false;
+
+	constructor(private loginService: LoginService, private filesService: FilesService) { }
 
 	ngOnInit() {
 		this.loginService.geCurrentUser().subscribe(user => this.user = user);
@@ -18,5 +22,13 @@ export class UserComponent implements OnInit {
 
 	signOut() {
 		this.loginService.signOut().subscribe(()=> this.loginService.userIsSignedIn(false));
+	}
+
+	editUser(){
+		this.edit = !this.edit;
+	}
+
+	saveUserImg(id) {
+		this.filesService.save(id).subscribe();
 	}
 }

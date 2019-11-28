@@ -1,0 +1,11 @@
+{
+	"/api/*": {
+		"target": "http://k8s-eshop.io",
+		"secure": false,
+		"changeOrigin": true,
+		"logLevel": "debug",
+		"pathRewrite": {
+			"^/api": "http://k8s-eshop.io/api"
+		}
+	}
+}

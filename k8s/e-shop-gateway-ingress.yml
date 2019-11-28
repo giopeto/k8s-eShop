@@ -10,15 +10,15 @@ spec:
       http:
         paths:
           # Back-end applications
-          - path: /users(/|$)(.*)
+          - path: /api/authentication-svc(/|$)(.*)
             backend:
               serviceName: authentication-service-svc
               servicePort: 8080
-          - path: /store(/|$)(.*)
+          - path: /api/store-svc(/|$)(.*)
             backend:
               serviceName: store-service-svc
               servicePort: 8081
-          - path: /files(/|$)(.*)
+          - path: /api/files-svc(/|$)(.*)
             backend:
               serviceName: files-service-svc
               servicePort: 8082

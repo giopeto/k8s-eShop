@@ -4,12 +4,12 @@ import { Observable } from 'rxjs/Observable';
 import { catchError } from 'rxjs/operators';
 
 import { Items } from '../models/Items';
-import { HTTP_OPTIONS, getApiBaseUrl } from '../common/ApiConstants';
+import { HTTP_OPTIONS, STORE_INGRESS_PATH, STORE_SERVICE_PREFIX, getApiBaseUrl } from '../common/ApiConstants';
 
 @Injectable()
 export class ItemsService {
 	
-	private apiUrl = getApiBaseUrl('store') + `/items`;
+	private apiUrl = getApiBaseUrl(STORE_INGRESS_PATH, STORE_SERVICE_PREFIX) + '/items';
 
 	constructor(private http: HttpClient) { }
 

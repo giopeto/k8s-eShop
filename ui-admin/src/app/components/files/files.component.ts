@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChange } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { FilesService } from '../../services/files.service';
@@ -13,6 +13,8 @@ import { SafePipe } from '../../pipes/safe.pipe';
 export class FilesComponent implements OnInit {
 
 	@Input() domainId: String;
+	@Input() editMode: boolean;
+	
 	filesForUpload = {files: [], src: []};
 	filesToDomainMapper: FilesToDomainMapper = {fileIds: []};
 	tableDataIsReady: boolean = false;
@@ -35,6 +37,13 @@ export class FilesComponent implements OnInit {
 		}
 		this.filesUrl = this.filesService.getFilesUrl();
 	}
+
+
+	//ngOnChanges(changes: { [propName: string]: SimpleChange }) {
+	//	if(this. switchMode && this.editMode && changes['editMode'] && changes['editMode'].firstChanges) {
+	//		this.createEventListenerToFileInputOnNextIteration();
+	//	}
+	//}
 
 	save() {
 		if (!this.domainId) {
@@ -74,6 +83,12 @@ export class FilesComponent implements OnInit {
 			this.filesToDomainMapper = filesToDomainMapper;
 			this.tableDataIsReady = true;
 		});
+	}
+
+	private createEventListenerToFileInputOnNextIteration() {
+		setTimeout(() => {
+			this.addEventListenerToFileInput(this.filesForUpload, this.filesService);
+		}, 0);
 	}
 
 	private addEventListenerToFileInput(filesForUpload, filesService) {
