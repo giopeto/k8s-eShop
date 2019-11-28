@@ -1,23 +1,24 @@
-# k8s-eShop
+# k8s-eshop
 
 ## How to run
 - Install virtual box
 - Install vagrant
 - Clone project
-    - `git clone https://github.com/giopeto/k8s-eShop.git`
+    - `git clone https://github.com/giopeto/k8s-eshop.git`
 - Navigate to vagrant-env folder
-	- `cd k8s-eShop/vagrant-env`
+	- `cd k8s-eshop/vagrant-env`
 - Run vagrant provisioning
 	- `vagrant up`
 - Vagrant user:password => vagrant:vagrant
 - Run bootstrap.sh
-	- `cd k8s-eShop/scripts && sh bootstrap.sh`
+	- `cd k8s-eshop/scripts && sh bootstrap.sh`
 
 ## Links
-### k8s-eShop [http://k8s-eshop.io](http://k8s-eshop.io)
+### k8s-eshop client application [http://k8s-eshop.io](http://k8s-eshop.io/client)
+### k8s-eshop admin application [http://k8s-eshop.io](http://k8s-eshop.io/admin)
 ### Jaeger tracing [http://jaeger.k8s-eshop.io](http://jaeger.k8s-eshop.io)
 ### Jenkins CI/CD [http://jenkins.k8s-eshop.io](http://jenkins.k8s-eshop.io)
-### SonarQube Code Inspection [http://sonar.k8s-eshop.io/sonar](http://sonar.k8s-eshop.io/sonar) user:pass admin:admin
+### SonarQube Code Quality and Security [http://sonar.k8s-eshop.io/sonar](http://sonar.k8s-eshop.io/sonar) user:pass admin:admin
 ### Nexus repository [http://nexus.k8s-eshop.io](http://nexus.k8s-eshop.io) user:pass admin:admin123
 ### Grafana run `kubectl cluster-info` and get grafana url
 
@@ -59,3 +60,39 @@ Add debug port to service definition:
 
 test
 [![test](https://j.gifs.com/OMX89B.gif)](https://www.youtube.com/)
+
+## microk8s useful commands
+********** To start **********
+
+1. check node
+kubectl get nodes
+
+2. if status is not started run
+microk8s.start
+
+
+********** Dashboard UI **********
+
+microk8s.enable dns dashboard
+
+microk8s.kubectl get all --all-namespaces
+
+Get dashboard url
+get service/kubernetes-dashboard IP and PORT ang go to https://{IP}:{PORT}
+
+Get token
+token=$(microk8s.kubectl -n kube-system get secret | grep default-token | cut -d " " -f1) && microk8s.kubectl -n kube-system describe secret $token
+
+
+********** Essential microk8s integrated commands **********
+
+microk8s.status: Provides an overview of the MicroK8s state (running/not running) as well as the set of enabled addons
+microk8s.enable: Enables an addon
+microk8s.disable: Disables an addon
+microk8s.kubectl: Interact with kubernetes
+microk8s.config: Shows the kubernetes config file
+microk8s.istioctl: Interact with the istio services. Needs the istio addon to be enabled
+microk8s.inspect: Performs a quick inspectio of the MicroK8s intallation. Offers hints on what
+microk8s.reset: Resets the infrastructure to a clean state
+microk8s.stop: Stops all kubernetes services
+microk8s.start: Starts MicroK8s after it is being stopped

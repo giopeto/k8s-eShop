@@ -1,0 +1,66 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: e-shop-gateway-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: k8s-eshop.io
+      http:
+        paths:
+          # Back-end applications
+          - path: /users(/|$)(.*)
+            backend:
+              serviceName: authentication-service-svc
+              servicePort: 8080
+          - path: /store(/|$)(.*)
+            backend:
+              serviceName: store-service-svc
+              servicePort: 8081
+          - path: /files(/|$)(.*)
+            backend:
+              serviceName: files-service-svc
+              servicePort: 8082
+          # Front-end applications
+          - path: /client(/|$)(.*)
+            backend:
+              serviceName: ui-client-svc
+              servicePort: 80
+          - path: /admin(/|$)(.*)
+            backend:
+              serviceName: ui-admin-svc
+              servicePort: 80
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: e-shop-gateway-ingress-nexus
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    # Nexus repository
+    - host: nexus.k8s-eshop.io
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: nexus-svc
+              servicePort: 80
+    # Jenkins CI/CD
+    - host: jenkins.k8s-eshop.io
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: jenkins-svc
+              servicePort: 80
+    # SonarQube Code Quality and Security
+    - host: sonar.k8s-eshop.io
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: sonar-svc
+              servicePort: 80

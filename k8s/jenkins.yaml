@@ -14,8 +14,6 @@ spec:
     spec:
       containers:
       - name: jenkins
-        #image: getintodevops/jenkins-withdocker:lts-docker18.06.0
-        #image: jenkinsci/blueocean:1.19.0
         image: giopeto/jenkins-with-docker:V2
         ports:
           - name: http-port
@@ -88,19 +86,3 @@ spec:
       targetPort: 50000
   selector:
     app: jenkins
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: e-shop-gateway-ingress-jenkins
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-    - host: jenkins.k8s-eshop.io
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: jenkins-svc
-              servicePort: 80

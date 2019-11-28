@@ -1,9 +1,10 @@
 def CONTAINER_NAME="e-shop-authentication-service"
-def CONTAINER_TAG="V"
 def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT=8080
 def PROJECT_DIR="authentication-service"
-def NEXUS_IP_ADDRESS="10.152.183.218"
+def NEXUS_IP_ADDRESS="10.152.183.36"
+def CURRENT_BUILD_NUMBER=currentBuild.number
+def CONTAINER_TAG="V"
 
 node {
 
@@ -11,7 +12,7 @@ node {
         def dockerHome = tool 'myDocker'
         def mavenHome  = tool 'myMaven'
         env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
-        CONTAINER_TAG = "${CONTAINER_TAG}${currentBuild.number}"
+        CONTAINER_TAG = "${CONTAINER_TAG}${CURRENT_BUILD_NUMBER}"
     }
 
     stage('Checkout') {
@@ -53,7 +54,15 @@ node {
     }
 
     stage('Run App'){
-        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT, HTTP_PORT + 1002)
+        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT + CURRENT_BUILD_NUMBER)
+    }
+
+    stage('Clean Docker Registry'){
+        try {
+            cleanDockerRegistryByContainerName(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER)
+        } catch(error){
+            echo "Failed to clean docker registry: ${error}"
+        }
     }
 
 }
@@ -77,8 +86,15 @@ def pushToImage(containerName, tag, dockerUser, dockerPassword){
     echo "Image push complete"
 }
 
-def runApp(containerName, tag, dockerHubUser, httpPort, exposedHttpPort){
+def runApp(containerName, tag, dockerHubUser, httpPort){
     sh "docker pull $dockerHubUser/$containerName:$tag"
-    sh "docker run -d --rm -p $exposedHttpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
+    sh "docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
     echo "Application started on port: ${httpPort} (http)"
+}
+
+def cleanDockerRegistryByContainerName(containerName, tag, dockerHubUser){
+    sh "docker stop $containerName"
+    sh "docker rmi $containerName"
+    sh "docker rmi $containerName:$tag"
+    sh "docker rmi $dockerHubUser/$containerName:$tag"
 }

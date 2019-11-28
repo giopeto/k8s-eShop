@@ -1,9 +1,9 @@
 def CONTAINER_NAME="e-shop-files-service"
 def DOCKER_HUB_USER="giopeto"
-def HTTP_PORT="8082"
+def HTTP_PORT=8082
 def PROJECT_DIR="files-service"
-def NEXUS_IP_ADDRESS="10.152.183.218"
-def CURRENT_BUILD_NUMBER=currentBuild.number as int
+def NEXUS_IP_ADDRESS="10.152.183.36"
+def CURRENT_BUILD_NUMBER=currentBuild.number
 def CONTAINER_TAG="V"
 
 node {
@@ -57,6 +57,14 @@ node {
         runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT + CURRENT_BUILD_NUMBER)
     }
 
+    stage('Clean Docker Registry'){
+        try {
+            cleanDockerRegistryByContainerName(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER)
+        } catch(error){
+            echo "Failed to clean docker registry: ${error}"
+        }
+    }
+
 }
 
 def imagePrune(containerName){
@@ -82,4 +90,11 @@ def runApp(containerName, tag, dockerHubUser, httpPort){
     sh "docker pull $dockerHubUser/$containerName:$tag"
     sh "docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
     echo "Application started on port: ${httpPort} (http)"
+}
+
+def cleanDockerRegistryByContainerName(containerName, tag, dockerHubUser){
+    sh "docker stop $containerName"
+    sh "docker rmi $containerName"
+    sh "docker rmi $containerName:$tag"
+    sh "docker rmi $dockerHubUser/$containerName:$tag"
 }

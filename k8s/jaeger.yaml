@@ -20,22 +20,3 @@ spec:
       # Port accessible outside cluster
       nodePort: 30122
   type: LoadBalancer
-#---
-# apiVersion: extensions/v1beta1
-# kind: Ingress
-# metadata:
-#   name: e-shop-gateway-ingress-jaeger
-#   annotations:
-#     nginx.ingress.kubernetes.io/rewrite-target: /
-# spec:
-#   backend:
-#     serviceName: default-http-backend
-#     servicePort: 80
-#   rules:
-#     - host: jaeger.k8s-eshop.io
-#       http:
-#         paths:
-#           - path: /
-#             backend:
-#               serviceName: jaeger-svc
-#               servicePort: 80

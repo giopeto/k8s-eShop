@@ -85,8 +85,8 @@ k create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/mast
 
 # Clone project
 echo "cd /vagrant" >> /home/vagrant/.bashrc
-git clone https://github.com/giopeto/k8s-eShop.git
-sudo chmod -R 777 k8s-eShop
+git clone https://github.com/giopeto/k8s-eshop.git
+sudo chmod -R 777 k8s-eshop
 
 # Remove 'cd /vagrant' from /home/vagrant/.bashrc
 sed -i '$d' /home/vagrant/.bashrc
