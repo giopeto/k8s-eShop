@@ -16,7 +16,6 @@ COPY jenkins /usr/src/app/jenkins
 
 RUN mvn -f /usr/src/app/pom.xml clean install -Pk8s -DskipTests
 
-
 ##################
 ### production ###
 ##################

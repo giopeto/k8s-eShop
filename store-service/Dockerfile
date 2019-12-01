@@ -13,8 +13,7 @@ COPY src /usr/src/app/src
 COPY pom.xml /usr/src/app
 COPY jenkins /usr/src/app/jenkins
 
-RUN mvn -f /usr/src/app/pom.xml clean install -DskipTests
-
+RUN mvn -f /usr/src/app/pom.xml clean install -Pk8s -DskipTests
 
 ##################
 ### production ###

@@ -4,6 +4,7 @@ import com.store.v1.remote.call.security.domain.Users;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,17 +24,19 @@ import static com.store.common.StoreConstants.JSESSIONID;
 @RequiredArgsConstructor
 public class SecurityInterceptor implements HandlerInterceptor {
 
-    @NonNull
-    private final CookieParser cookieParser;
+    public static final String K8S_ESHOP_AUTHENTICATION_SERVICE_URL = "k8s-eshop.authentication-service.url";
 
     @NonNull
+    private final CookieParser cookieParser;
+    @NonNull
     private final RestTemplate restTemplate;
+    @NonNull
+    private final Environment environment;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        log.info("[SecurityInterceptor] checking current user ...");
         Optional<String> jSessionIdCookie = cookieParser.getCookie(JSESSIONID);
-        log.info("[SecurityInterceptor] checking current user. JSESSIONID is present {}", jSessionIdCookie.isPresent());
+        log.info("[SecurityInterceptor] JSESSIONID is present {}, checking current user ...", jSessionIdCookie.isPresent());
         if (jSessionIdCookie.isPresent()) {
             Users user = getCurrentAccount(jSessionIdCookie.get());
             if (user != null) {
@@ -51,7 +54,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Cookie", JSESSIONID + "=" + sessionId);
 
-        return restTemplate.exchange(AUTHENTICATION_SERVICE_GET_CURRENT_ACCOUNT_URL,
+        return restTemplate.exchange(environment.getProperty(K8S_ESHOP_AUTHENTICATION_SERVICE_URL) + AUTHENTICATION_SERVICE_GET_CURRENT_ACCOUNT_URL,
                 HttpMethod.GET,
                 new HttpEntity<String>(requestHeaders),
                 Users.class).getBody();
