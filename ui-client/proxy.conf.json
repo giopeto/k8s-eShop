@@ -1,12 +1,12 @@
-{
+{	
 	"/api/files-svc/*": {
-		"target": "http://localhost:8082",
-		"secure": false,
-		"logLevel": "debug",
-		"pathRewrite": {
-			"^/api/files-svc": "http://localhost:8082"
-		}
-	},
+	    "target": "http://localhost:8082",
+	    "secure": false,
+	    "logLevel": "debug",
+	    "pathRewrite": {
+	      "^/api/files-svc": "http://localhost:8082"
+	    }
+  	},
 	"/api/*": {
 		"target": "http://k8s-eshop.io",
 		"secure": false,

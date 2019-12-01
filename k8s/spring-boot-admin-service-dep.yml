@@ -1,24 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: files-service-dep
-  annotations:
-    # Jaeger tracing sidecar
-    sidecar.jaegertracing.io/inject: "true"
+  name: spring-boot-admin-service-dep
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: files-service
+      app: spring-boot-admin-service
   template:
     metadata:
       labels:
-        app: files-service
+        app: spring-boot-admin-service
     spec:
       restartPolicy: Always
       containers:
-        - name: files-service
-          image: giopeto/e-shop-files-service:V21
+        - name: spring-boot-admin-service
+          image: giopeto/e-shop-spring-boot-admin-service:V1
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST
@@ -27,16 +24,16 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: files-service-svc
+  name: spring-boot-admin-service-svc
 spec:
   selector:
-    app: files-service
+    app: spring-boot-admin-service
   ports:
     - protocol: "TCP"
       # Port accessible inside cluster
-      port: 8082
+      port: 8083
       # Port to forward to inside the pod
-      targetPort: 8082
+      targetPort: 8083
       # Port accessible outside cluster
-      nodePort: 30103
+      nodePort: 30303
   type: LoadBalancer

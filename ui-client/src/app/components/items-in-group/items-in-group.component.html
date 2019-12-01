@@ -1,5 +1,22 @@
 <section>
-	<pre>{{items | json}}</pre>
-
+	<h1>???? </h1>
 	Init store data
+	<div class="row">
+		<div class="card-group" *ngIf="items && items.length">
+			<div class="col-3" *ngFor="let row of items">
+				<div class="card" >
+					<img src="{{filesUrl}}/file/{{row.fileIds[0]}}" class="card-img-top" alt="Image file" *ngIf="row.fileIds.length">
+					<div class="card-body">
+						<h5 class="card-title">{{row.name}}</h5>
+						<p class="card-text">{{row.shortDescription}}</p>
+						<p class="card-text"><small class="text-muted">{{row.price}}</small></p>
+					</div>
+					<div class="card-footer">
+						<small class="text-muted">Last updated 3 mins ago<br></small>
+						<button class="btn btn-warning btn-md" type="button" (click)="buyyyy(row)">buyyyy</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>

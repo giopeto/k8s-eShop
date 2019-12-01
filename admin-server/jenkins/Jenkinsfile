@@ -1,0 +1,91 @@
+def CONTAINER_NAME="e-shop-admin-service"
+def DOCKER_HUB_USER="giopeto"
+def HTTP_PORT=8083
+def PROJECT_DIR="admin-service"
+def NEXUS_IP_ADDRESS="10.152.183.36"
+def CURRENT_BUILD_NUMBER=currentBuild.number
+def CONTAINER_TAG="V"
+
+node {
+
+    stage('Initialize'){
+        def dockerHome = tool 'myDocker'
+        def mavenHome  = tool 'myMaven'
+        env.PATH = "${dockerHome}/bin:${mavenHome}/bin:${env.PATH}"
+        CONTAINER_TAG = "${CONTAINER_TAG}${CURRENT_BUILD_NUMBER}"
+    }
+
+    stage('Checkout') {
+        checkout scm
+    }
+
+    stage('Build'){
+        dir(PROJECT_DIR) {
+            //sh "mvn clean install -DskipTests"
+        }
+    }
+
+    stage("Image Prune"){
+        imagePrune(CONTAINER_NAME)
+    }
+
+    stage('Image Build'){
+        dir(PROJECT_DIR) {
+            imageBuild(CONTAINER_NAME, CONTAINER_TAG, NEXUS_IP_ADDRESS)
+        }
+    }
+
+    stage('Push to Docker Registry'){
+        withCredentials([usernamePassword(credentialsId: 'dockerHubAccount', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+            dir(PROJECT_DIR) {
+                pushToImage(CONTAINER_NAME, CONTAINER_TAG, USERNAME, PASSWORD)
+            }
+        }
+    }
+
+    stage('Run App'){
+        runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT + CURRENT_BUILD_NUMBER)
+    }
+
+    stage('Clean Docker Registry'){
+        try {
+            cleanDockerRegistryByContainerName(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER)
+        } catch(error){
+            echo "Failed to clean docker registry: ${error}"
+        }
+    }
+
+}
+
+def imagePrune(containerName){
+    try {
+        sh "docker image prune -f"
+        sh "docker stop $containerName"
+    } catch(error){}
+}
+
+def imageBuild(containerName, tag, nexusIpAddress){
+    sh "docker build --add-host=nexus.k8s-eshop.io:$nexusIpAddress -t $containerName:$tag  -t $containerName --pull --no-cache ."
+    echo "Image build complete"
+}
+
+
+def pushToImage(containerName, tag, dockerUser, dockerPassword){
+    sh "docker login -u $dockerUser -p $dockerPassword"
+    sh "docker tag $containerName:$tag $dockerUser/$containerName:$tag"
+    sh "docker push $dockerUser/$containerName:$tag"
+    echo "Image push complete"
+}
+
+def runApp(containerName, tag, dockerHubUser, httpPort){
+    sh "docker pull $dockerHubUser/$containerName:$tag"
+    sh "docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
+    echo "Application started on port: ${httpPort} (http)"
+}
+
+def cleanDockerRegistryByContainerName(containerName, tag, dockerHubUser){
+    sh "docker stop $containerName"
+    sh "docker rmi $containerName"
+    sh "docker rmi $containerName:$tag"
+    sh "docker rmi $dockerHubUser/$containerName:$tag"
+}
