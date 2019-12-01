@@ -18,7 +18,14 @@ spec:
       restartPolicy: Always
       containers:
         - name: authentication-service
-          image: giopeto/e-shop-authentication-service:V10
+          image: giopeto/e-shop-authentication-service:V11
+          # livenessProbe:
+          #   httpGet:
+          #     port: 8080
+          #     path: /actuator/health
+          #   initialDelaySeconds: 30
+          #   failureThreshold: 3
+          #   timeoutSeconds: 5
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST

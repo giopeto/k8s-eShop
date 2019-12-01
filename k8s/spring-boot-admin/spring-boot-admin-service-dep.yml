@@ -1,0 +1,39 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: spring-boot-admin-service-dep
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: spring-boot-admin-service
+#   template:
+#     metadata:
+#       labels:
+#         app: spring-boot-admin-service
+#     spec:
+#       restartPolicy: Always
+#       containers:
+#         - name: spring-boot-admin-service
+#           image: giopeto/e-shop-spring-boot-admin-service:V5
+#           imagePullPolicy: Always
+#           env:
+#             - name: MONGODB_HOST
+#               value: mongodb
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: spring-boot-admin-service-svc
+# spec:
+#   selector:
+#     app: spring-boot-admin-service
+#   ports:
+#     - protocol: "TCP"
+#       # Port accessible inside cluster
+#       port: 8083
+#       # Port to forward to inside the pod
+#       targetPort: 8083
+#       # Port accessible outside cluster
+#       nodePort: 30303
+#   type: LoadBalancer

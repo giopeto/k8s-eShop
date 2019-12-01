@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-pod
+  labels:
+    app: shoppingdemo
+    type: spring-boot
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: admin
+    spec:
+      serviceAccountName: admin
+      containers:
+        - image: giopeto/e-shop-spring-boot-admin-service:V5 # joshiste/admin:sio-bcn
+          imagePullPolicy: Never
+          name: admin
+          env:
+            - name: spring.profiles.active
+              value: k8s
+            - name: management.endpoints.web.exposure.include
+              value: "*"
+            - name: management.endpoint.health.show-details
+              value: "always"
+          ports:
+            - containerPort: 8083
+          resources: {}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 10
+            timeoutSeconds: 2
+            periodSeconds: 5
+            failureThreshold: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 20
+            timeoutSeconds: 2
+            periodSeconds: 8
+            failureThreshold: 5
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: admin
+
+
+
+

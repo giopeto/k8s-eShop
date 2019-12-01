@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { ItemsService } from '../../services/items.service';
 import { Items } from '../../models/Items';
+import { FilesService } from '../../services/files.service';
 
 @Component({
 	selector: 'app-items-in-group',
@@ -13,8 +14,10 @@ export class ItemsInGroupComponent implements OnInit {
 	
 	groupId: string;
 	items: Items[];
-	
-	constructor(private itemsService: ItemsService, private router: Router, private route: ActivatedRoute) { }
+	filesUrl: string;
+
+	constructor(private itemsService: ItemsService, private router: Router, private route: ActivatedRoute,
+		private filesService: FilesService) { }
 
 	ngOnInit() {
 		
@@ -24,11 +27,16 @@ export class ItemsInGroupComponent implements OnInit {
 				this.getItems(this.groupId);
 			}
 		});
-		
+
+		this.filesUrl = this.filesService.getFilesUrl();
 	}
 
 	getItems(groupId) {
 		this.itemsService.getByGroupId(groupId).subscribe(items=> this.items = items);
+	}
+
+	buyyyy(item: Items) {
+		alert('Buy item: ' + item.name);
 	}
 
 }

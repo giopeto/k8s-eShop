@@ -64,3 +64,11 @@ spec:
             backend:
               serviceName: sonar-svc
               servicePort: 80
+    # Spring boot admin server
+    - host: spring-boot-admin-server.k8s-eshop.io
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: admin-service
+              servicePort: 8083

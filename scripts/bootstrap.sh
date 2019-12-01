@@ -29,6 +29,9 @@ sudo sed -i "$ a 127.0.0.1	nexus.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	jaeger.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	jenkins.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	sonar.k8s-eshop.io" /etc/hosts
+sudo sed -i "$ a 127.0.0.1	spring-boot-admin-server.k8s-eshop.io" /etc/hosts
+
+
 
 # create postgresql secret for sonar deployment
 k create secret generic postgres-pwd --from-literal=password=S0nar_P0stgress_Pass

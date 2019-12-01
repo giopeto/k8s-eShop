@@ -1,0 +1,14 @@
+# apiVersion: networking.k8s.io/v1beta1
+# kind: Ingress
+# metadata:
+#   name: admin-ingress
+# spec:
+#   rules:
+#     - host: admin.workshop.demo
+#       #- host: fashion-HOSTPATTERN.chaos.codecentric.io
+#       http:
+#         paths:
+#           - path: /
+#             backend:
+#               serviceName: admin-service
+#               servicePort: 8083
