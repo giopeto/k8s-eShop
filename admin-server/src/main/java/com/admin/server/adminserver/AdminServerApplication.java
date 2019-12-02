@@ -1,12 +1,9 @@
 package com.admin.server.adminserver;
 
 import de.codecentric.boot.admin.server.config.EnableAdminServer;
-import de.codecentric.boot.admin.server.domain.values.Endpoint;
 import de.codecentric.boot.admin.server.notify.Notifier;
 import de.codecentric.boot.admin.server.web.client.InstanceExchangeFilterFunction;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -33,7 +30,7 @@ public class AdminServerApplication {
 	@Bean
 	public Notifier customNotifier() {
 		return event -> {
-			//log.info("Event {}", event);
+			log.info("Event {}", event);
 			return Mono.empty();
 		};
 	}
@@ -51,5 +48,4 @@ public class AdminServerApplication {
 			return next.exchange(request);
 		};
 	}
-
 }

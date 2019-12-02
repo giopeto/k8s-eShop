@@ -40,7 +40,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         if (jSessionIdCookie.isPresent()) {
             Users user = getCurrentAccount(jSessionIdCookie.get());
             if (user != null) {
-                log.info("[SecurityInterceptor] User is logged: " + user.toString());
+                log.info("[SecurityInterceptor] User is logged: {}", user.toString());
                 return true;
             }
         }
