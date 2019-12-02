@@ -18,7 +18,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: files-service
-          image: giopeto/e-shop-files-service:V23
+          image: giopeto/e-shop-files-service:V25
 
 
 
@@ -42,7 +42,7 @@ spec:
             periodSeconds: 8
             failureThreshold: 5
 
-          
+
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST
