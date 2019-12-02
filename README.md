@@ -20,6 +20,7 @@
 ### Jenkins CI/CD [http://jenkins.k8s-eshop.io](http://jenkins.k8s-eshop.io)
 ### SonarQube Code Quality and Security [http://sonar.k8s-eshop.io/sonar](http://sonar.k8s-eshop.io/sonar) user:pass admin:admin
 ### Nexus repository [http://nexus.k8s-eshop.io](http://nexus.k8s-eshop.io) user:pass admin:admin123
+### Spring Boot Admin [spring-boot-admin-server.k8s-eshop.io] user:pass admin:admin
 ### Grafana run `kubectl cluster-info` and get grafana url
 
 ## Optional setup

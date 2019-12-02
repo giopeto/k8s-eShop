@@ -21,7 +21,7 @@ sudo chown -R 200:200 /home/vagrant/persistent-volumes-k8s/nexus
 # Update vm.max_map_count for sonarqube/postgres
 echo "vm.max_map_count=262144" | sudo tee -a /etc/sysctl.conf
 # Update max_user_watches for IntelliJ files scan
-cho "fs.inotify.max_user_watches=524288" | sudo tee -a /etc/sysctl.conf
+echo "fs.inotify.max_user_watches=524288" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 
 sudo sed -i "$ a 127.0.0.1	k8s-eshop.io" /etc/hosts
@@ -30,8 +30,6 @@ sudo sed -i "$ a 127.0.0.1	jaeger.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	jenkins.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	sonar.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	spring-boot-admin-server.k8s-eshop.io" /etc/hosts
-
-
 
 # create postgresql secret for sonar deployment
 k create secret generic postgres-pwd --from-literal=password=S0nar_P0stgress_Pass

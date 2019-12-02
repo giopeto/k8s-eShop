@@ -3,7 +3,6 @@ package com.authentication.authentication.config;
 import com.authentication.authentication.v1.users.service.UsersService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,9 +15,9 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 
 import static com.authentication.authentication.common.AuthenticationConstants.AUTHENTICATION_BASE_URL;
 import static com.authentication.authentication.common.SecurityRoles.ROLE_ADMIN;
-import static com.authentication.authentication.common.SecurityRoles.ROLE_USER;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
-import static org.springframework.http.HttpMethod.*;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Configuration
 @AllArgsConstructor
@@ -59,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(POST, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
                 .antMatchers(GET, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
-                .antMatchers(GET, "/actuator/**").hasRole(ROLE_ADMIN.getName())
+                .antMatchers(GET, "/actuator/**").permitAll()
                 .anyRequest().hasRole(ROLE_ADMIN.getName())
                 .and()
                 .logout()

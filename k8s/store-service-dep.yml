@@ -6,7 +6,7 @@ metadata:
     # Jaeger tracing sidecar
     sidecar.jaegertracing.io/inject: "true"
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: store-service
@@ -18,39 +18,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: store-service
-          image: giopeto/e-shop-store-service:V21
-
-
-
-          ports:
-            - containerPort: 8081
-          resources: {}
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8081
-            initialDelaySeconds: 10
-            timeoutSeconds: 2
-            periodSeconds: 5
-            failureThreshold: 5
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 8081
-            initialDelaySeconds: 20
-            timeoutSeconds: 2
-            periodSeconds: 8
-            failureThreshold: 5
-
-
-
-          # livenessProbe:
-          #   httpGet:
-          #     port: 8080
-          #     path: /actuator/health
-          #   initialDelaySeconds: 30
-          #   failureThreshold: 3
-          #   timeoutSeconds: 5
+          image: giopeto/e-shop-store-service:V3
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST
