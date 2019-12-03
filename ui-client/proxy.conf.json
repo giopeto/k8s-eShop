@@ -7,9 +7,5 @@
 		"pathRewrite": {
 			"^/api": "http://k8s-eshop.io/api"
 		}
-	},
-	"/socket.io/*": {
-    "target": "http://localhost:3000",
-    "secure": false
-  }
+	}
 }

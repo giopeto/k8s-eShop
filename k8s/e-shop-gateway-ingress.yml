@@ -30,6 +30,10 @@ spec:
             backend:
               serviceName: payment-service-svc
               servicePort: 8085
+          - path: /api/nodejs-socket-svc(/|$)(.*)
+            backend:
+              serviceName: nodejs-socket-service-svc
+              servicePort: 8085
           # Front-end applications
           - path: /client(/|$)(.*)
             backend:

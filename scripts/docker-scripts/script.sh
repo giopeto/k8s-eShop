@@ -28,7 +28,7 @@ NEXUS_IP_ADDRESS=$(get_nexus_ip_address)
 echo "Build docker image: $APP_NAME:$APP_VERSION ..."
 
 # build, tag and push
-cd ../$APP_PATH
+cd ../../$APP_PATH
 
 docker build --add-host=nexus.k8s-eshop.io:$NEXUS_IP_ADDRESS -t $APP_NAME:$APP_VERSION -t $APP_NAME --pull --no-cache .
 

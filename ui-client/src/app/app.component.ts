@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
 		this.loginService.geCurrentUser().subscribe(
 			user => this.userIsSignedIn = true,
 			error => this.redirectToLogn()
+			//error => this.userIsSignedIn = true,
 		);
 		this.loginService.userIsSignedInSubject.subscribe(isUserIsSignedIn => {
 			this.userIsSignedIn = isUserIsSignedIn;

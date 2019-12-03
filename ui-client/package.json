@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --port 4200",
+    "start": "ng serve --port 4200 --base-href / ",
     "dev-proxy": "ng serve --proxy-config proxy.conf.json --base-href / ",
     "build": "ng build --prod",
     "test": "ng test --sourcemaps=false --browsers ChromeHeadless",

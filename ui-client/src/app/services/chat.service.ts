@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import * as io from 'socket.io-client';
 
@@ -12,10 +11,10 @@ import { Events } from '../models/Events';
 @Injectable()
 export class ChatService {
 
-	public user: Users;
+	public user: Users; 
 	public socketSubject: Subject<any> = new Subject<any>();
-	private apiUrl: string = 'http://localhost:3000';  // URL to web api
-	private socket: any = io(this.apiUrl);
+	private socketApiUrl: string = 'http://k8s-eshop.io/api/nodejs-socket-svc:3000';
+	private socket: any = io(this.socketApiUrl);
 	private message: Subject<string> = new Subject<string>();
 
 	constructor(private http: HttpClient) {
@@ -52,6 +51,7 @@ export class ChatService {
 	}
 
 	createMessage(content: string): Messages {
+		console.log('createMessage user: ', this.user);
 		let message: Messages = {user: this.user, content};
 		return message;
 	}
