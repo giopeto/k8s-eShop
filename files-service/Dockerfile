@@ -23,5 +23,5 @@ RUN mvn -f /usr/src/app/pom.xml clean install -Pk8s -DskipTests
 FROM gcr.io/distroless/java  
 
 COPY --from=build /usr/src/app/target/*.jar /usr/app/app.jar 
-# EXPOSE 8080  
+
 ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n","-jar","/usr/app/app.jar"]

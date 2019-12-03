@@ -16,5 +16,15 @@ spring:
   boot:
     admin:
       monitor:
-        status-interval: 3s
-        status-lifetime: 3s
+        status-interval: 10s
+        status-lifetime: 10s
+      client:
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    health:
+      show-details: always
+logging:
+  file: target/app.log

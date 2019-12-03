@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service-dep
+  annotations:
+    # Jaeger tracing sidecar
+    sidecar.jaegertracing.io/inject: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    metadata:
+      labels:
+        app: payment-service
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: payment-service
+          image: giopeto/e-shop-payment-service:V4
+          imagePullPolicy: Always
+          env:
+            - name: MONGODB_HOST
+              value: mongodb
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payment-service-svc
+spec:
+  selector:
+    app: payment-service
+  ports:
+    - protocol: "TCP"
+      # Port accessible inside cluster
+      port: 8085
+      # Port to forward to inside the pod
+      targetPort: 8085
+      # Port accessible outside cluster
+      nodePort: 30106
+  type: LoadBalancer

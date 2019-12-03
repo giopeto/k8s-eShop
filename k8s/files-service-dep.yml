@@ -6,7 +6,7 @@ metadata:
     # Jaeger tracing sidecar
     sidecar.jaegertracing.io/inject: "true"
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: files-service
@@ -18,7 +18,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: files-service
-          image: giopeto/e-shop-files-service:V2
+          image: giopeto/e-shop-files-service:V3
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST

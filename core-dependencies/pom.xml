@@ -27,13 +27,13 @@
         <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-        <!--<jacoco.version>0.7.0.201403182114</jacoco.version>-->
         <jacoco.version>0.8.5</jacoco.version>
         <nexus-server-url>http://nexus.k8s-eshop.io</nexus-server-url>
         <sonar.exclusions>**/domain/*.java,**/config/*.java,**/*Constants.java</sonar.exclusions>
     </properties>
 
     <dependencies>
+        <!-- Spring dependencies -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-kubernetes</artifactId>
@@ -63,16 +63,23 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-kubernetes-ribbon</artifactId>
         </dependency>
+        <!-- Admin server dependency -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-        <!-- Jaeger distributed tracing -->
+        <!-- Jaeger distributed tracing dependency -->
         <dependency>
             <groupId>io.opentracing.contrib</groupId>
             <artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>
             <version>1.0.3</version>
+        </dependency>
+        <!-- Admin server dependency -->
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.1.6</version>
         </dependency>
 
         <!-- Test dependencies -->

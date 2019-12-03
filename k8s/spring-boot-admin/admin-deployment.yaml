@@ -14,24 +14,15 @@ spec:
     spec:
       serviceAccountName: admin
       containers:
-        - image: giopeto/e-shop-spring-boot-admin-service:V11 # joshiste/admin:sio-bcn
+        - image: giopeto/e-shop-admin-server:V1
           imagePullPolicy: Always
           name: admin
           env:
             - name: spring.profiles.active
               value: k8s
-            # - name: management.endpoints.web.exposure.include
-            #   value: "*"
-            # - name: management.endpoint.health.show-details
-            #   value: "always"
           ports:
             - containerPort: 8083
-          resources: {}
       restartPolicy: Always
   selector:
     matchLabels:
       app: admin
-
-
-
-

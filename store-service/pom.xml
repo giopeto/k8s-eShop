@@ -9,7 +9,7 @@
     <packaging>jar</packaging>
 
     <name>store-service</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Store Service</description>
 
     <parent>
         <groupId>com</groupId>

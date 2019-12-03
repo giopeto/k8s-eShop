@@ -5,10 +5,6 @@ metadata:
   labels:
     type: spring-boot
 spec:
-  # ports:
-  #   - name: "http"
-  #     port: 8083
-  #     targetPort: 8083
   ports:
     - protocol: "TCP"
       # Port accessible inside cluster

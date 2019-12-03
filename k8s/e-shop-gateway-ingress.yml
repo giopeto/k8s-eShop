@@ -22,6 +22,14 @@ spec:
             backend:
               serviceName: files-service-svc
               servicePort: 8082
+          - path: /api/basket-svc(/|$)(.*)
+            backend:
+              serviceName: basket-service-svc
+              servicePort: 8084
+          - path: /api/payment-svc(/|$)(.*)
+            backend:
+              serviceName: payment-service-svc
+              servicePort: 8085
           # Front-end applications
           - path: /client(/|$)(.*)
             backend:
