@@ -18,7 +18,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: basket-service
-          image: giopeto/e-shop-basket-service:V4
+          image: giopeto/e-shop-basket-service:V5
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST
