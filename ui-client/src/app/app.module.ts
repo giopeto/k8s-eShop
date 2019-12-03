@@ -15,8 +15,10 @@ import { LoginService } from './services/login.service';
 import { GroupsService } from './services/groups.service';
 import { ItemsService } from './services/items.service';
 import { FilesService } from './services/files.service';
+import { ChatService } from './services/chat.service';
 import { SafePipe } from './pipes/safe.pipe';
 import { ItemsInGroupComponent } from './components/items-in-group/items-in-group.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
 	declarations: [
@@ -27,7 +29,8 @@ import { ItemsInGroupComponent } from './components/items-in-group/items-in-grou
 		FilesComponent,
 		SafePipe,
 		HomeComponent,
-		ItemsInGroupComponent
+		ItemsInGroupComponent,
+		ChatComponent
 	],
 	imports: [
 		BrowserModule,
@@ -39,7 +42,8 @@ import { ItemsInGroupComponent } from './components/items-in-group/items-in-grou
 		LoginService,
 		GroupsService,
 		ItemsService,
-		FilesService
+		FilesService,
+		ChatService
 	],
 	bootstrap: [AppComponent]
 })
