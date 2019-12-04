@@ -2,11 +2,13 @@ apiVersion: jaegertracing.io/v1
 kind: Jaeger
 metadata:
   name: jaeger-dep
+  namespace: k8s-eshop
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: jaeger-svc
+  namespace: k8s-eshop
 spec:
   selector:
     app: jaeger-svc

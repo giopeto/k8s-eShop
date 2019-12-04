@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sonar-postgres-dep
+  namespace: k8s-eshop
 spec:
   replicas: 1
   selector:

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: admin-pod
+  namespace: k8s-eshop
   labels:
     app: shoppingdemo
     type: spring-boot

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: jenkins-dep
+  namespace: k8s-eshop
 spec:
   replicas: 1
   selector:
@@ -52,6 +53,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: jenkins-pv-claim
+  namespace: k8s-eshop
   labels:
     app: jenkinspv
 spec:
@@ -65,6 +67,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: jenkins-svc
+  namespace: k8s-eshop
 spec:
   type: LoadBalancer
   ports:
@@ -79,6 +82,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: jenkins-jnlp-svc
+  namespace: k8s-eshop
 spec:
   type: ClusterIP
   ports:

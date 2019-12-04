@@ -1,3 +1,8 @@
+# create project namespace(name=k8s-eshop)
+k create -f ../k8s/namespace.yaml
+# Set namespace k8s-eshop as default kubectl namespace
+k config set-context --current --namespace=k8s-eshop
+
 # Enable prometheus addon
 #microk8s.enable prometheus
 
@@ -32,7 +37,7 @@ sudo sed -i "$ a 127.0.0.1	sonar.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	spring-boot-admin-server.k8s-eshop.io" /etc/hosts
 
 # create postgresql secret for sonar deployment
-k create secret generic postgres-pwd --from-literal=password=S0nar_P0stgress_Pass
+k create secret generic postgres-pwd --from-literal=password=S0nar_P0stgress_Pass -n k8s-eshop
 
 # Deploy k8s-eshop application via kubernetes
 k apply -R -f ../k8s/
