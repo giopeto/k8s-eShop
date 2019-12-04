@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: e-shop-gateway-ingress
+  name: e-shop-gateway-ingress-aps
   namespace: k8s-eshop
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
@@ -34,7 +34,7 @@ spec:
           - path: /api/nodejs-socket-svc(/|$)(.*)
             backend:
               serviceName: nodejs-socket-service-svc
-              servicePort: 8085
+              servicePort: 3000
           # Front-end applications
           - path: /client(/|$)(.*)
             backend:
@@ -48,7 +48,7 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: e-shop-gateway-ingress-nexus
+  name: e-shop-gateway-ingress-ops
   namespace: k8s-eshop
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /

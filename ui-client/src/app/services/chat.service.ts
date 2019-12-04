@@ -14,11 +14,8 @@ export class ChatService {
 	public user: Users; 
 	public socketSubject: Subject<any> = new Subject<any>();
 	
-
-	//private socketApiUrl: string = 'http://k8s-eshop.io/api/nodejs-socket-svc:3000';
-	//private socket: any = io(this.socketApiUrl);
-
-	private socket: any = io('http://k8s-eshop.io', {path: '/api/nodejs-socket-svc'});
+	//private socket: any = io('http://localhost:3000'); // Test url
+	private socket: any = io('http://k8s-eshop.io', {path: '/api/nodejs-socket-svc/socket.io'});
 
 	private message: Subject<string> = new Subject<string>();
 

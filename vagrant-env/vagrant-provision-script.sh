@@ -21,6 +21,7 @@ sudo apt-get install -y nodejs
 sudo apt-get install -y build-essential
 sudo npm install -g npm
 sudo npm install -g n
+sudo npm install -g @angular/cli
 
 echo -e 'Install java 11, maven, intellij-idea-community, chromium, visual studio code and sublime'
 # Install java 11, maven, intellij-idea-community, chromium, visual studio code and sublime

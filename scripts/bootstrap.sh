@@ -40,4 +40,4 @@ sudo sed -i "$ a 127.0.0.1	spring-boot-admin-server.k8s-eshop.io" /etc/hosts
 k create secret generic postgres-pwd --from-literal=password=S0nar_P0stgress_Pass -n k8s-eshop
 
 # Deploy k8s-eshop application via kubernetes
-k apply -R -f ../k8s/
+k create -R -f ../k8s/

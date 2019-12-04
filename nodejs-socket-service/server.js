@@ -1,61 +1,33 @@
-// Get dependencies
 const express = require('express');
 const path = require('path');
 const app = express();
 const http = require('http');
-
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
-// Get our API routes
+// Config
+const SocketIo = require('./server/socket/SockerIo');
+const dbConfig = require('./server/config/db/config');
+// Routes
 const api = require('./server/routes/api');
+const actuator = require('./server/routes/actuator');
 
-// Parsers for POST data
+// configuration ===============================================================
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Set our api routes
 app.use('/api', api);
+app.use('/actuator', actuator);
 
-/**
- * Get port from environment and store in Express.
- */
-const port = process.env.PORT || '3000';
-app.set('port', port);
+mongoose.connect(dbConfig.localUrl, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.set('debug', false);
 
 /**
  * Create HTTP server.
  */
 const server = http.createServer(app);
+
 const io = require('socket.io')(server);
+const socketListener = new SocketIo(io).listen();
 
-const allEvents = ['user-added', 'chat-message'];
-let users = [];
-let checkUsers = {};
-io.on('connection', function(socket){
-	
-	socket.on('disconnect', function(){
-	});
-
-	allEvents.forEach(event => {
-		socket.on(event, function(eventData){
-			
-			if (event === 'user-added' && !checkUsers[eventData.id]) {
-				console.log('1 Event: ', event, ', Data: ', eventData);
-				users.push(eventData);
-				eventData = users;
-				checkUsers[eventData.id] = 1;
-			} else if (checkUsers[eventData.id]) {
-				console.log('2 Event: ', event, ', Data: ', eventData);
-			}
-
-			console.log('ALL USERS: ', users);
-
-			socket.broadcast.emit(event, eventData);
-		});
-	});
-});
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+server.listen(3000, () => console.info('\n########## Nodejs Socket Service Ready ##########\n'));

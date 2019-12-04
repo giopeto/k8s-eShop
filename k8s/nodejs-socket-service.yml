@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: nodejs-socket-service
-          image: giopeto/e-shop-nodejs-socket-service:V1
+          image: giopeto/e-shop-nodejs-socket-service:V5
 ---
 
 apiVersion: v1

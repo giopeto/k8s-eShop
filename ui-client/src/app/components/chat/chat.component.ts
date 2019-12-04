@@ -28,13 +28,16 @@ export class ChatComponent implements OnInit {
 				this.users = event.payload;
 			}
 		});
-		//this.chatService.setUser({
-		//	id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15), 
-		//	email: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15), 
-		//	password: 'qwe', 
-		//	role: 'ROLE_ADMIN'});
 
 		this.loginService.geCurrentUser().subscribe(user=> this.chatService.setUser(user));		
+		
+		/* Test with local user
+		this.chatService.setUser({
+			id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15), 
+			email: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15), 
+			password: 'qwe', 
+			role: 'ROLE_ADMIN'});
+		*/			
 	}
 
 	sendMessage(content: string): void {

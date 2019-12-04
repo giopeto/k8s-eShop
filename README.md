@@ -14,13 +14,13 @@
 	- `cd k8s-eshop/scripts && sh bootstrap.sh`
 
 ## Links
-### k8s-eshop client application [http://k8s-eshop.io](http://k8s-eshop.io/client)
-### k8s-eshop admin application [http://k8s-eshop.io](http://k8s-eshop.io/admin)
+### k8s-eshop client application [http://k8s-eshop.io/client](http://k8s-eshop.io/client)
+### k8s-eshop admin application [http://k8s-eshop.io/admin](http://k8s-eshop.io/admin)
 ### Jaeger tracing [http://jaeger.k8s-eshop.io](http://jaeger.k8s-eshop.io)
 ### Jenkins CI/CD [http://jenkins.k8s-eshop.io](http://jenkins.k8s-eshop.io)
 ### SonarQube Code Quality and Security [http://sonar.k8s-eshop.io/sonar](http://sonar.k8s-eshop.io/sonar) user:pass admin:admin
 ### Nexus repository [http://nexus.k8s-eshop.io](http://nexus.k8s-eshop.io) user:pass admin:admin123
-### Spring Boot Admin [spring-boot-admin-server.k8s-eshop.io] user:pass admin:admin
+### Spring Boot Admin [http://spring-boot-admin-server.k8s-eshop.io](http://spring-boot-admin-server.k8s-eshop.io) user:pass admin:admin
 ### Grafana run `kubectl cluster-info` and get grafana url
 
 ## Optional setup

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: ui-client
-          image: giopeto/e-shop-ui-client:V50
+          image: giopeto/e-shop-ui-client:V2
 ---
 
 apiVersion: v1
