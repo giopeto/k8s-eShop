@@ -4,6 +4,7 @@ const app = express();
 const http = require('http');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+var cors = require('cors')
 
 // Config
 const SocketIo = require('./server/socket/SockerIo');
@@ -15,11 +16,12 @@ const actuator = require('./server/routes/actuator');
 // configuration ===============================================================
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors())
 
 app.use('/api', api);
 app.use('/actuator', actuator);
 
-mongoose.connect(dbConfig.localUrl, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(dbConfig.url, { useUnifiedTopology: true, useNewUrlParser: true });
 mongoose.set('debug', false);
 
 /**

@@ -9,13 +9,14 @@
 	- `cd k8s-eshop/vagrant-env`
 - Run vagrant provisioning
 	- `vagrant up`
-- Vagrant user:password => vagrant:vagrant
+- Add `192.168.50.4 service.k8s-eshop.io` to hosts(/etc/hosts or C:\Windows\System32\drivers\etc\hosts)
+- Go to virtual machine. Vagrant user:password => vagrant:vagrant
 - Run bootstrap.sh
 	- `cd k8s-eshop/scripts && sh bootstrap.sh`
 
 ## Links
-### k8s-eshop client application [http://k8s-eshop.io/client](http://k8s-eshop.io/client)
-### k8s-eshop admin application [http://k8s-eshop.io/admin](http://k8s-eshop.io/admin)
+### k8s-eshop client application [http://k8s-eshop.io](http://k8s-eshop.io)
+### k8s-eshop admin application [http://admin.k8s-eshop.io/admin](http://admin.k8s-eshop.io)
 ### Jaeger tracing [http://jaeger.k8s-eshop.io](http://jaeger.k8s-eshop.io)
 ### Jenkins CI/CD [http://jenkins.k8s-eshop.io](http://jenkins.k8s-eshop.io)
 ### SonarQube Code Quality and Security [http://sonar.k8s-eshop.io/sonar](http://sonar.k8s-eshop.io/sonar) user:pass admin:admin

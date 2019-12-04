@@ -18,6 +18,7 @@ import static com.authentication.authentication.common.SecurityRoles.ROLE_ADMIN;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.OPTIONS;
 
 @Configuration
 @AllArgsConstructor
@@ -56,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
+                .antMatchers(OPTIONS, "**").permitAll()
                 .antMatchers(POST, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
                 .antMatchers(GET, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
                 .antMatchers(GET, "/actuator/**").permitAll()

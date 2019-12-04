@@ -34,5 +34,6 @@
 sudo
 mvnw
 mvnw.cmd
+k8s-eshop-box.box
 
 **/.mvn
