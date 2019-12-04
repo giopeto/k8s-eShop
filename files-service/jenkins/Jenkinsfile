@@ -2,7 +2,7 @@ def CONTAINER_NAME="e-shop-files-service"
 def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT=8082
 def PROJECT_DIR="files-service"
-def NEXUS_IP_ADDRESS="10.152.183.154"
+def NEXUS_IP_ADDRESS="10.152.183.196"
 def CURRENT_BUILD_NUMBER=currentBuild.number
 def CONTAINER_TAG="V"
 

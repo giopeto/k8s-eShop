@@ -30,6 +30,8 @@ echo "fs.inotify.max_user_watches=524288" | sudo tee -a /etc/sysctl.conf
 sudo sysctl -p
 
 sudo sed -i "$ a 127.0.0.1	k8s-eshop.io" /etc/hosts
+sudo sed -i "$ a 127.0.0.1	admin.k8s-eshop.io" /etc/hosts
+sudo sed -i "$ a 127.0.0.1	service.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	nexus.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	jaeger.k8s-eshop.io" /etc/hosts
 sudo sed -i "$ a 127.0.0.1	jenkins.k8s-eshop.io" /etc/hosts
