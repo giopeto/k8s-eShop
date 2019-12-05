@@ -1,44 +1,44 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: basket-service-dep
-  namespace: k8s-eshop
-  annotations:
-    # Jaeger tracing sidecar
-    sidecar.jaegertracing.io/inject: "true"
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: basket-service
-  template:
-    metadata:
-      labels:
-        app: basket-service
-    spec:
-      restartPolicy: Always
-      containers:
-        - name: basket-service
-          image: giopeto/e-shop-basket-service:V5
-          imagePullPolicy: Always
-          env:
-            - name: MONGODB_HOST
-              value: mongodb
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: basket-service-svc
-  namespace: k8s-eshop
-spec:
-  selector:
-    app: basket-service
-  ports:
-    - protocol: "TCP"
-      # Port accessible inside cluster
-      port: 8084
-      # Port to forward to inside the pod
-      targetPort: 8084
-      # Port accessible outside cluster
-      nodePort: 30105
-  type: LoadBalancer
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: basket-service-dep
+#   namespace: k8s-eshop
+#   annotations:
+#     # Jaeger tracing sidecar
+#     sidecar.jaegertracing.io/inject: "true"
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: basket-service
+#   template:
+#     metadata:
+#       labels:
+#         app: basket-service
+#     spec:
+#       restartPolicy: Always
+#       containers:
+#         - name: basket-service
+#           image: giopeto/e-shop-basket-service:V5
+#           imagePullPolicy: Always
+#           env:
+#             - name: MONGODB_HOST
+#               value: mongodb
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: basket-service-svc
+#   namespace: k8s-eshop
+# spec:
+#   selector:
+#     app: basket-service
+#   ports:
+#     - protocol: "TCP"
+#       # Port accessible inside cluster
+#       port: 8084
+#       # Port to forward to inside the pod
+#       targetPort: 8084
+#       # Port accessible outside cluster
+#       nodePort: 30105
+#   type: LoadBalancer
