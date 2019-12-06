@@ -1,5 +1,4 @@
 <section>
-
 	<div id="send-message">
 		<ul>
 			<li *ngFor="let message of messages">{{message.user.email}}: {{message.content}}</li>
@@ -7,6 +6,4 @@
 		<input #content />
 		<button title="Send" (click)="sendMessage(content.value)">Send</button>
 	</div>
-	{{users | json}}
-
 </section>

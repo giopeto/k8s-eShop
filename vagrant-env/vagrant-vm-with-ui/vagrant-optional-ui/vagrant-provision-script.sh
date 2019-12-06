@@ -4,14 +4,22 @@ echo -e '\n microk8s-ubuntu \n'
 echo -e '\n Install snapd and kubernetes (https://microk8s.io/docs/) \n'
 sudo dpkg --configure -a
 sudo apt update -y
-#sudo apt upgrade -y
-#sudo apt dist-upgrade -y
 sudo apt install snapd -y
 
 sudo snap install microk8s --classic
 sudo usermod -a -G microk8s vagrant
 
-sudo swapoff -a
+echo -e 'Install curl, nodejs 12.x, n and npm'
+# Install curl, nodejs 12.x, n and npm
+sudo apt-get install -y curl
+curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo apt-get install -y build-essential
+sudo npm install -g npm
+
+echo -e 'Install java 11, maven, intellij-idea-community, chromium, visual studio code and sublime'
+sudo apt install openjdk-11-jdk -y
+sudo apt install maven -y
 
 # Install docker (https://unix.stackexchange.com/questions/363048/unable-to-locate-package-docker-ce-on-a-64bit-ubuntu)
 echo -e '\n Install docker \n'
@@ -69,6 +77,10 @@ k create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/mast
 echo "cd /vagrant" >> /home/vagrant/.bashrc
 git clone https://github.com/giopeto/k8s-eshop.git
 sudo chmod -R 777 k8s-eshop
+
+cd /home/vagrant/k8s-eshop
+# git ignore filemode change (https://stackoverflow.com/questions/1257592/how-do-i-remove-files-saying-old-mode-100755-new-mode-100644-from-unstaged-cha)
+git config core.filemode false
 
 # Remove 'cd /vagrant' from /home/vagrant/.bashrc
 sed -i '$d' /home/vagrant/.bashrc

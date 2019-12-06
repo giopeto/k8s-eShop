@@ -19,7 +19,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: authentication-service
-          image: giopeto/e-shop-authentication-service:V500
+          image: giopeto/e-shop-authentication-service:V2
           imagePullPolicy: Always
           env:
             - name: MONGODB_HOST
@@ -43,12 +43,9 @@ spec:
       targetPort: 8080
       # Port accessible outside cluster
       nodePort: 30101
-    #- name: authentication-service-debug
-     # protocol: "TCP"
-      # Port accessible inside cluster
-      #port: 5005
-      # Port to forward to inside the pod
-      #targetPort: 5005
-      # Port accessible outside cluster
-      #nodePort: 30111
+    - name: authentication-service-debug
+      protocol: "TCP"
+      port: 5005
+      targetPort: 5005
+      nodePort: 30111
   type: LoadBalancer

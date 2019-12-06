@@ -2,15 +2,15 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 # Box / OS
-VAGRANT_BOX = 'bento/ubuntu-18.04'
+VAGRANT_BOX = 'peru/ubuntu-18.04-desktop-amd64'
 # Box / OS version
-# VAGRANT_BOX_VERSION = '20190901.01'
+VAGRANT_BOX_VERSION = '20190901.01'
 # Memorable name for your
-VM_NAME = 'k8s-eshop-bento'
+VM_NAME = 'k8s-eshop-ui-cut-dev-tools'
 
 Vagrant.configure('2') do |config|
   config.vm.box = VAGRANT_BOX
-  # config.vm.box_version = VAGRANT_BOX_VERSION
+  config.vm.box_version = VAGRANT_BOX_VERSION
   config.vm.hostname = VM_NAME
   
   config.vm.network "private_network", ip: "192.168.50.4" 
@@ -24,15 +24,15 @@ Vagrant.configure('2') do |config|
   config.vm.network "forwarded_port", guest: 30102, host: 4006
   config.vm.network "forwarded_port", guest: 30103, host: 4007
   config.vm.network "forwarded_port", guest: 30104, host: 4008
+  config.vm.network "forwarded_port", guest: 30303, host: 4009 # Spring boot admin
 
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   config.vm.provider 'virtualbox' do |v|
     v.name = VM_NAME
-    v.memory = 10240 # 10GB 4096 # 4GB
+    v.memory = 10240 # 10GB
     v.cpus = 4
-    #v.gui = true
-
+    
   	v.customize ["modifyvm", :id, "--vram", "128"]
   end
   

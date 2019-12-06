@@ -25,7 +25,7 @@ export class ChatComponent implements OnInit {
 				this.addToMessages(event.payload);
 			} else if (event.type === EventTypes.USER_ADDED) {
 				console.log('USER_ADDED: ', event);
-				this.users = event.payload;
+				this.users.push(event.payload);
 			}
 		});
 
@@ -44,7 +44,7 @@ export class ChatComponent implements OnInit {
 		let message: Messages = this.chatService.createMessage(content);
 		let event: Events = {type: EventTypes.CHAT_MESSAGE, payload: message};
 		this.chatService.emitToServer(event);
-		this.addToMessages(this.chatService.createMessage(content));
+		this.addToMessages(message);
 	}
 
 	addToMessages(message: Messages): void {

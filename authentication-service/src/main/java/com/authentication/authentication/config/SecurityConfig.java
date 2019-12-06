@@ -16,9 +16,7 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 import static com.authentication.authentication.common.AuthenticationConstants.AUTHENTICATION_BASE_URL;
 import static com.authentication.authentication.common.SecurityRoles.ROLE_ADMIN;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.OPTIONS;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @AllArgsConstructor
@@ -60,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(OPTIONS, "**").permitAll()
                 .antMatchers(POST, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
                 .antMatchers(GET, "/" + AUTHENTICATION_BASE_URL + "/users/**").permitAll()
-                .antMatchers(GET, "/actuator/**").permitAll()
+                .antMatchers("/actuator/**").permitAll()
                 .anyRequest().hasRole(ROLE_ADMIN.getName())
                 .and()
                 .logout()

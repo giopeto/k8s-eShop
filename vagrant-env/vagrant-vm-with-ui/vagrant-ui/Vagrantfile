@@ -1,17 +1,16 @@
 # encoding: utf-8
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+# Box / OS
+VAGRANT_BOX = 'peru/ubuntu-18.04-desktop-amd64'
+# Box / OS version
+VAGRANT_BOX_VERSION = '20190901.01'
 
-VAGRANT_BOX = 'bento/ubuntu-19.04'
-VM_NAME = 'k8s-eshop'
-# Host folder to sync
-#HOST_PATH = 'D:/Tutorials/Dev/k8s-eshop'
-HOST_PATH = '../../k8s-eshop'
-# Guest folder to sync
-GUEST_PATH = '/home/vagrant/k8s-eshop'
+VM_NAME = 'k8s-eshop-ui'
 
 Vagrant.configure('2') do |config|
   config.vm.box = VAGRANT_BOX
+  config.vm.box_version = VAGRANT_BOX_VERSION
   config.vm.hostname = VM_NAME
   
   config.vm.network "private_network", ip: "192.168.50.4" 
@@ -26,17 +25,16 @@ Vagrant.configure('2') do |config|
   config.vm.network "forwarded_port", guest: 30103, host: 4007
   config.vm.network "forwarded_port", guest: 30104, host: 4008
   config.vm.network "forwarded_port", guest: 30303, host: 4009 # Spring boot admin
-  config.vm.network "forwarded_port", guest: 3000, host: 3000 # nodejs dev server
-  config.vm.network "forwarded_port", guest: 4200, host: 4200 # nodejs dev server
-  
-  # Sync folder
-  config.vm.synced_folder HOST_PATH, GUEST_PATH
+
   config.vm.synced_folder '.', '/vagrant', disabled: true
 
   config.vm.provider 'virtualbox' do |v|
     v.name = VM_NAME
-    v.memory = 10240 # 10GB # 4096 # 4GB 
+    v.memory = 10240 # 10GB
     v.cpus = 4
+    v.gui = true
+
+    v.customize ["modifyvm", :id, "--vram", "128"]
   end
   
   config.vm.provision "shell", path: "vagrant-provision-script.sh"

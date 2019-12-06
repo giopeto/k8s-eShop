@@ -53,7 +53,6 @@ export class ChatService {
 	}
 
 	createMessage(content: string): Messages {
-		console.log('createMessage user: ', this.user);
 		let message: Messages = {user: this.user, content};
 		return message;
 	}

@@ -4,12 +4,15 @@ echo -e '\n microk8s-ubuntu \n'
 echo -e '\n Install snapd and kubernetes (https://microk8s.io/docs/) \n'
 sudo dpkg --configure -a
 sudo apt update -y
-sudo apt install snapd -y
+#sudo apt upgrade -y
+#sudo apt dist-upgrade -y
+sudo apt install snapd
 
 sudo snap install microk8s --classic
 sudo usermod -a -G microk8s vagrant
 
-echo -e '\n Install curl, nodejs 12.x, n, npm and @angular/cli \n'
+echo -e 'Install curl, nodejs 12.x, n, npm and @angular/cli'
+# Install curl, nodejs 12.x, n and npm
 sudo apt-get install -y curl
 curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
 sudo apt-get install -y nodejs
@@ -18,9 +21,14 @@ sudo npm install -g npm
 sudo npm install -g n
 sudo npm install -g @angular/cli
 
-echo -e '\n Install java 11, maven and maven \n'
+echo -e 'Install java 11, maven, intellij-idea-community, chromium, visual studio code and sublime'
+# Install java 11, maven, intellij-idea-community, chromium, visual studio code and sublime
 sudo apt install openjdk-11-jdk -y
 sudo apt install maven -y
+sudo snap install intellij-idea-community --classic
+sudo snap install chromium
+sudo snap install code --classic
+sudo snap install sublime-text --classic
 
 # Install docker (https://unix.stackexchange.com/questions/363048/unable-to-locate-package-docker-ce-on-a-64bit-ubuntu)
 echo -e '\n Install docker \n'
@@ -48,6 +56,7 @@ mkdir -p /etc/systemd/system/docker.service.d
 # Restart docker.
 systemctl daemon-reload
 systemctl restart docker
+
 sudo systemctl enable docker
 
 snap alias microk8s.kubectl k
@@ -55,14 +64,15 @@ snap alias microk8s.kubectl k
 # Fix dns
 sudo iptables -P FORWARD ACCEPT
 
-echo -e '\n K8s ingress, dns, jaeger-operator \n'
+echo -e '\n K8s ingress, dns, dashboard, jaeger-operator \n'
 
 # Install k8s addons
-sudo microk8s.enable ingress dns
+sudo microk8s.enable ingress dns dashboard
 
 # Manual k8s ingress controller
 k create -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
 k create -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/baremetal/service-nodeport.yaml
+
 
 # Jaeger Operator k8s setup
 k create namespace observability
@@ -71,6 +81,18 @@ k create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/mast
 k create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml
 k create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml
 k create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml
+
+# Clone project
+echo "cd /vagrant" >> /home/vagrant/.bashrc
+git clone https://github.com/giopeto/k8s-eshop.git
+sudo chmod -R 777 k8s-eshop
+
+cd /home/vagrant/k8s-eshop
+# git ignore filemode change (https://stackoverflow.com/questions/1257592/how-do-i-remove-files-saying-old-mode-100755-new-mode-100644-from-unstaged-cha)
+git config core.filemode false
+
+# Remove 'cd /vagrant' from /home/vagrant/.bashrc
+sed -i '$d' /home/vagrant/.bashrc
 
 sudo apt autoremove -y
 echo -e '\n END \n'
