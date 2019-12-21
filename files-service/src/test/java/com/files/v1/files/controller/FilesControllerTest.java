@@ -3,7 +3,6 @@ package com.files.v1.files.controller;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.files.config.TestConfig;
 import com.files.v1.files.domain.FilesToDomainMapper;
 import com.files.v1.files.domain.FilesUpload;
 import com.files.v1.files.service.FilesService;
@@ -12,15 +11,12 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static com.files.common.FilesConstants.FILES_BASE_URL;
 import static java.util.Arrays.asList;
@@ -33,25 +29,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(FilesController.class)
-@Import(TestConfig.class)
-@TestPropertySource("classpath:test.properties")
 public class FilesControllerTest {
 
     private static final String FILES_URL = "/" + FILES_BASE_URL + "/files";
 
-    @Autowired
-    private MockMvc mockMvc;
+    private FilesController filesController;
+
     @MockBean
     private FilesService filesService;
     @MockBean
     private FilesToDomainMapperService filesToDomainMapperService;
 
+    private MockMvc mockMvc;
     private ObjectMapper jacksonObjectMapper;
     private String domainId;
 
     @Before
     public void setUp() {
+        filesController = new FilesController(filesService, filesToDomainMapperService);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(filesController).build();
         jacksonObjectMapper = new ObjectMapper();
         jacksonObjectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         domainId = randomUUID().toString();

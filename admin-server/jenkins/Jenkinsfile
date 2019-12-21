@@ -3,7 +3,7 @@ def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT=8083
 def PROJECT_DIR="admin-server"
 def CURRENT_BUILD_NUMBER=currentBuild.number
-def CONTAINER_TAG="V"
+def CONTAINER_TAG="v"
 
 node {
 
@@ -20,12 +20,8 @@ node {
 
     stage('Build'){
         dir(PROJECT_DIR) {
-            //sh "mvn clean install -DskipTests"
+            sh "mvn clean install"
         }
-    }
-
-    stage("Image Prune"){
-        imagePrune(CONTAINER_NAME)
     }
 
     stage('Image Build'){
@@ -54,13 +50,6 @@ node {
         }
     }
 
-}
-
-def imagePrune(containerName){
-    try {
-        sh "docker image prune -f"
-        sh "docker stop $containerName"
-    } catch(error){}
 }
 
 def imageBuild(containerName, tag){

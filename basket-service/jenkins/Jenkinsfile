@@ -4,7 +4,7 @@ def HTTP_PORT=8084
 def PROJECT_DIR="basket-service"
 def NEXUS_IP_ADDRESS="10.152.183.40"
 def CURRENT_BUILD_NUMBER=currentBuild.number
-def CONTAINER_TAG="V"
+def CONTAINER_TAG="v"
 
 node {
 
@@ -21,23 +21,19 @@ node {
 
     stage('Build'){
         dir(PROJECT_DIR) {
-            //sh "mvn clean install -DskipTests"
+            sh "mvn clean install"
         }
     }
     
     stage('Sonar'){
         try {
             dir(PROJECT_DIR) {
-                //sh "mvn sonar:sonar"
+                sh "mvn sonar:sonar"
             }
         } catch(error){
             echo "The sonar server could not be reached ${error}"
         }
      }
-
-    stage("Image Prune"){
-        imagePrune(CONTAINER_NAME)
-    }
 
     stage('Image Build'){
         dir(PROJECT_DIR) {
@@ -65,13 +61,6 @@ node {
         }
     }
 
-}
-
-def imagePrune(containerName){
-    try {
-        sh "docker image prune -f"
-        sh "docker stop $containerName"
-    } catch(error){}
 }
 
 def imageBuild(containerName, tag, nexusIpAddress){

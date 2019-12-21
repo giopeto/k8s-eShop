@@ -3,6 +3,7 @@ package com.store.v1.items.service;
 import com.store.common.CookieParser;
 import com.store.jms.producer.JmsProducer;
 import com.store.v1.items.domain.Items;
+import com.store.v1.items.domain.ItemsDto;
 import com.store.v1.items.repository.ItemsRepository;
 import com.store.v1.remote.call.files.FilesClient;
 import org.junit.Before;
@@ -13,10 +14,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static com.store.common.StoreConstants.JSESSIONID;
 import static com.store.v1.items.utils.ItemsTestUtils.generateItem;
 import static com.store.v1.items.utils.ItemsTestUtils.generateItems;
 import static java.util.UUID.randomUUID;
+import static org.assertj.core.util.Lists.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -77,10 +81,23 @@ public class ItemsServiceTest {
     @Test
     public void testFindByGroupId() throws Exception {
         List<Items> allItems = generateItems(2, groupId);
+        List<ItemsDto> allItemsDto = allItems.stream().map(item -> mapToItemsDto(item, emptyList())).collect(Collectors.toList());
 
+        when(cookieParser.getCookie(JSESSIONID)).thenReturn(Optional.of("123-456"));
         when(itemsRepository.findByGroupId(groupId)).thenReturn(allItems);
 
-        assertEquals(itemsService.findByGroupId(groupId), allItems);
+        assertEquals(itemsService.findByGroupId(groupId), allItemsDto);
+    }
+
+    private ItemsDto mapToItemsDto(Items item, List<String> fileIdsPerItem) {
+        return new ItemsDto(item.getId(),
+                item.getName(),
+                item.getGroupId(),
+                item.getShortDescription(),
+                item.getDescription(),
+                item.getPrice(),
+                item.isArchive(),
+                fileIdsPerItem);
     }
 
 }

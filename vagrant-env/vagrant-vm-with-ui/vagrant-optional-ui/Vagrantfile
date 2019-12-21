@@ -25,6 +25,9 @@ Vagrant.configure('2') do |config|
   config.vm.network "forwarded_port", guest: 30103, host: 4007
   config.vm.network "forwarded_port", guest: 30104, host: 4008
   config.vm.network "forwarded_port", guest: 30303, host: 4009 # Spring boot admin
+  config.vm.network "forwarded_port", guest: 31625, host: 4010 # SonarQube
+  config.vm.network "forwarded_port", guest: 3000, host: 3000 # nodejs dev server
+  config.vm.network "forwarded_port", guest: 4200, host: 4200 # nodejs dev server
 
   config.vm.synced_folder '.', '/vagrant', disabled: true
 

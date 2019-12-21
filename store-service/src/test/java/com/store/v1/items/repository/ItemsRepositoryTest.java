@@ -1,6 +1,5 @@
 package com.store.v1.items.repository;
 
-
 import com.store.v1.groups.repository.GroupsRepository;
 import com.store.v1.items.domain.Items;
 import org.junit.After;
@@ -27,12 +26,13 @@ import static org.junit.Assert.assertFalse;
 public class ItemsRepositoryTest {
 
     private static final int NUMBER_OF_TEST_RECORDS = 10;
-    String groupId;
+
     @Autowired
     private ItemsRepository itemsRepository;
     @MockBean
     private GroupsRepository groupsRepository;
     private List<Items> items;
+    private String groupId;
 
     @Before
     public void setUp() throws Exception {

@@ -1,21 +1,17 @@
 package com.store.v1.items.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.store.config.TestConfig;
 import com.store.v1.groups.domain.Groups;
 import com.store.v1.items.domain.Items;
 import com.store.v1.items.domain.ItemsList;
 import com.store.v1.items.service.ItemsService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
+import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Date;
 import java.util.Optional;
@@ -34,17 +30,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(ItemsController.class)
-@Import(TestConfig.class)
 public class ItemsControllerTest {
 
     private static final String ITEMS_URL = "/" + STORE_BASE_URL + "/items";
 
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
+    private ItemsController itemsController;
+
+    @Mock
     private ItemsService itemsService;
 
+    private MockMvc mockMvc;
     private ObjectMapper jacksonObjectMapper;
     private String id;
     private Items items;
@@ -53,6 +48,9 @@ public class ItemsControllerTest {
 
     @Before
     public void setUp() throws Exception {
+        itemsController = new ItemsController(itemsService);
+
+        mockMvc = MockMvcBuilders.standaloneSetup(itemsController).build();
         jacksonObjectMapper = new ObjectMapper();
         jacksonObjectMapper.configure(WRITE_DATES_AS_TIMESTAMPS, false);
         id = randomUUID().toString();
@@ -113,7 +111,6 @@ public class ItemsControllerTest {
     }
 
     @Test
-    @Ignore
     public void testGetByGroupId() throws Exception {
         when(itemsService.findByGroupId(id)).thenReturn(emptyList());
 

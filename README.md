@@ -6,6 +6,7 @@
 ## Table of contents
 * [Setup](#setup)
 * [Technologies](#technologies)
+* [Kubernetes info](#kubernetes-info)
 * [Links to k8s-eshop apps](#links-to-k8s-eshop-apps)
 * [Run apps on localhost (dev/debug purpose)](#run-apps-on-localhost-devdebug-purpose)
 
@@ -27,26 +28,79 @@
     - `sudo chmod -R 777 /home/vagrant/persistent-volumes-k8s`
 
 ## Technologies
-* Kubernetes, MicroK8s, Docker, Vagrant, VirtualBox, Jenkins, Maven, ActiveMQ, Nexus, SonarQube, Spring Boot Admin, Jaeger, Nginx, npm
-* Java 8, Spring Boot 2
+* Kubernetes, MicroK8s, Docker, Vagrant, VirtualBox, ActiveMQ, Jenkins, Nexus, SonarQube, Spring Boot Admin, Jaeger, Maven, Nginx, npm
+* Java 8, Spring Boot 2, JUnit, Mockito
 * Node.js, Express
-* Angular 8, Bootstrap
+* Angular 8, Bootstrap 4
 * MongoDB
 
+## Kubernetes info
+
+### Services
+
+| Service | Port | NodePort | Type |
+| ------- | ---- | -------- | ---- |
+| authentication-service-svc | 8080 | 30101 | LoadBalancer |
+| store-service-svc | 8081 | 30102 | LoadBalancer |
+| files-service-svc | 8082 | 30103 | LoadBalancer |
+| basket-service-svc | 8084 | 30105 | LoadBalancer |
+| payment-service-svc | 8085 | 30106 | LoadBalancer |
+| nodejs-socket-service-svc | 3000 | 30107 | LoadBalancer |
+| ui-admin-svc | 80 | 30100 | LoadBalancer |
+| ui-client-svc | 80 | 30104 | LoadBalancer |
+| admin-service | 8083 | 30303 | LoadBalancer |
+| nexus-svc | 80 | 30181 | LoadBalancer |
+| sonar-svc | 80 | 31625 | LoadBalancer |
+| jenkins-svc | 80 | 30123 | LoadBalancer |
+| mongodb | 27017 | | ClusterIP |
+| sonar-postgres | 5432 | | ClusterIP |
+| jenkins-jnlp-svc | 50000 | | ClusterIP |
+
+### Ingress
+| Service | DNS |
+| ------- | ---- |
+| authentication-service-svc | k8s-eshop.io/api/authentication-svc |
+| store-service-svc | k8s-eshop.io/api/store-svc |
+| files-service-svc | k8s-eshop.io/api/files-svc |
+| nodejs-socket-service-svc | k8s-eshop.io/api/nodejs-socket-svc |
+| ui-client-svc | k8s-eshop.io/client |
+| ui-admin-svc | k8s-eshop.io/admin |
+| nexus-svc | nexus-svc.k8s-eshop.io |
+| jenkins-svc | jenkins.k8s-eshop.io |
+| sonar-svc | sonar.k8s-eshop.io |
+| sonar-svc | sonar.k8s-eshop.io |
+| spring-boot-admin-server.k8s-eshop.io | admin-service |
+
 ## Links to k8s-eshop apps
-### k8s-eshop client application [http://k8s-eshop.io](http://k8s-eshop.io)
-### k8s-eshop admin application [http://admin.k8s-eshop.io/admin](http://admin.k8s-eshop.io)
-### Jaeger tracing [http://jaeger.k8s-eshop.io](http://jaeger.k8s-eshop.io)
-### Jenkins CI/CD [http://jenkins.k8s-eshop.io](http://jenkins.k8s-eshop.io)
-### SonarQube Code Quality and Security [http://sonar.k8s-eshop.io/sonar](http://sonar.k8s-eshop.io/sonar) user:pass admin:admin
-### Nexus repository [http://nexus.k8s-eshop.io](http://nexus.k8s-eshop.io) user:pass admin:admin123
-### Spring Boot Admin [http://spring-boot-admin-server.k8s-eshop.io](http://spring-boot-admin-server.k8s-eshop.io) user:pass admin:admin
-### Grafana run `kubectl cluster-info` and get grafana url
+
+- ### k8s-eshop client application
+  - Host [http://localhost:4008](http://localhost:4008)
+  - Guest [http://k8s-eshop.io](http://k8s-eshop.io)
+- ### k8s-eshop admin application 
+  - Host [http://localhost](http://localhost)
+  - Guest [http://admin.k8s-eshop.io](http://admin.k8s-eshop.io)
+- ### Jaeger tracing
+  - Host [http://localhost:4004](http://localhost:4004)
+  - Guest [http://jaeger.k8s-eshop.io](http://jaeger.k8s-eshop.io)
+- ### Jenkins CI/CD 
+  - Host [http://localhost:4001](http://localhost:4001)
+  - Guest [http://jenkins.k8s-eshop.io](http://jenkins.k8s-eshop.io)
+- ### SonarQube Code Quality and Security user:pass admin:admin
+  - Host [http://localhost:4010/sonar](http://localhost:4010/sonar)
+  - Guest [http://sonar.k8s-eshop.io/sonar](http://sonar.k8s-eshop.io/sonar)
+- ### Nexus repository user:pass admin:admin123
+  - Host [http://localhost:4003](http://localhost:4003)
+  - Guest [http://nexus.k8s-eshop.io](http://nexus.k8s-eshop.io)
+- ### Spring Boot Admin user:pass admin:admin
+  - Host [http://localhost:4009](http://localhost:4009)
+  - Guest [http://spring-boot-admin-server.k8s-eshop.io](http://spring-boot-admin-server.k8s-eshop.io)
+- ### Grafana 
+  - run `kubectl cluster-info` and get grafana url
 
 ## Run apps on localhost (dev/debug purpose)
 
 ### Backend apps
-1. Get k8s activemq-svc and mongodb services CLUSTER-IP
+Get k8s activemq-svc and mongodb services CLUSTER-IP
 
 ```
 vagrant@e-shop-microk8s-ubuntu ~ $ kubectl  get svc activemq-svc mongodb
@@ -55,17 +109,21 @@ activemq-svc   LoadBalancer   10.152.183.84     ... ...
 mongodb        ClusterIP      10.152.183.37     ... ...
 ```
 
-2. Change application-local.properties
+Change application-local.properties
 ```
-spring.data.mongodb.host=[CLUSTER-IP-MONGO] # eq spring.data.mongodb.host=10.152.183.37
+spring.data.mongodb.host=[CLUSTER-IP-MONGO] 
+# spring.data.mongodb.host=10.152.183.37
 ...
-spring.activemq.broker-url=tcp://[CLUSTER-IP-ACTIVEMQ]:61616 # eq spring.activemq.broker-url=tcp://10.152.183.84:61616 !!! Keep the port 61616 here
+spring.activemq.broker-url=tcp://[CLUSTER-IP-ACTIVEMQ]:61616 
+# spring.activemq.broker-url=tcp://10.152.183.84:61616 !!! Keep the port 61616 here
 ```
 
 ### Frontend apps
 
-3. Add appropriate key in proxy.conf.json. Existing key "/api/*" need to be last, otherwise newly added key can't be fired
-3.1 Authentication service key:
+Add appropriate key in proxy.conf.json. Existing key "/api/*" need to be last, otherwise newly added key can't be fired
+
+Authentication service key:
+
 ```
   "/api/authentication-svc/*": {
     "target": "http://localhost:8080",
@@ -76,7 +134,9 @@ spring.activemq.broker-url=tcp://[CLUSTER-IP-ACTIVEMQ]:61616 # eq spring.activem
     }
   }
 ```
-3.2 Store service key:
+
+Store service key:
+
 ```
   "/api/store-svc/*": {
     "target": "http://localhost:8081",
@@ -98,35 +158,14 @@ spring.activemq.broker-url=tcp://[CLUSTER-IP-ACTIVEMQ]:61616 # eq spring.activem
     }
   }
 ```
-***** Use:
-```
-{
-  "/api/files-svc/*": {
-    ...
-  },
-  "/api/*": {
-    ...
-  }
-}
-```
-***** Don't:
-```
-{
-  "/api/*": {
-    ...
-  },
-  "/api/files-svc/*": {
-    ...
-  }
-}
-```
 
-### Build maven-parent project
-	- `cd maven-parent`
-    - Get nexus server ip address
-	- `kubectl get svc nexus-svc -o jsonpath='{.spec.clusterIP}'`
-    - Build parent project
-	- `sudo docker build --add-host=nexus.k8s-eshop.io:<NEXUS-SERVER-IP-ADDRESS> .`
+
+### Build core-dependencies project 
+  - Get nexus server ip address
+	 - `kubectl get svc nexus-svc -o jsonpath='{.spec.clusterIP}'`
+  - Build core-dependencies project
+	 - `sudo docker build --add-host=nexus.k8s-eshop.io:<NEXUS-SERVER-IP-ADDRESS> .`
+
 ###  Get grafana default password
 	- `cat /var/snap/microk8s/current/credentials/basic_auth.csv`
 	
@@ -156,50 +195,9 @@ Add debug port to service definition:
 - forward 5005 port
 	- `kubectl port-forward <NODE_NAME>  5005:5005`
 
-## microk8s useful commands
-********** To start **********
+## microk8s troubleshooting
 
-1. check node
-kubectl get nodes
-
-2. if status is not started run
-microk8s.start
-
-
-********** Dashboard UI **********
-
-microk8s.enable dns dashboard
-
-microk8s.kubectl get all --all-namespaces
-
-Get dashboard url
-get service/kubernetes-dashboard IP and PORT ang go to https://{IP}:{PORT}
-
-Get token
-token=$(microk8s.kubectl -n kube-system get secret | grep default-token | cut -d " " -f1) && microk8s.kubectl -n kube-system describe secret $token
-
-
-********** Essential microk8s integrated commands **********
-
-microk8s.status: Provides an overview of the MicroK8s state (running/not running) as well as the set of enabled addons
-
-microk8s.enable: Enables an addon
-
-microk8s.disable: Disables an addon
-
-microk8s.kubectl: Interact with kubernetes
-
-microk8s.config: Shows the kubernetes config file
-
-microk8s.istioctl: Interact with the istio services. Needs the istio addon to be enabled
-
-microk8s.inspect: Performs a quick inspectio of the MicroK8s intallation. Offers hints on what
-
-microk8s.reset: Resets the infrastructure to a clean state
-
-microk8s.stop: Stops all kubernetes services
-
-microk8s.start: Starts MicroK8s after it is being stopped
-
-test
-[![test](https://j.gifs.com/OMX89B.gif)](https://www.youtube.com/)
+- check node
+  - `kubectl get nodes`
+- if status is not started run
+  - `microk8s.start`

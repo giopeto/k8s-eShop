@@ -81,7 +81,6 @@ public class ItemsServiceImpl implements ItemsService {
                 item.getDescription(),
                 item.getPrice(),
                 item.isArchive(),
-                item.getDate(),
                 fileIdsPerItem);
     }
 }
