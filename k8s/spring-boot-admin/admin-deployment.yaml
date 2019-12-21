@@ -15,7 +15,7 @@ spec:
     spec:
       serviceAccountName: admin
       containers:
-        - image: giopeto/e-shop-admin-server:V1
+        - image: giopeto/e-shop-admin-server:dev-1
           imagePullPolicy: Always
           name: admin
           env:

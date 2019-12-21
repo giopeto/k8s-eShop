@@ -1,6 +1,5 @@
 package com.store.common;
 
-import com.store.common.CookieParser;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;

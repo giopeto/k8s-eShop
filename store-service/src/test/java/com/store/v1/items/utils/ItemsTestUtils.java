@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.emptyList;
 import static java.util.UUID.randomUUID;
 
 @UtilityClass
@@ -18,7 +17,6 @@ public class ItemsTestUtils {
     private static final String ITEM_NAME = "Item ";
     private static final String SHORT_DESCRIPTION = "Short description";
     private static final String DESCRIPTION = "Description";
-    private static final Date NEW_DATE = new Date();
 
     public static Items generateItem(String id, Optional<String> name, String groupId, Optional<Date> date) {
         return new Items(
@@ -28,8 +26,7 @@ public class ItemsTestUtils {
                 SHORT_DESCRIPTION,
                 DESCRIPTION,
                 1D,
-                true,
-                date.isPresent() ? date.get() : NEW_DATE
+                true
         );
     }
 

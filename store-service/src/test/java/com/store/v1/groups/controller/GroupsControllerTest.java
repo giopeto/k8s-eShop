@@ -1,19 +1,16 @@
 package com.store.v1.groups.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.store.config.TestConfig;
 import com.store.v1.groups.domain.Groups;
 import com.store.v1.groups.domain.GroupsList;
 import com.store.v1.groups.service.GroupsService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
+import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Optional;
 
@@ -28,24 +25,24 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(GroupsController.class)
-@Import(TestConfig.class)
 public class GroupsControllerTest {
 
     private static final String GROUP_URL = "/" + STORE_BASE_URL + "/groups";
 
-    @Autowired
-    private MockMvc mockMvc;
-    @MockBean
+    private GroupsController groupsController;
+    @Mock
     private GroupsService groupsService;
 
+    private MockMvc mockMvc;
     private ObjectMapper jacksonObjectMapper;
     private Groups groups;
     private String id;
 
     @Before
     public void setUp() {
+        groupsController = new GroupsController(groupsService);
 
+        mockMvc = MockMvcBuilders.standaloneSetup(groupsController).build();
         jacksonObjectMapper = new ObjectMapper();
         id = randomUUID().toString();
         groups = generateGroup(id, Optional.empty());

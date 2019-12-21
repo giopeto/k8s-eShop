@@ -3,22 +3,18 @@ def DOCKER_HUB_USER="giopeto"
 def HTTP_PORT=80
 def PROJECT_DIR="nodejs-socket-service"
 def CURRENT_BUILD_NUMBER=currentBuild.number
-def CONTAINER_TAG="V"
+def CONTAINER_TAG="dev"
 
 node {
 
     stage('Initialize'){
         def dockerHome = tool 'myDocker'
         env.PATH = "${dockerHome}/bin:${env.PATH}"
-        CONTAINER_TAG = "${CONTAINER_TAG}${CURRENT_BUILD_NUMBER}"
+        CONTAINER_TAG = "${CONTAINER_TAG}-${CURRENT_BUILD_NUMBER}"
     }
 
     stage('Checkout') {
         checkout scm
-    }
-
-    stage("Image Prune"){
-        imagePrune(CONTAINER_NAME)
     }
 
     stage('Image Build'){
@@ -47,13 +43,6 @@ node {
         }
     }
     
-}
-
-def imagePrune(containerName){
-    try {
-        sh "docker image prune -f"
-        sh "docker stop $containerName"
-    } catch(error){}
 }
 
 def imageBuild(containerName, tag){

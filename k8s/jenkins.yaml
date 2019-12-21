@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: jenkins
-        image: giopeto/jenkins-with-docker:V2
+        image: giopeto/jenkins-with-docker:1
         ports:
           - name: http-port
             containerPort: 8080

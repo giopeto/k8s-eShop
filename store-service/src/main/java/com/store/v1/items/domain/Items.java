@@ -7,9 +7,6 @@ import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-import java.util.List;
-
 @Document(collection = "items")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,5 +22,4 @@ public class Items {
     private String description;
     private Double price;
     private boolean archive;
-    private Date date;
 }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,7 +18,6 @@ public class ItemsDto {
     private String description;
     private Double price;
     private boolean archive;
-    private Date date;
 
     private List<String> fileIds;
 }

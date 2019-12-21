@@ -4,7 +4,7 @@ k create -f /home/vagrant/k8s-eshop/k8s/namespace.yaml
 k config set-context --current --namespace=k8s-eshop
 
 # Enable prometheus addon
-#microk8s.enable prometheus
+microk8s.enable prometheus
 
 # Add maven settings.xml file
 mkdir /home/vagrant/.m2

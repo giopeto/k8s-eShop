@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { ItemsService } from './items.service';
-import { STORE_SERVICE_BASE_URL, HTTP_OPTIONS } from '../common/ApiConstants';
+import { STORE_INGRESS_PATH, STORE_SERVICE_PREFIX, getApiBaseUrl } from '../common/ApiConstants';
 import { Items } from '../models/Items';
 
 describe('ItemsService', () => {
@@ -13,7 +13,7 @@ describe('ItemsService', () => {
 	let mockItems: Array<Items>;
 
 	beforeEach(() => {
-		apiUrl = `${STORE_SERVICE_BASE_URL}/items`;
+		apiUrl = getApiBaseUrl(STORE_INGRESS_PATH, STORE_SERVICE_PREFIX) + '/items';
 		mockItems = [{id: '1', name: 'Item 1', groupId: '1'}, {id: '2', name: 'Item 2', groupId: '2'}];
 
 		TestBed.configureTestingModule({

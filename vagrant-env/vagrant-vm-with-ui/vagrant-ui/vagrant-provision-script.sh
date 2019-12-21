@@ -1,11 +1,9 @@
-echo -e '\n microk8s-ubuntu \n'
+echo -e '\n k8s-eshoop-ui \n'
 
 # Install snapd and kubernetes (https://microk8s.io/docs/)
 echo -e '\n Install snapd and kubernetes (https://microk8s.io/docs/) \n'
 sudo dpkg --configure -a
 sudo apt update -y
-#sudo apt upgrade -y
-#sudo apt dist-upgrade -y
 sudo apt install snapd
 
 sudo snap install microk8s --classic

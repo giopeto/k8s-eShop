@@ -1,4 +1,4 @@
-echo -e '\n microk8s-ubuntu \n'
+echo -e '\n k8s-eshoop \n'
 
 # Install snapd and kubernetes (https://microk8s.io/docs/)
 echo -e '\n Install snapd and kubernetes (https://microk8s.io/docs/) \n'
