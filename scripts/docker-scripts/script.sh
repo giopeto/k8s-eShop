@@ -28,7 +28,7 @@ if [ -z "$SKIP_NEXUS_HOST" ]; then
     ADD_HOST=--add-host=nexus.k8s-eshop.io:$(get_nexus_ip_address)
 fi
 
-APP_VERSION="V$APP_VERSION"
+APP_VERSION="dev-$APP_VERSION"
 APP_NAME="e-shop-$APP_PATH"
 
 echo "Build docker image: $APP_NAME:$APP_VERSION ..."

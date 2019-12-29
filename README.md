@@ -8,7 +8,7 @@
 * [Technologies](#technologies)
 * [Kubernetes info](#kubernetes-info)
 * [Links to k8s-eshop apps](#links-to-k8s-eshop-apps)
-* [Run apps on localhost (dev/debug purpose)](#run-apps-on-localhost-devdebug-purpose)
+* [Running apps locally](#running-apps-locally)
 * [microk8s troubleshooting](#microk8s-troubleshooting)
 
 ## Setup
@@ -31,8 +31,8 @@
 ## Technologies
 * Kubernetes, MicroK8s, Docker, Vagrant, VirtualBox, ActiveMQ, Jenkins, Nexus, SonarQube, Spring Boot Admin, Jaeger, Maven, Nginx, npm
 * Java 8, Spring Boot 2, JUnit, Mockito
-* Node.js, Express
-* Angular 8, Bootstrap 4, HTML, CSS
+* JavaScript ES6, Node.js, Express, TypeScript, Angular 8, Socket.IO
+* Bootstrap 4, HTML, CSS
 * MongoDB
 
 ## Kubernetes info
@@ -96,15 +96,15 @@
   - Host [http://localhost:4009](http://localhost:4009)
   - Guest [http://spring-boot-admin-server.k8s-eshop.io](http://spring-boot-admin-server.k8s-eshop.io)
 - ### Grafana 
-  - run `kubectl cluster-info` and get grafana url
+  - run `k cluster-info` and get grafana url
 
-## Run apps on localhost (dev/debug purpose)
+## Running apps locally
 
 ### Backend apps
 Get k8s activemq-svc and mongodb services CLUSTER-IP
 
 ```
-vagrant@e-shop-microk8s-ubuntu ~ $ kubectl  get svc activemq-svc mongodb
+vagrant@e-shop-microk8s-ubuntu ~ $ k  get svc activemq-svc mongodb
 NAME           TYPE           CLUSTER-IP        ... ...   
 activemq-svc   LoadBalancer   10.152.183.84     ... ...
 mongodb        ClusterIP      10.152.183.37     ... ...
@@ -161,7 +161,7 @@ Store service key:
 ```
 
 
-### Build docker image manually
+### Build docker images
   - Build with script
     - `sudo sh /home/vagrant/k8s-eshop/scripts/docker-scripts/script.sh [APP_VERSION] [APP_PATH] [SKIP_NEXUS_HOST](optional default to no)`
       - Example: 
@@ -170,12 +170,12 @@ Store service key:
         - `cd core-dependencies && mvn clean install && mvn deploy`
   - Build manually
     - Get nexus server ip address(For java apps, oherwise remove --add-host from build command)
-	    - `kubectl get svc nexus-svc -o jsonpath='{.spec.clusterIP}'`
+	    - `k get svc nexus-svc -o jsonpath='{.spec.clusterIP}'`
     - Build image
 	    - `sudo docker build --add-host=nexus.k8s-eshop.io:<NEXUS-SERVER-IP-ADDRESS> .`
 
 ###  Get grafana default password
-	- `cat /var/snap/microk8s/current/credentials/basic_auth.csv`
+	- cat /var/snap/microk8s/current/credentials/basic_auth.csv
 	
 	MGJBOFh...,admin,admin,"system:masters"
 
@@ -201,11 +201,11 @@ Add debug port to service definition:
 	- `ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,address=5005,server=y,suspend=n","-jar","/usr/app/app.jar"]`
 	
 - forward 5005 port
-	- `kubectl port-forward <NODE_NAME>  5005:5005`
+	- `k port-forward <NODE_NAME>  5005:5005`
 
 ## microk8s troubleshooting
 
 - check node
-  - `kubectl get nodes`
+  - `k get nodes`
 - if status is not started run
   - `microk8s.start`

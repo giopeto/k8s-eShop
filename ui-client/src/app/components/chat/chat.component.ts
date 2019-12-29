@@ -20,24 +20,22 @@ export class ChatComponent implements OnInit {
 
 	ngOnInit() {
 		this.chatService.socketSubject.subscribe(event => {
-			console.log('ChatComponent subscribe: ', event);
 			if (event.type === EventTypes.CHAT_MESSAGE) {
 				this.addToMessages(event.payload);
 			} else if (event.type === EventTypes.USER_ADDED) {
-				console.log('USER_ADDED: ', event);
 				this.users.push(event.payload);
 			}
 		});
 
 		this.loginService.geCurrentUser().subscribe(user=> this.chatService.setUser(user));		
 		
-		/* Test with local user
+		/* //Test with local user
 		this.chatService.setUser({
 			id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15), 
 			email: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15), 
 			password: 'qwe', 
-			role: 'ROLE_ADMIN'});
-		*/			
+			role: 'ROLE_ADMIN'}); */
+				
 	}
 
 	sendMessage(content: string): void {

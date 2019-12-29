@@ -1,9 +1,4 @@
-#########################
-### build environment ###
-#########################
-
-# base image
-FROM node:10.16.0 as builder
+FROM node:10.16.0
 
 # set working directory
 RUN mkdir /usr/src/app
@@ -19,4 +14,6 @@ RUN npm install
 # add app
 COPY . /usr/src/app
 
-CMD [ "node", "server.js" ]
+RUN npm run tsc
+
+CMD [ "node", "dist/index.js" ]

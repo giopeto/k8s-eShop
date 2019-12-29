@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon"
+    "start": "tsc && node dist/index.js",
+    "dev": "tsc-watch --onSuccess & nodemon dist",
+    "tsc": "tsc"
   },
   "private": true,
   "dependencies": {
@@ -15,6 +16,11 @@
     "socket.io": "^2.1.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.1"
+    "@types/express": "^4.17.2",
+    "@types/node": "^13.1.1",
+    "@types/socket.io": "^2.1.4",
+    "nodemon": "^2.0.1",
+    "tsc-watch": "^4.0.0",
+    "typescript": "^3.7.4"
   }
 }

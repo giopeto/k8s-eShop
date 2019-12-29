@@ -1,4 +1,4 @@
-const express = require('express');
+import express = require('express');
 const router = express.Router();
 
 const healtActuator = {
@@ -10,4 +10,4 @@ router.get('/health', (req, res) => {
   res.send(healtActuator);
 });
 
-module.exports = router;
+export default router;
